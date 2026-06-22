@@ -1,0 +1,30 @@
+/* ============================================================
+   MOLSAN ERP — GLASS LUXE 2027
+   ARCHIVO MAESTRO DE ESTILOS (SOLO IMPORTS)
+============================================================ */
+/* THEME */
+@import url("theme-molsan-light.css");
+
+/* MOTION */
+@import url("motion-molsan-2027.css");
+
+/* UI KIT GENERAL */
+@import url("ui-kit-molsan-2027.css");
+
+/* LAYOUT ENGINE */
+@import url("layout-engine.css");
+@import url("layout-molsan-2027.css");
+
+/* CHARTS */
+@import url("charts-molsan-2027.css");
+
+/* COMPONENTES */
+@import url("sidebar.css");
+@import url("dashboard.css");
+@import url("listado.css");
+@import url("informes.css");
+@import url("informes-dinamicos.css");
+@import url("paneles.css");
+
+/* BOTONES — SIEMPRE AL FINAL */
+@import url("buttons.css");

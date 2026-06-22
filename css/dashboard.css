@@ -1,0 +1,92 @@
+/* ============================================================
+   DASHBOARD — MOLSAN ERP SAAS PREMIUM 2027
+   Adaptado a Glass Luxe Light + UI-Kit + Motion + Charts
+============================================================ */
+
+/* ============================================================
+   ANIMACIÓN DE ENTRADA DEL MÓDULO
+============================================================ */
+
+.modulo-wrapper.fade-in {
+    animation: fadeUp var(--motion-normal) var(--ease-emphasized);
+}
+
+/* ============================================================
+   KPIs — SISTEMA CORPORATIVO 2027
+============================================================ */
+
+.dashboard-kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.dashboard-kpi {
+    background: var(--m-bg-card);
+    border: 1px solid var(--m-border-soft);
+    border-radius: var(--m-radius-md);
+    padding: 16px 20px;
+
+    box-shadow: var(--m-shadow-soft);
+    transition: transform var(--motion-normal) var(--ease-emphasized),
+                box-shadow var(--motion-normal) var(--ease-soft);
+}
+
+.dashboard-kpi:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--m-shadow-medium);
+}
+
+.dashboard-kpi-title {
+    font-size: 0.85rem;
+    color: var(--m-text-secondary);
+    margin-bottom: 4px;
+}
+
+.dashboard-kpi-value {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--m-primary-dark);
+}
+
+/* ============================================================
+   TARJETAS DE GRÁFICOS — GLASS LUXE LIGHT
+============================================================ */
+
+.dashboard-card {
+    background: var(--m-bg-card);
+    border-radius: var(--m-radius-lg);
+    padding: 1.2rem;
+    border: 1px solid var(--m-border-soft);
+    box-shadow: var(--m-shadow-medium);
+    backdrop-filter: blur(10px);
+    margin-top: 1.5rem;
+
+    transition: box-shadow var(--motion-normal) var(--ease-soft),
+                transform var(--motion-normal) var(--ease-emphasized);
+}
+
+.dashboard-card:hover {
+    box-shadow: var(--m-shadow-strong);
+    transform: translateY(-3px);
+}
+
+/* Canvas */
+.dashboard-card canvas {
+    width: 100%;
+    transition: opacity var(--motion-normal) var(--ease-soft);
+}
+
+/* ============================================================
+   GRÁFICOS (Charts 2027)
+============================================================ */
+
+.dashboard-chart {
+    background: var(--m-bg-card);
+    border-radius: var(--m-radius-lg);
+    padding: 1.2rem;
+    border: 1px solid var(--m-border-soft);
+    box-shadow: var(--m-shadow-soft);
+    margin-top: 1.5rem;
+}

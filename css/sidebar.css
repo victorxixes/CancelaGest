@@ -1,0 +1,179 @@
+/* ============================================================
+   SIDEBAR — MOLSAN ERP SAAS PREMIUM 2027
+   Glass Luxe Dark + Motion 2027 + UI-Kit
+============================================================ */
+
+/* ============================================================
+   CONTENEDOR PRINCIPAL
+============================================================ */
+
+.sidebar {
+    width: var(--m-sidebar-width);
+    height: 100vh;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9000;
+
+    background: rgba(15, 23, 42, 0.92); /* Navy Glass Luxe Dark */
+    backdrop-filter: blur(14px);
+
+    border-right: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 4px 0 18px rgba(0,0,0,0.25);
+
+    overflow-y: auto;
+    padding-top: 12px;
+
+    transition: width var(--motion-normal) var(--ease-soft);
+}
+
+.sidebar.collapsed {
+    width: 70px;
+}
+
+/* ============================================================
+   LISTA
+============================================================ */
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* ============================================================
+   ITEMS
+============================================================ */
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background var(--motion-fast) var(--ease-soft),
+                padding var(--motion-normal) var(--ease-soft);
+    position: relative;
+}
+
+.menu-item:hover {
+    background: rgba(255,255,255,0.10);
+}
+
+.menu-item.active {
+    background: rgba(77,181,255,0.18); /* Azul corporativo suave */
+    border-left: 3px solid var(--m-primary);
+}
+
+/* ICONO */
+.menu-item .icon {
+    font-size: 1.25rem;
+    width: 26px;
+    text-align: center;
+    color: #e2e8f0;
+}
+
+/* TEXTO */
+.menu-item .text {
+    font-size: 0.95rem;
+    white-space: nowrap;
+    color: #e2e8f0;
+    transition: opacity var(--motion-fast) var(--ease-soft);
+}
+
+/* Ocultar texto cuando está colapsado */
+.sidebar.collapsed .menu-item .text {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ============================================================
+   TOOLTIP GLASS LUXE DARK
+============================================================ */
+
+.menu-item .tooltip {
+    position: absolute;
+    left: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+
+    color: var(--m-text-main);
+    padding: 0.35rem 0.6rem;
+
+    border-radius: var(--m-radius-sm);
+    border: 1px solid var(--m-border-glass);
+    box-shadow: var(--m-shadow-medium);
+
+    white-space: nowrap;
+    font-size: 0.8rem;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--motion-fast) var(--ease-soft),
+                transform var(--motion-fast) var(--ease-soft);
+
+    z-index: 9999;
+}
+
+/* Mostrar tooltip solo cuando está colapsado */
+.sidebar.collapsed .menu-item:hover .tooltip {
+    opacity: 1;
+    transform: translateY(-50%) translateX(6px);
+}
+
+/* Ocultar tooltip cuando sidebar está expandido */
+.sidebar:not(.collapsed) .tooltip {
+    display: none;
+}
+
+/* ============================================================
+   SCROLLBAR PREMIUM
+============================================================ */
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.18);
+    border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.28);
+}
+
+/* ============================================================
+   BOTÓN TOGGLE — Minimalista Premium
+============================================================ */
+
+.sidebar-toggle-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 10;
+
+    background: transparent;
+    border: none;
+
+    padding: 6px;
+    border-radius: var(--m-radius-sm);
+
+    cursor: pointer;
+    color: #e2e8f0;
+
+    transition: opacity var(--motion-fast) var(--ease-soft),
+                transform var(--motion-fast) var(--ease-emphasized);
+}
+
+.sidebar-toggle-btn:hover {
+    opacity: 0.7;
+    transform: scale(1.05);
+}

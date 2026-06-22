@@ -1,0 +1,210 @@
+/* ============================================================
+   INFORMES — MOLSAN ERP SAAS PREMIUM 2027
+   Adaptado a Glass Luxe Light + UI-Kit + Motion + Charts
+============================================================ */
+
+/* ============================================================
+   GRID DE TARJETAS DE INFORMES
+============================================================ */
+
+.grid-informes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 22px;
+    margin-top: 25px;
+}
+
+/* ============================================================
+   TARJETAS DE INFORME (Menú principal)
+============================================================ */
+
+.informe-card {
+    background: var(--m-bg-card);
+    border: 1px solid var(--m-border-soft);
+    border-radius: var(--m-radius-lg);
+    padding: 20px;
+
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--m-text-main);
+    text-align: center;
+
+    box-shadow: var(--m-shadow-soft);
+    transition: transform var(--motion-normal) var(--ease-emphasized),
+                box-shadow var(--motion-normal) var(--ease-soft),
+                background var(--motion-normal) var(--ease-soft);
+}
+
+.informe-card:hover {
+    background: var(--m-primary-soft);
+    border-color: var(--m-primary);
+    transform: translateY(-4px);
+    box-shadow: var(--m-shadow-medium);
+}
+
+/* Icono dentro de la tarjeta */
+.informe-card .icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* ============================================================
+   CONTENEDOR DEL INFORME
+============================================================ */
+
+#informeContainer {
+    margin-top: 25px;
+    padding: 25px;
+
+    background: var(--m-bg-card);
+    border: 1px solid var(--m-border-soft);
+    border-radius: var(--m-radius-lg);
+
+    box-shadow: var(--m-shadow-medium);
+    backdrop-filter: blur(10px);
+
+    animation: fadeUp var(--motion-normal) var(--ease-emphasized);
+}
+
+/* ============================================================
+   TABLAS DENTRO DE INFORMES (Table Premium 2027)
+============================================================ */
+
+#informeContainer table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+
+    background: var(--m-bg-card);
+    border-radius: var(--m-radius-md);
+    overflow: hidden;
+    box-shadow: var(--m-shadow-soft);
+}
+
+#informeContainer thead th {
+    background: var(--m-primary-soft);
+    color: var(--m-primary-dark);
+    padding: 10px;
+    font-weight: 600;
+    text-align: left;
+    border-bottom: 1px solid var(--m-border-soft);
+}
+
+#informeContainer tbody td {
+    padding: 10px;
+    border-bottom: 1px solid var(--m-border-soft);
+    color: var(--m-text-secondary);
+}
+
+#informeContainer tbody tr:nth-child(even) {
+    background: var(--m-bg-soft);
+}
+
+#informeContainer tbody tr:hover td {
+    background: var(--m-primary-soft);
+    color: var(--m-primary-dark);
+}
+
+/* ============================================================
+   GRÁFICOS DENTRO DE INFORMES (Charts 2027)
+============================================================ */
+
+#informeContainer canvas {
+    margin-top: 25px;
+    width: 100% !important;
+    height: auto !important;
+
+    background: var(--m-bg-card);
+    border: 1px solid var(--m-border-soft);
+    border-radius: var(--m-radius-md);
+    padding: 12px;
+
+    box-shadow: var(--m-shadow-soft);
+}
+
+/* ============================================================
+   BOTONES DE INFORMES (UI-Kit)
+============================================================ */
+
+.btn-inf {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+
+    background: var(--m-primary);
+    border: 1px solid var(--m-primary-dark);
+    color: var(--m-text-invert);
+
+    padding: 0.75rem 1.1rem;
+    border-radius: var(--m-radius-md);
+
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+
+    transition: background var(--motion-fast) var(--ease-soft),
+                transform var(--motion-fast) var(--ease-emphasized);
+}
+
+.btn-inf:hover {
+    background: var(--m-primary-dark);
+    transform: translateY(-2px);
+}
+
+.btn-inf svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2;
+    transition: transform var(--motion-normal) var(--ease-emphasized),
+                opacity var(--motion-normal) var(--ease-soft);
+}
+
+.btn-inf:hover svg {
+    transform: translateX(4px) scale(1.1);
+    opacity: 0.9;
+}
+/* ============================================================
+   INFORMES PREMIUM — TARJETAS GLASS LUXE 2027
+============================================================ */
+
+.inf-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.inf-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 14px;
+    padding: 20px;
+    cursor: pointer;
+    transition: 0.25s ease;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.inf-card:hover {
+    transform: translateY(-4px);
+    background: rgba(255,255,255,0.15);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+.inf-icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.inf-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.inf-desc {
+    font-size: 14px;
+    opacity: 0.8;
+}
