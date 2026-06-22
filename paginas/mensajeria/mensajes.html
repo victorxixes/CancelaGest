@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Mensajes</title>
+
+    <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- DESIGN SYSTEM BASE -->
+    <link rel="stylesheet" href="../../css/ds.css">
+
+    <!-- COMPONENTES NECESARIOS -->
+    <link rel="stylesheet" href="../../css/components/ds-buttons.css">
+    <link rel="stylesheet" href="../../css/components/ds-inputs.css">
+    <link rel="stylesheet" href="../../css/components/ds-cards.css">
+    <link rel="stylesheet" href="../../css/components/ds-grid.css">
+    <link rel="stylesheet" href="../../css/components/ds-badges.css">
+    <link rel="stylesheet" href="../../css/components/ds-tables.css">
+
+    <!-- CSS DEL MÓDULO -->
+    <link rel="stylesheet" href="../../css/modules/ds-mensajes.css">
+
+<style>
+
+/* Anular animaciones */
+* {
+    animation: none !important;
+    transition: none !important;
+}
+
+/* CORRECCIÓN LAYOUT */
+.content {
+    flex: 1;
+    padding: 30px 40px;
+    width: 100%;
+    margin-left: 260px;
+}
+
+body.sidebar-collapsed .content {
+    margin-left: 130px;
+}
+
+/* NUEVA PALETA */
+:root {
+    --msg-primary: #0A4A8A;
+    --msg-primary-dark: #083866;
+    --msg-accent: #1E7CC3;
+    --msg-bg: rgba(255,255,255,0.55);
+    --msg-bg-hover: rgba(255,255,255,0.75);
+    --msg-border: rgba(255,255,255,0.35);
+}
+
+/* GLOBO MENSAJE NUEVO */
+.msg-badge {
+    background: #e11d48;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 999px;
+    margin-left: auto;
+    box-shadow: 0 2px 6px rgba(225,29,72,0.35);
+}
+
+/* LAYOUT GENERAL */
+.messages-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 25px;
+    margin-top: 25px;
+}
+
+/* LISTA DE CONVERSACIONES */
+.messages-sidebar {
+    background: var(--msg-bg);
+    border-radius: 14px;
+    border: 1px solid var(--msg-border);
+    padding: 18px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 18px rgba(10,74,138,0.15);
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--msg-bg);
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--msg-border);
+    backdrop-filter: blur(10px);
+}
+
+.search-box input {
+    border: none;
+    background: transparent;
+    width: 100%;
+    outline: none;
+}
+
+.conversation-list {
+    margin-top: 15px;
+}
+
+.conversation-item {
+    padding: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    margin-bottom: 10px;
+    transition: 0.25s ease;
+    background: rgba(255,255,255,0.35);
+}
+
+.conversation-item:hover {
+    background: var(--msg-bg-hover);
+}
+
+.conversation-item.active {
+    background: rgba(10,74,138,0.15);
+    border-color: var(--msg-primary);
+}
+
+.conv-name {
+    font-weight: 600;
+    color: var(--msg-primary);
+}
+
+.conv-preview {
+    font-size: 13px;
+    color: #475569;
+}
+
+.conv-time {
+    font-size: 12px;
+    color: #64748b;
+    text-align: right;
+}
+
+/* PANEL DE CHAT */
+.messages-chat {
+    background: var(--msg-bg);
+    border-radius: 14px;
+    border: 1px solid var(--msg-border);
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 18px rgba(10,74,138,0.15);
+}
+
+/* CABECERA DEL CHAT */
+.chat-header {
+    padding: 18px;
+    border-bottom: 1px solid var(--msg-border);
+    background: linear-gradient(180deg, var(--msg-primary) 0%, var(--msg-primary-dark) 100%);
+    color: white;
+    border-radius: 14px 14px 0 0;
+}
+
+.chat-status {
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+/* MENSAJES */
+.chat-body {
+    padding: 20px;
+    height: 500px;
+    overflow-y: auto;
+}
+
+.msg {
+    margin-bottom: 18px;
+    max-width: 70%;
+}
+
+.msg-in .msg-text {
+    background: rgba(255,255,255,0.85);
+    color: #1e293b;
+    border-radius: 12px;
+    padding: 10px 14px;
+    box-shadow: 0 4px 12px rgba(10,74,138,0.15);
+}
+
+.msg-out {
+    margin-left: auto;
+    text-align: right;
+}
+
+.msg-out .msg-text {
+    background: var(--msg-primary);
+    color: white;
+    border-radius: 12px;
+    padding: 10px 14px;
+    box-shadow: 0 4px 12px rgba(10,74,138,0.25);
+}
+
+.msg-time {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 4px;
+}
+
+/* INPUT MENSAJE */
+.chat-input {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    border-top: 1px solid var(--msg-border);
+    background: rgba(255,255,255,0.45);
+}
+
+.chat-input .input {
+    background: rgba(255,255,255,0.55);
+    border: 1px solid var(--msg-border);
+    padding: 10px;
+    border-radius: 10px;
+    flex: 1;
+}
+
+.btn {
+    background: var(--msg-primary);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.25s ease;
+}
+
+.btn:hover {
+    background: var(--msg-accent);
+    transform: translateY(-2px);
+}
+
+</style>
+</head>
+
+<body class="sidebar-expanded">
+
+<div class="layout">
+
+    <div id="sidebar-container"></div>
+    <script src="../../js/components/ds-sidebar.js"></script>
+
+    <div class="content">
+
+        <div class="header">
+            <h1>🗨️ Centro de Mensajes</h1>
+            <span class="header-sub">Comunicación interna y con clientes</span>
+        </div>
+
+        <div class="messages-layout">
+
+            <!-- LISTA DE CONVERSACIONES -->
+            <div class="messages-sidebar">
+
+                <div class="search-box" style="margin-bottom: 12px;">
+                    <span class="icon">🔎</span>
+                    <input type="text" class="input" placeholder="Buscar conversación...">
+                </div>
+
+                <div class="conversation-list">
+
+                    <div class="conversation-item active">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div class="conv-name">María López</div>
+                            <span class="msg-badge">1</span>
+                        </div>
+                        <div class="conv-preview">¿Puedes enviarme la copia simple?</div>
+                        <div class="conv-time">10:24</div>
+                    </div>
+
+                    <div class="conversation-item">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div class="conv-name">Carlos Pérez</div>
+                            <span class="msg-badge">3</span>
+                        </div>
+                        <div class="conv-preview">Firmamos a las 12:00</div>
+                        <div class="conv-time">09:10</div>
+                    </div>
+
+                    <div class="conversation-item">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div class="conv-name">Notaría Bonet</div>
+                        </div>
+                        <div class="conv-preview">Documento recibido correctamente</div>
+                        <div class="conv-time">Ayer</div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- PANEL DE CHAT -->
+            <div class="messages-chat">
+
+                <div class="chat-header">
+                    <div>
+                        <strong>María López</strong><br>
+                        <span class="chat-status">En línea</span>
+                    </div>
+                </div>
+
+                <div class="chat-body">
+
+                    <div class="msg msg-in">
+                        <div class="msg-text">
+                            Hola, ¿puedes enviarme la copia simple de la escritura?
+                        </div>
+                        <div class="msg-time">10:22</div>
+                    </div>
+
+                    <div class="msg msg-out">
+                        <div class="msg-text">
+                            Claro, te la envío ahora mismo.
+                        </div>
+                        <div class="msg-time">10:23</div>
+                    </div>
+
+                    <div class="msg msg-out">
+                        <div class="msg-text">
+                            Aquí la tienes adjunta.
+                        </div>
+                        <div class="msg-time">10:24</div>
+                    </div>
+
+                </div>
+
+                <div class="chat-input">
+
+                    <select id="destinatario" class="input" style="max-width: 220px;">
+                        <option value="">Seleccionar destinatario</option>
+                        <option value="Maria Lopez">María López</option>
+                        <option value="Carlos Perez">Carlos Pérez</option>
+                        <option value="Notaría Bonet">Notaría Bonet</option>
+                        <option value="Atención al Cliente">Atención al Cliente</option>
+                    </select>
+
+                    <input type="text" id="mensajeTexto" class="input" placeholder="Escribe un mensaje...">
+
+                    <button class="btn" onclick="enviarMensaje()">Enviar</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

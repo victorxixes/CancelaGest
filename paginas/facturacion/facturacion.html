@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Facturación</title>
+
+    <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- DESIGN SYSTEM BASE -->
+    <link rel="stylesheet" href="../../css/ds.css">
+
+    <!-- COMPONENTES NECESARIOS -->
+    <link rel="stylesheet" href="../../css/components/ds-buttons.css">
+    <link rel="stylesheet" href="../../css/components/ds-inputs.css">
+    <link rel="stylesheet" href="../../css/components/ds-cards.css">
+    <link rel="stylesheet" href="../../css/components/ds-grid.css">
+    <link rel="stylesheet" href="../../css/components/ds-badges.css">
+    <link rel="stylesheet" href="../../css/components/ds-tables.css">
+
+
+
+    <!-- SIDEBAR -->
+    <script src="../../js/components/ds-sidebar.js"></script>
+
+<style>
+/* Desactivar TODAS las animaciones y transiciones de la página */
+* {
+    animation: none !important;
+    transition: none !important;
+}
+
+/* Animación expandida */
+.expandido-cerrado {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding-top: 0;
+    transition: all 0.35s ease;
+}
+
+.expandido {
+    max-height: 1500px;
+    opacity: 1;
+    padding-top: 20px;
+    transition: all 0.35s ease;
+}
+
+/* Grids */
+.facturas-two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    margin-top: 20px;
+}
+
+.facturas-four-columns {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    margin-top: 25px;
+}
+
+@media (max-width: 1200px) {
+    .facturas-four-columns {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .facturas-four-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Filtros premium */
+.filters-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 15px;
+}
+
+.filters-bar div label {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.filters-actions {
+    margin-top: 18px;
+    display: flex;
+    gap: 10px;
+}
+
+/* KPIs */
+.fusion-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-top: 15px;
+}
+
+.kpi-box {
+    background: #f8f8f8;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    transition: 0.2s;
+}
+
+.kpi-box:hover {
+    background: #ececec;
+    cursor: pointer;
+}
+
+.kpi-number {
+    font-size: 32px;
+    font-weight: 700;
+    margin-top: 5px;
+}
+
+.kpi-sub {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+/* Tabla premium */
+.sla-table.compact-table td,
+.sla-table.compact-table th {
+    padding: 10px 12px;
+}
+</style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR NUEVO -->
+    <div id="sidebar-container"></div>
+
+    <!-- CONTENIDO -->
+    <div class="layout-content">
+
+        
+        <h2>🧾 Facturación</h2>
+        <span class="header-sub">Control completo de facturas y PPAD</span>
+ <!-- ============================
+             ESTADOS DE FACTURACIÓN
+        ============================ -->
+        <div class="facturas-four-columns">
+
+            <article class="card-block compact" style="border-left: 6px solid #dc2626;">
+                <div class="section-title">Pendientes de facturar</div>
+                <div class="kpi-box">
+                    <h3>Total</h3>
+                    <div class="kpi-number" style="color:#dc2626;">128</div>
+                    <div class="kpi-sub">Aún sin emitir</div>
+                </div>
+            </article>
+
+            <article class="card-block compact" style="border-left: 6px solid #0ea5e9;">
+                <div class="section-title">Emitidas</div>
+                <div class="kpi-box">
+                    <h3>Total</h3>
+                    <div class="kpi-number" style="color:#0ea5e9;">312</div>
+                    <div class="kpi-sub">Enviadas al cliente</div>
+                </div>
+            </article>
+
+            <article class="card-block compact" style="border-left: 6px solid #16a34a;">
+                <div class="section-title">Cobradas</div>
+                <div class="kpi-box">
+                    <h3>Total</h3>
+                    <div class="kpi-number" style="color:#16a34a;">221</div>
+                    <div class="kpi-sub">Pagadas correctamente</div>
+                </div>
+            </article>
+
+            <article class="card-block compact" style="border-left: 6px solid #6b7280;">
+                <div class="section-title">Anuladas</div>
+                <div class="kpi-box">
+                    <h3>Total</h3>
+                    <div class="kpi-number" style="color:#6b7280;">14</div>
+                    <div class="kpi-sub">Canceladas por revisión</div>
+                </div>
+            </article>
+
+        </div>
+
+<!-- ============================
+     BÚSQUEDA SIMPLE (NUEVA)
+============================ -->
+<article class="card-block compact">
+    <div class="section-title">🔎 Búsqueda rápida</div>
+
+    <div class="exp-searchbar">
+        <span class="icon">🔍</span>
+        <input 
+            type="text" 
+            id="busquedaFacturas" 
+            placeholder="Buscar por ID, expediente, cliente, estado o fecha..."
+            oninput="filtrarFacturas()"
+        >
+    </div>
+</article>
+    
+
+       
+        <!-- ============================
+             PPAD + CANCELACIONES
+        ============================ -->
+        <div class="facturas-two-columns">
+
+            <article class="card-block compact">
+                <div class="section-title">PPAD – Pagos Pendientes a Devolver</div>
+
+                <div class="fusion-kpi-grid">
+                    <div class="kpi-box clickable">
+                        <h3>PPAD Pendientes</h3>
+                        <div class="kpi-number">42</div>
+                        <div class="kpi-sub">Aún no compensados</div>
+                    </div>
+
+                    <div class="kpi-box clickable">
+                        <h3>PPAD Compensados</h3>
+                        <div class="kpi-number">318</div>
+                        <div class="kpi-sub">Procesados correctamente</div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card-block compact">
+                <div class="section-title">Cancelaciones</div>
+
+                <div class="fusion-kpi-grid">
+
+                    <div class="kpi-box clickable">
+                        <h3>Sin provisión</h3>
+                        <div class="kpi-number">87</div>
+                        <div class="kpi-sub">Facturado sin provisión</div>
+                    </div>
+
+                    <div class="kpi-box clickable">
+                        <h3>Con provisión CaixaBank</h3>
+                        <div class="kpi-number">54</div>
+                        <div class="kpi-sub">Facturado con provisión CB</div>
+                    </div>
+
+                    <div class="kpi-box clickable">
+                        <h3>Con provisión externa</h3>
+                        <div class="kpi-number">23</div>
+                        <div class="kpi-sub">Facturado con provisión externa</div>
+                    </div>
+
+                </div>
+            </article>
+
+        </div>
+
+<button class="btn-excel" id="btnDescargarExpedientes" style="margin-bottom:15px;">
+    📤 Descargar Excel
+</button>
+
+        <!-- ============================
+             LISTADO DE FACTURAS
+        ============================ -->
+        <article class="card-block compact">
+            <div class="section-title">Listado de Facturas</div>
+
+            <div class="table-wrapper">
+                <table class="table table--compact">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Expediente</th>
+                            <th>Cliente</th>
+                            <th>Importe</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaFacturas">
+                        <!-- Se rellenará por JS -->
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+    </div> <!-- /layout-content -->
+
+<script>
+
+</script>
+<script>
+function filtrarFacturas() {
+    const q = document.getElementById("busquedaFacturas").value.toLowerCase();
+
+    document.querySelectorAll("#tablaFacturas tr").forEach(row => {
+        const texto = row.innerText.toLowerCase();
+        row.style.display = texto.includes(q) ? "" : "none";
+    });
+}
+</script>
+
+</body>
+</html>

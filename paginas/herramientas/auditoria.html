@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Auditoría</title>
+
+    <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- DESIGN SYSTEM COMPLETO -->
+    <link rel="stylesheet" href="../../css/ds.css">
+
+    <!-- CSS DEL MÓDULO ESPECÍFICO -->
+    <link rel="stylesheet" href="../../css/modules/ds-auditoria.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR NUEVO -->
+    <div id="sidebar-container"></div>
+
+    <!-- CONTENIDO -->
+    <div class="layout-content">
+<div style="margin-bottom: 15px;">
+    <button class="btn" onclick="location.href='herramientas.html'">
+        ⬅ Volver a Herramientas
+    </button>
+</div>
+
+        <h2 class="section-title">🛡️ Control de Auditoría</h2>
+
+        <!-- CARD: RESUMEN -->
+        <div class="card">
+            <div class="section-title">Resumen de actividad</div>
+
+            <div class="audit-kpi-grid">
+
+                <div class="audit-kpi-box audit-kpi-info">
+                    <div class="audit-kpi-icon">🛡️</div>
+                    <div class="audit-kpi-title">Accesos</div>
+                    <div class="audit-kpi-num" id="kpiAccesos">0</div>
+                    <div class="audit-kpi-sub">Entradas al sistema</div>
+                </div>
+
+                <div class="audit-kpi-box audit-kpi-success">
+                    <div class="audit-kpi-icon">✏️</div>
+                    <div class="audit-kpi-title">Modificaciones</div>
+                    <div class="audit-kpi-num" id="kpiModificaciones">0</div>
+                    <div class="audit-kpi-sub">Cambios registrados</div>
+                </div>
+
+                <div class="audit-kpi-box audit-kpi-warning">
+                    <div class="audit-kpi-icon">🗑️</div>
+                    <div class="audit-kpi-title">Eliminaciones</div>
+                    <div class="audit-kpi-num" id="kpiEliminaciones">0</div>
+                    <div class="audit-kpi-sub">Registros eliminados</div>
+                </div>
+
+                <div class="audit-kpi-box audit-kpi-danger">
+                    <div class="audit-kpi-icon">⚠️</div>
+                    <div class="audit-kpi-title">Errores</div>
+                    <div class="audit-kpi-num" id="kpiErrores">0</div>
+                    <div class="audit-kpi-sub">Acciones fallidas</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- CARD: TABLA PRINCIPAL -->
+        <div class="card">
+            <div class="section-title">Registro de auditoría</div>
+
+            <div class="table-wrapper">
+                <table class="table table--compact">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Usuario</th>
+                            <th>Acción</th>
+                            <th>Módulo</th>
+                            <th>Descripción</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaAuditoria">
+                        <!-- Se rellenará por JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div> <!-- layout-content -->
+
+
+    <!-- SCRIPT BACKEND AUDITORÍA -->
+    <script>
+        async function cargarAuditoria() {
+            const res = await fetch("/api/auditoria/listar");
+            const datos = await res.json();
+
+            const tbody = document.getElementById("tablaAuditoria");
+            tbody.innerHTML = "";
+
+            let accesos = 0, modificaciones = 0, eliminaciones = 0, errores = 0;
+
+            datos.forEach(row => {
+
+                // Contadores KPI
+                if (row.accion === "Acceso") accesos++;
+                if (row.accion === "Modificación") modificaciones++;
+                if (row.accion === "Eliminación") eliminaciones++;
+                if (row.accion === "Error") errores++;
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${row.id}</td>
+                        <td>${row.usuario}</td>
+                        <td><span class="badge badge--${row.tipo_badge}">${row.accion}</span></td>
+                        <td>${row.modulo}</td>
+                        <td>${row.descripcion}</td>
+                        <td>${row.fecha}</td>
+                    </tr>
+                `;
+            });
+
+            // Actualizar KPIs
+            document.getElementById("kpiAccesos").textContent = accesos;
+            document.getElementById("kpiModificaciones").textContent = modificaciones;
+            document.getElementById("kpiEliminaciones").textContent = eliminaciones;
+            document.getElementById("kpiErrores").textContent = errores;
+        }
+
+        cargarAuditoria();
+    </script>
+
+</body>
+</html>

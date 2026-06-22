@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+   <meta charset="UTF-8">
+   <title>Sede Notarial con Protocolo - CancelaGest 2.0</title>
+
+   <!-- Tipografía -->
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+   <!-- DESIGN SYSTEM COMPLETO -->
+   <link rel="stylesheet" href="../../css/ds.css">
+   <link rel="stylesheet" href="../../css/modules/ds-auditoria.css">
+
+   <style>
+   /* ============================================================
+      OVERRIDES ESPECÍFICOS — GLASS LUXE 2027
+   ============================================================ */
+
+   body {
+       background: transparent !important;
+   }
+
+   .content {
+       flex: 1;
+       padding: 30px 40px;
+       box-sizing: border-box;
+       width: 100%;
+       max-width: none;
+       margin-left: 50px;
+       transition: margin-left 0.25s ease;
+   }
+
+   body.sidebar-collapsed .content {
+       margin-left: 130px;
+   }
+
+   /* ============================================================
+      KPIS COMPACTOS
+   ============================================================ */
+   .kpi-grid-compact {
+       display: grid;
+       grid-template-columns: repeat(3, 1fr);
+       gap: 12px;
+       margin-bottom: 25px;
+   }
+
+   .kpi-grid-compact .kpi-card {
+       padding: 14px 16px;
+       border-radius: 12px;
+       display: flex;
+       align-items: center;
+       gap: 12px;
+   }
+
+   .kpi-grid-compact .kpi-icon {
+       font-size: 26px;
+   }
+
+   .kpi-grid-compact .kpi-title {
+       font-size: 13px;
+   }
+
+   .kpi-grid-compact .kpi-value {
+       font-size: 22px;
+       margin-top: 2px;
+   }
+
+   /* ============================================================
+      MODAL PDF
+   ============================================================ */
+   .modal-bg {
+       display: none;
+       position: fixed;
+       top: 0; left: 0;
+       width: 100%; height: 100%;
+       background: rgba(0,0,0,0.55);
+       justify-content: center;
+       align-items: center;
+       z-index: 9999;
+       backdrop-filter: blur(6px);
+   }
+
+   .modal-box {
+       width: 70%;
+       height: 80%;
+       background: var(--glass-bg-strong);
+       border-radius: var(--radius-md);
+       border: 1px solid var(--glass-border);
+       overflow: hidden;
+       display: flex;
+       flex-direction: column;
+       box-shadow: var(--shadow-glass);
+       backdrop-filter: blur(14px);
+   }
+
+   .modal-header {
+       background: var(--molsan-primary);
+       color: white;
+       padding: 12px;
+       font-size: 18px;
+       display: flex;
+       justify-content: space-between;
+   }
+
+   .modal-close {
+       cursor: pointer;
+       font-size: 22px;
+   }
+
+   .modal-content {
+       flex: 1;
+   }
+
+   .ojo-icon {
+       width: 22px;
+       cursor: pointer;
+       transition: 0.2s;
+   }
+   .ojo-icon:hover {
+       transform: scale(1.15);
+   }
+   </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+
+    <!-- CONTENIDO -->
+    <div class="content">
+
+        <h1>📘 Expedientes en <span>Sede notarial con protocolo</span></h1>
+
+        <!-- ============================================================
+             KPIS — GLASS LUXE 2027 (compactos)
+        ============================================================ -->
+        <div class="kpi-grid kpi-grid-compact">
+
+            <div class="kpi-card kpi-red">
+                <div class="kpi-icon">📄</div>
+                <div class="kpi-info">
+                    <div class="kpi-title">Sin copia simple</div>
+                    <div class="kpi-value" id="kpiSinCopia">0</div>
+                </div>
+            </div>
+
+            <div class="kpi-card kpi-yellow">
+                <div class="kpi-icon">⚠</div>
+                <div class="kpi-info">
+                    <div class="kpi-title">Sin entrada informada</div>
+                    <div class="kpi-value" id="kpiSinEntrada">0</div>
+                </div>
+            </div>
+
+            <div class="kpi-card kpi-blue">
+                <div class="kpi-icon">📅</div>
+                <div class="kpi-info">
+                    <div class="kpi-title">Sin fecha presentación</div>
+                    <div class="kpi-value" id="kpiSinPresentacion">0</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ============================================================
+             BLOQUE DE BÚSQUEDA
+        ============================================================ -->
+        <div class="card">
+            <div class="section-title">Buscar expedientes</div>
+
+            <div class="filters-bar">
+
+                <div><label>Nº Expediente</label><input type="text" id="fExpediente"></div>
+                <div><label>Nº Oficina</label><input type="text" id="fOficina"></div>
+                <div><label>Fecha de alta</label><input type="date" id="fAlta"></div>
+                <div><label>DNI Solicitante</label><input type="text" id="fDni"></div>
+
+                <div>
+                    <label>Tipo documento</label>
+                    <select id="fTipo">
+                        <option value="">Todos</option>
+                        <option>Cancelación</option>
+                        <option>Herencia</option>
+                        <option>Poder</option>
+                    </select>
+                </div>
+
+                <div><label>Notario</label><input type="text" id="fNotario"></div>
+                <div><label>Apoderado</label><input type="text" id="fApoderado"></div>
+
+            </div>
+
+            <div class="filters-actions">
+                <button class="btn-small" id="btnBuscar">Buscar</button>
+            </div>
+        </div>
+
+        <!-- BOTÓN EXCEL -->
+        <div style="display:flex; justify-content:flex-end; margin-top:10px;">
+            <button class="btn-excel" id="btnExcel">📥 Descargar Excel</button>
+        </div>
+
+        <!-- ============================================================
+             BLOQUE LISTADO
+        ============================================================ -->
+        <div class="card card-full">
+            <div class="section-title">Listado de expedientes</div>
+
+            <div class="table-wrapper">
+                <table class="sla-table" id="tablaPresentacion">
+                    <thead>
+                        <tr>
+                            <th>Expediente</th>
+                            <th>F. alta</th>
+                            <th>Oficina</th>
+                            <th>Solicitante</th>
+                            <th>DNI</th>
+                            <th>Tipo documento</th>
+                            <th>Notario</th>
+                            <th>Protocolo</th>
+                            <th>F. de firma</th>
+                            <th>Tipo de Trámite</th>
+                            <th>Formato</th>
+                            <th>Apoderado</th>
+                            <th>Asiento</th>
+                            <th>Libro</th>
+                            <th>Fecha presentación</th>
+                            <th>Nº entrada</th>
+                            <th>Fecha recogida</th>
+                            <th>Copia simple</th>
+                            <th>ID Trámite</th>
+                            <th>Acceder</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="pagination">
+                <div id="paginationInfo"></div>
+                <div class="pagination-controls">
+                    <button id="prevPage">Anterior</button>
+                    <button id="nextPage">Siguiente</button>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- /content -->
+
+    <!-- ============================================================
+         MODAL PDF
+    ============================================================ -->
+    <div class="modal-bg" id="modalPDF">
+        <div class="modal-box">
+            <div class="modal-header">
+                <span>Visualizar PDF</span>
+                <span class="modal-close" onclick="cerrarModal()">×</span>
+            </div>
+            <div class="modal-content">
+                <iframe id="visorPDF" src="" width="100%" height="100%"></iframe>
+            </div>
+        </div>
+    </div>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+    <script src="../../js/components/ds-sidebar.js"></script>
+
+<script>
+    const datos = [
+        {
+            expediente: "EXP-3001",
+            alta: "2026-05-10",
+            oficina: "Barcelona",
+            solicitante: "Juan Pérez",
+            dni: "12345678A",
+            tipo: "Cancelación",
+            notario: "Notario López",
+            protocolo: "1234",
+            firma: "2026-05-12",
+            tramite: "Cancelación",
+            formato: "Digital",
+            apoderado: "Sí",
+            asiento: "A-123",
+            libro: "L-22",
+            presentacion: "2026-05-13",
+            entrada: "5566",
+            recogida: "2026-05-15",
+            copia: "docs/copia_simple_3001.pdf",
+            idtramite: "TR-001"
+        },
+        {
+            expediente: "EXP-3002",
+            alta: "2026-05-11",
+            oficina: "Madrid",
+            solicitante: "Laura Gómez",
+            dni: "87654321B",
+            tipo: "Herencia",
+            notario: "Notario Ruiz",
+            protocolo: "5678",
+            firma: "2026-05-14",
+            tramite: "Herencia",
+            formato: "Papel",
+            apoderado: "No",
+            asiento: "A-555",
+            libro: "L-10",
+            presentacion: "",
+            entrada: "7788",
+            recogida: "2026-05-17",
+            copia: "",
+            idtramite: "TR-002"
+        }
+    ];
+
+    let filtered = [...datos];
+    let currentPage = 1;
+    const rowsPerPage = 10;
+
+    const tbody = document.querySelector("#tablaPresentacion tbody");
+
+    function format(date) {
+        if (!date) return "";
+        const [y,m,d] = date.split("-");
+        return `${d}/${m}/${y}`;
+    }
+
+    function diasEntre(firma, presentacion) {
+        if (!firma || !presentacion) return 0;
+        const f1 = new Date(firma);
+        const f2 = new Date(presentacion);
+        return Math.floor((f2 - f1) / (1000*60*60*24));
+    }
+
+    function alertaPresentacion(firma, presentacion) {
+        if (!presentacion)
+            return `<span class="alert-danger">⚠ Falta fecha</span>`;
+
+        const dias = diasEntre(firma, presentacion);
+
+        return dias > 15
+            ? `<span class="alert-danger">⚠ ${dias} días</span>`
+            : `${dias} días`;
+    }
+
+    function iconoPDF(ruta) {
+        return ruta
+            ? `<img src="img/ojo.png" class="ojo-icon" onclick="verPDF('${ruta}')">`
+            : `<span class="badge-red">✖</span>`;
+    }
+
+    function verPDF(ruta) {
+        document.getElementById("visorPDF").src = ruta;
+        document.getElementById("modalPDF").style.display = "flex";
+    }
+
+    function cerrarModal() {
+        document.getElementById("modalPDF").style.display = "none";
+        document.getElementById("visorPDF").src = "";
+    }
+
+    function actualizarKPIs() {
+        const sinCopia = filtered.filter(e => !e.copia).length;
+        const sinEntrada = filtered.filter(e => !e.entrada).length;
+        const sinPresentacion = filtered.filter(e => !e.presentacion).length;
+
+        document.getElementById("kpiSinCopia").textContent = sinCopia;
+        document.getElementById("kpiSinEntrada").textContent = sinEntrada;
+        document.getElementById("kpiSinPresentacion").textContent = sinPresentacion;
+    }
+
+    function render() {
+        tbody.innerHTML = "";
+        const start = (currentPage - 1) * rowsPerPage;
+        const page = filtered.slice(start, start + rowsPerPage);
+
+        page.forEach(e => {
+            tbody.innerHTML += `
+                <tr>
+                    <td>${e.expediente}</td>
+                    <td>${format(e.alta)}</td>
+                    <td>${e.oficina}</td>
+                    <td>${e.solicitante}</td>
+                    <td>${e.dni}</td>
+                    <td>${e.tipo}</td>
+                    <td>${e.notario}</td>
+                    <td>${e.protocolo}</td>
+                    <td>${format(e.firma)}</td>
+                    <td>${e.tramite}</td>
+                    <td>${e.formato}</td>
+                    <td>${e.apoderado}</td>
+                    <td>${e.asiento}</td>
+                    <td>${e.libro}</td>
+                    <td>${format(e.presentacion)} ${alertaPresentacion(e.firma, e.presentacion)}</td>
+                    <td>${e.entrada}</td>
+                    <td>${format(e.recogida)}</td>
+                    <td>${iconoPDF(e.copia)}</td>
+                    <td>${e.idtramite}</td>
+                    <td><a class="btn-ir" href="expediente_detalle.html?id=${e.expediente}">Ir</a></td>
+                </tr>
+            `;
+        });
+
+        const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
+        document.getElementById("paginationInfo").textContent =
+            `Página ${currentPage} de ${totalPages} — ${filtered.length} expediente(s)`;
+
+        document.getElementById("prevPage").disabled = currentPage === 1;
+        document.getElementById("nextPage").disabled = currentPage === totalPages;
+
+        actualizarKPIs();
+    }
+
+    document.getElementById("prevPage").onclick = () => { currentPage--; render(); };
+    document.getElementById("nextPage").onclick = () => { currentPage++; render(); };
+
+    render();
+</script>
+
+</body>
+</html>
+

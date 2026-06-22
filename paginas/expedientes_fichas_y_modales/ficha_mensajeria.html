@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo Servicio de Mensajería - CancelaGest 2.0</title>
+
+    <link rel="stylesheet" href="../css/styles.css">
+
+    <style>
+        .content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 30px 40px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 140px;
+            resize: vertical;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.35);
+            background: rgba(255,255,255,0.55);
+            backdrop-filter: blur(10px);
+            padding: 12px;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(10,74,138,0.15);
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #084482;
+            box-shadow: 0 0 0 3px rgba(8,68,130,0.25);
+        }
+
+        .btn-sas {
+            background: rgba(255,255,255,0.55);
+            border: 1px solid rgba(255,255,255,0.35);
+            backdrop-filter: blur(10px);
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: 0.25s ease;
+            box-shadow: 0 4px 12px rgba(10,74,138,0.15);
+        }
+
+        .btn-sas:hover {
+            background: rgba(255,255,255,0.75);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body class="sidebar-expanded">
+
+<div class="content">
+
+    <h2 class="section-title">📦 Nuevo Servicio de Mensajería</h2>
+
+    <a href="mensajeria.html" class="btn-small">⬅ Volver</a>
+
+    <!-- ============================================================
+         🔵 BLOQUE 1 — DATOS DEL SERVICIO
+    ============================================================ -->
+    <div class="card-block" style="margin-top:20px;">
+        <div class="section-title">Datos del servicio</div>
+
+        <div class="form-grid">
+
+            <div class="campo">
+                <label>Tipo de servicio</label>
+                <select id="tipoServicio">
+                    <option>Urgente</option>
+                    <option>Normal</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label>Persona que solicita el servicio</label>
+                <select id="solicitante">
+                    <option>Víctor</option>
+                    <option>Yolanda</option>
+                    <option>Melisa</option>
+                    <option>Pedro</option>
+                </select>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================================
+         🔵 BLOQUE 2 — LUGAR DE RECOGIDA Y ENTREGA
+    ============================================================ -->
+    <div class="card-block">
+        <div class="section-title">Lugar de recogida</div>
+
+        <div class="form-grid">
+            <div class="campo"><label>Nombre</label><input type="text"></div>
+            <div class="campo"><label>Dirección</label><input type="text"></div>
+            <div class="campo"><label>Código Postal</label><input type="text"></div>
+            <div class="campo"><label>Población</label><input type="text"></div>
+            <div class="campo"><label>Provincia</label><input type="text"></div>
+            <div class="campo"><label>Horario</label><input type="text"></div>
+            <div class="campo"><label>Teléfono</label><input type="text"></div>
+            <div class="campo"><label>Email</label><input type="email"></div>
+            <div class="campo"><label>Persona de contacto</label><input type="text"></div>
+            <div class="campo"><label>Documento a recoger</label><input type="text"></div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="section-title">Lugar de entrega</div>
+
+        <div class="form-grid">
+            <div class="campo"><label>Nombre</label><input type="text"></div>
+            <div class="campo"><label>Dirección</label><input type="text"></div>
+            <div class="campo"><label>Código Postal</label><input type="text"></div>
+            <div class="campo"><label>Población</label><input type="text"></div>
+            <div class="campo"><label>Provincia</label><input type="text"></div>
+            <div class="campo"><label>Horario</label><input type="text"></div>
+            <div class="campo"><label>Teléfono</label><input type="text"></div>
+            <div class="campo"><label>Email</label><input type="email"></div>
+            <div class="campo"><label>Persona de contacto</label><input type="text"></div>
+            <div class="campo"><label>Documento a entregar</label><input type="text"></div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         🔵 BLOQUE 3 — OBSERVACIONES Y BOTONES
+    ============================================================ -->
+    <div class="card-block">
+        <div class="section-title">Observaciones</div>
+
+        <textarea id="observaciones" placeholder="Escribe aquí cualquier detalle adicional..."></textarea>
+
+        <br><br>
+
+        <button class="btn-sas">Guardar</button>
+        <button class="btn-sas">Deshacer</button>
+        <button class="btn-sas" onclick="location.href='mensajeria.html'">Cancelar</button>
+    </div>
+
+</div>
+
+<script>
+<div id="modalMensajeria" class="modal-overlay">
+    <div class="glass-modal modal-mensajeria">
+
+        <h2 class="section-title">📦 Nuevo Servicio de Mensajería</h2>
+
+        <button class="btn-nuevo" onclick="abrirModalMensajeria()">
+    ➕ Nuevo servicio
+</button>
+
+           </div>
+</div>
+</script>
+
+</body>
+</html>

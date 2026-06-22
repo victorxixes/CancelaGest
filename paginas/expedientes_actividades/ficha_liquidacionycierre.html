@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Liquidación y Cierre</title>
+
+    <!-- DESIGN SYSTEM -->
+    <link rel="stylesheet" href="../../css/ds.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../../css/modules/ds-liquidacionycierre.css">
+
+</head>
+
+<body class="sidebar-expanded expediente-liquidacion">
+
+<!-- HEADER -->
+<div class="header-top">
+    <button class="btn btn-small btn-back" onclick="window.history.back()">⬅ Volver</button>
+</div>
+
+<div class="section-header main-title">
+    <div>
+        <h2 class="section-title">🧾 Liquidación y cierre del expediente</h2>
+        <span class="header-sub">
+            Resumen global, estado económico, actividades, incidencias y documentación final.
+        </span>
+    </div>
+</div>
+
+
+<!-- ============================
+     GRID SUPERIOR (2 BLOQUES)
+============================= -->
+<div class="grid-superior">
+
+    <!-- BLOQUE — RESUMEN DEL EXPEDIENTE -->
+    <section class="card-block widget" id="bloqueResumenGlobal">
+        <div class="section-header">
+            <h3 class="section-title">📌 Resumen del expediente</h3>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <span class="kpi-label">Estado general</span>
+                <span id="kpiEstadoGeneral" class="kpi-value kpi-pill kpi-pill--yellow">Pendiente</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-label">Fecha apertura</span>
+                <span id="kpiFechaApertura" class="kpi-value">–</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-label">Fecha cierre</span>
+                <span id="kpiFechaCierre" class="kpi-value">–</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-label">Notario</span>
+                <span id="kpiNotario" class="kpi-value">–</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-label">Oficina</span>
+                <span id="kpiOficina" class="kpi-value">–</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-label">Nº protocolo</span>
+                <span id="kpiProtocolo" class="kpi-value">–</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- BLOQUE — INCIDENCIAS -->
+    <section class="card-block widget" id="bloqueIncidencias">
+        <div class="section-header">
+            <h3 class="section-title">⚠ Incidencias y observaciones pendientes</h3>
+        </div>
+
+        <div id="listaIncidencias"></div>
+    </section>
+
+</div>
+<!-- ============================
+     GRID MEDIO (2 BLOQUES)
+============================= -->
+<div class="grid-medio">
+
+    <!-- BLOQUE — ESTADO DE ACTIVIDADES -->
+    <section class="card-block widget" id="bloqueActividades">
+        <div class="section-header">
+            <h3 class="section-title">📂 Estado de actividades</h3>
+        </div>
+
+        <table class="table table--compact">
+            <thead>
+                <tr>
+                    <th>Actividad</th>
+                    <th>Estado</th>
+                    <th>Documentos</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tablaSituacionActividades"></tbody>
+        </table>
+    </section>
+
+    <!-- BLOQUE — DOCUMENTACIÓN FINAL -->
+    <section class="card-block widget" id="bloqueDocumentacionFinal">
+        <div class="section-header">
+            <h3 class="section-title">📁 Expediente digital final</h3>
+
+            <button class="btn btn-small btn-blue" onclick="generarExpedienteDigital()">
+                📄 Generar expediente digital agrupado
+            </button>
+        </div>
+
+        <p class="text-soft">
+            Selecciona los documentos de la Carpeta Digital y de Documentos para Notaría que quieres incluir
+            en el expediente digital final.
+        </p>
+
+        <div class="grid-2" style="margin-top:12px; gap:16px;">
+            <div>
+                <h4 class="section-title" style="font-size:14px;">Carpeta Digital</h4>
+                <div class="scroll-box" style="max-height:220px;">
+                    <table class="table table--compact">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Documento</th>
+                                <th>Origen</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaDocsCarpetaDigital"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="section-title" style="font-size:14px;">Documentos para Notaría</h4>
+                <div class="scroll-box" style="max-height:220px;">
+                    <table class="table table--compact">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Documento</th>
+                                <th>Tipo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaDocsNotaria"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-box mt-20">
+            <p class="text-soft">[Previsualización del expediente digital agrupado (PDF generado por backend)]</p>
+        </div>
+    </section>
+
+</div>
+<!-- ============================
+     GRID INFERIOR (2 BLOQUES)
+============================= -->
+<div class="grid-inferior">
+
+    <!-- BLOQUE — RESUMEN ECONÓMICO -->
+    <section class="card-block widget" id="bloqueResumenEconomico">
+        <div class="section-header">
+            <h3 class="section-title">💰 Resumen económico del expediente</h3>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <span class="kpi-label">Provisión inicial</span>
+                <span id="kpiProvisionInicial" class="kpi-value">0,00 €</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-label">Gastos reales</span>
+                <span id="kpiGastosReales" class="kpi-value">0,00 €</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-label">Diferencia</span>
+                <span id="kpiDiferencia" class="kpi-value kpi-pill kpi-pill--yellow">0,00 €</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-label">Pagos realizados</span>
+                <span id="kpiPagosRealizados" class="kpi-value">0,00 €</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-label">Pagos pendientes</span>
+                <span id="kpiPagosPendientes" class="kpi-value kpi-pill kpi-pill--red">0,00 €</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-label">Saldo final</span>
+                <span id="kpiSaldoFinal" class="kpi-value kpi-pill kpi-pill--green">0,00 €</span>
+            </div>
+        </div>
+
+        <div class="scroll-box mt-20" style="max-height:260px;">
+            <table class="table table--compact">
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Tipo</th>
+                        <th>Proveedor</th>
+                        <th>Fecha</th>
+                        <th>Importe</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaGastosDetalle"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- BLOQUE — FACTURA -->
+    <section class="card-block widget" id="bloqueFactura">
+        <div class="section-header">
+            <h3 class="section-title">🧾 Factura de honorarios</h3>
+        </div>
+
+        <div class="glass-box">
+            <p class="text-soft">[Factura digital generada por backend]</p>
+        </div>
+
+        <button class="btn btn-blue mt-10" onclick="abrirModalFactura()">
+            ✔ Confirmar factura y generar documento final inscrito
+        </button>
+    </section>
+
+</div>
+    <!-- BOTÓN FINAL -->
+    <button class="btn mt-20" style="width:100%;" onclick="enviarAlAbsis()">
+        🔄 Enviar al Absis y cerrar expediente
+    </button>
+
+</div>
+<script>
+/* ============================================================
+   DATOS SIMULADOS (luego los conectas a tu backend)
+============================================================ */
+
+// Actividades
+const actividades = [
+    "Documentación previa",
+    "Sede notarial",
+    "Liquidación impuestos",
+    "Gestión económica",
+    "Registro propiedad"
+];
+
+const estadoActividades = {
+    "Documentación previa": { completado: true, docs: 3 },
+    "Sede notarial": { completado: true, docs: 2 },
+    "Liquidación impuestos": { completado: false, docs: 0 },
+    "Gestión económica": { completado: false, docs: 1 },
+    "Registro propiedad": { completado: false, docs: 0 }
+};
+
+// Económico
+const resumenEconomico = {
+    provisionInicial: 1500.00,
+    gastosReales: 1320.50,
+    pagosRealizados: 1200.00,
+    pagosPendientes: 120.50
+};
+
+const gastosDetalle = [
+    { concepto: "Provisión inicial", tipo: "Provisión", proveedor: "Cliente", fecha: "2027-01-10", importe: 1500.00 },
+    { concepto: "Factura notario", tipo: "Notario", proveedor: "Notaría Pérez", fecha: "2027-02-02", importe: 650.00 },
+    { concepto: "Factura registro", tipo: "Registro", proveedor: "Registro nº 3", fecha: "2027-02-15", importe: 320.50 },
+    { concepto: "Honorarios gestoría", tipo: "Gestoría", proveedor: "Gestoría Molsan", fecha: "2027-02-20", importe: 350.00 }
+];
+
+// Incidencias
+const incidencias = [
+    { fecha: "2027-02-05", texto: "Pendiente recepción de escritura original.", estado: "pendiente" },
+    { fecha: "2027-02-12", texto: "Cliente solicita aclaración sobre provisión.", estado: "resuelta" }
+];
+
+// Documentos (simulados)
+const docsCarpetaDigital = [
+    { nombre: "DNI cliente.pdf", origen: "Carpeta Digital" },
+    { nombre: "Certificado cancelación.pdf", origen: "Carpeta Digital" }
+];
+
+const docsNotaria = [
+    { nombre: "Escritura cancelación.pdf", tipo: "Escritura" },
+    { nombre: "Factura notario.pdf", tipo: "Factura" }
+];
+
+/* ============================================================
+   RENDER — ACTIVIDADES
+============================================================ */
+function renderActividades() {
+    const tbody = document.getElementById("tablaSituacionActividades");
+    tbody.innerHTML = "";
+
+    actividades.forEach(act => {
+        const info = estadoActividades[act];
+        const completado = info?.completado;
+        const numDocs = info?.docs || 0;
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${act}</td>
+            <td>
+                <span class="badge badge--${completado ? "green" : "red"}">
+                    ${completado ? "Completada" : "Pendiente"}
+                </span>
+            </td>
+            <td>${numDocs} documento(s)</td>
+            <td>
+                <button class="btn btn-small" onclick="verDocsActividad('${act}')">📄 Ver documentos</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function verDocsActividad(act) {
+    alert("Documentos de " + act + " (simulado).\nConecta aquí con Carpeta Digital / backend.");
+}
+
+/* ============================================================
+   RENDER — RESUMEN ECONÓMICO
+============================================================ */
+function renderResumenEconomico() {
+    const { provisionInicial, gastosReales, pagosRealizados, pagosPendientes } = resumenEconomico;
+    const saldoFinal = provisionInicial - gastosReales;
+
+    document.getElementById("kpiProvisionInicial").innerText = provisionInicial.toFixed(2) + " €";
+    document.getElementById("kpiGastosReales").innerText = gastosReales.toFixed(2) + " €";
+    document.getElementById("kpiPagosRealizados").innerText = pagosRealizados.toFixed(2) + " €";
+    document.getElementById("kpiPagosPendientes").innerText = pagosPendientes.toFixed(2) + " €";
+    document.getElementById("kpiDiferencia").innerText = (provisionInicial - gastosReales).toFixed(2) + " €";
+    document.getElementById("kpiSaldoFinal").innerText = saldoFinal.toFixed(2) + " €";
+
+    const tbody = document.getElementById("tablaGastosDetalle");
+    tbody.innerHTML = "";
+
+    gastosDetalle.forEach(g => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${g.concepto}</td>
+            <td>${g.tipo}</td>
+            <td>${g.proveedor}</td>
+            <td>${g.fecha}</td>
+            <td>${g.importe.toFixed(2)} €</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+/* ============================================================
+   RENDER — INCIDENCIAS
+============================================================ */
+function renderIncidencias() {
+    const cont = document.getElementById("listaIncidencias");
+    cont.innerHTML = "";
+
+    if (!incidencias.length) {
+        cont.innerHTML = `<p class="text-soft">No hay incidencias pendientes.</p>`;
+        return;
+    }
+
+    incidencias.forEach(inc => {
+        const div = document.createElement("div");
+        div.className = "obs-item fade-in";
+        div.innerHTML = `
+            <div class="obs-header">
+                <span class="obs-fecha">${inc.fecha}</span>
+                <span class="badge ${inc.estado === "pendiente" ? "badge-urgente" : "badge-vis"}">
+                    ${inc.estado === "pendiente" ? "Pendiente" : "Resuelta"}
+                </span>
+            </div>
+            <div class="obs-texto">${inc.texto}</div>
+        `;
+        cont.appendChild(div);
+    });
+}
+
+/* ============================================================
+   RENDER — DOCUMENTOS AGRUPACIÓN
+============================================================ */
+function renderDocumentosAgrupacion() {
+    const tbodyCarpeta = document.getElementById("tablaDocsCarpetaDigital");
+    const tbodyNotaria = document.getElementById("tablaDocsNotaria");
+
+    tbodyCarpeta.innerHTML = "";
+    docsCarpetaDigital.forEach((d, idx) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td><input type="checkbox" data-origen="carpeta" data-index="${idx}"></td>
+            <td>${d.nombre}</td>
+            <td>${d.origen}</td>
+        `;
+        tbodyCarpeta.appendChild(tr);
+    });
+
+    tbodyNotaria.innerHTML = "";
+    docsNotaria.forEach((d, idx) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td><input type="checkbox" data-origen="notaria" data-index="${idx}"></td>
+            <td>${d.nombre}</td>
+            <td>${d.tipo}</td>
+        `;
+        tbodyNotaria.appendChild(tr);
+    });
+}
+
+function generarExpedienteDigital() {
+    const seleccionados = [];
+
+    document.querySelectorAll('#tablaDocsCarpetaDigital input[type="checkbox"]:checked').forEach(chk => {
+        const idx = parseInt(chk.dataset.index, 10);
+        seleccionados.push(docsCarpetaDigital[idx].nombre);
+    });
+
+    document.querySelectorAll('#tablaDocsNotaria input[type="checkbox"]:checked').forEach(chk => {
+        const idx = parseInt(chk.dataset.index, 10);
+        seleccionados.push(docsNotaria[idx].nombre);
+    });
+
+    alert("Generar expediente digital con:\n\n" + seleccionados.join("\n") + "\n\n[Aquí llamas al backend para generar el PDF agrupado]");
+}
+
+/* ============================================================
+   MODAL FACTURA
+============================================================ */
+function abrirModalFactura() {
+    document.getElementById("modalFactura").style.display = "flex";
+}
+
+function cerrarModalFactura() {
+    document.getElementById("modalFactura").style.display = "none";
+}
+
+function confirmarFactura() {
+    cerrarModalFactura();
+    alert("✔ Factura confirmada. [Aquí llamas al backend para marcar factura como confirmada y generar documento final]");
+}
+
+/* ============================================================
+   ENVIAR AL ABSIS
+============================================================ */
+function enviarAlAbsis() {
+    alert("🔄 Enviar al Absis.\n[Aquí llamas al backend para enviar expediente, factura y documentación final, y marcar el expediente como cerrado]");
+}
+
+/* ============================================================
+   INICIO
+============================================================ */
+function initLiquidacion() {
+    renderActividades();
+    renderResumenEconomico();
+    renderIncidencias();
+    renderDocumentosAgrupacion();
+
+    // Simulación de resumen global (luego lo conectas al backend)
+    document.getElementById("kpiEstadoGeneral").innerText = "Pendiente";
+    document.getElementById("kpiFechaApertura").innerText = "2027-01-05";
+    document.getElementById("kpiFechaCierre").innerText = "–";
+    document.getElementById("kpiNotario").innerText = "Notaría Pérez";
+    document.getElementById("kpiOficina").innerText = "Oficina Barcelona";
+    document.getElementById("kpiProtocolo").innerText = "PNC-2027-00123";
+}
+
+document.addEventListener("DOMContentLoaded", initLiquidacion);
+</script>
+
+</body>
+</html>

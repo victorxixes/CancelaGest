@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Histórico de comentarios – CancelaGest 2.0</title>
+
+    <link rel="stylesheet" href="../css/styles.css">
+
+<style>
+body {
+    background: #f1f5f9;
+    font-family: 'Inter', sans-serif;
+    padding: 25px;
+}
+
+.content {
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* TARJETA GLASS */
+.card-block {
+    background: rgba(255,255,255,0.55);
+    padding: 22px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.35);
+    backdrop-filter: blur(10px);
+    margin-top: 25px;
+    box-shadow: 0 6px 18px rgba(10,74,138,0.15);
+}
+
+.section-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #084482;
+    margin-bottom: 20px;
+}
+
+/* TABLA GLASS */
+.sla-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 14px rgba(10,74,138,0.15);
+}
+
+.sla-table th {
+    background: #084482;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+
+.sla-table td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.35);
+    color: #334155;
+}
+
+.sla-table tr:hover td {
+    background: rgba(255,255,255,0.35);
+}
+
+/* FILTROS */
+.filtros {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.filtros input,
+.filtros select {
+    padding: 10px;
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(10px);
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(10,74,138,0.15);
+}
+
+/* BOTONES */
+.btn-excel {
+    background: #084482;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.25s ease;
+    box-shadow: 0 4px 12px rgba(10,74,138,0.15);
+    margin-bottom: 15px;
+}
+
+.btn-excel:hover {
+    background: #0A5AA3;
+    transform: translateY(-2px);
+}
+
+/* PAGINACIÓN */
+.paginacion {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.paginacion button {
+    padding: 6px 12px;
+    border: 1px solid rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.55);
+    border-radius: 8px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: 0.25s ease;
+}
+
+.paginacion button:hover {
+    background: rgba(255,255,255,0.75);
+}
+</style>
+</head>
+
+<body class="sidebar-expanded">
+
+<div class="content">
+
+    <!-- BOTÓN VOLVER -->
+    <button class="btn-excel" onclick="window.history.back()">
+        ⬅ Volver
+    </button>
+
+    <!-- BLOQUE 1: HISTÓRICO + FILTROS -->
+    <div class="card-block">
+        <div class="section-title">Histórico de comentarios</div>
+
+        <div class="filtros">
+            <input type="date" id="filtroFecha">
+            <input type="text" id="filtroGestor" placeholder="Gestor">
+            <input type="text" id="busqueda" placeholder="Buscar...">
+        </div>
+    </div>
+
+    <!-- BLOQUE 2: DESCARGAR EXCEL -->
+    <div class="card-block">
+        <div class="section-title">Descargar</div>
+        <button class="btn-excel" onclick="exportarExcel()">📤 Descargar Excel</button>
+    </div>
+
+    <!-- BLOQUE 3: TABLA -->
+    <div class="card-block">
+        <div class="section-title">Listado de comentarios</div>
+
+        <table class="sla-table">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Comentario</th>
+                    <th>Gestor</th>
+                </tr>
+            </thead>
+
+            <tbody id="tablaComentarios"></tbody>
+        </table>
+
+        <div class="paginacion" id="paginacion"></div>
+    </div>
+
+</div>
+
+<script>
+/* ============================================================
+   CARGA DE DATOS
+============================================================ */
+let datos = JSON.parse(localStorage.getItem("comentarios")) || [];
+let paginaActual = 1;
+const filasPorPagina = 10;
+
+/* ============================================================
+   FILTRADO + BÚSQUEDA
+============================================================ */
+function filtrarDatos() {
+    let filtrado = [...datos];
+
+    const fecha = document.getElementById("filtroFecha").value;
+    const gestor = document.getElementById("filtroGestor").value.toLowerCase();
+    const busqueda = document.getElementById("busqueda").value.toLowerCase();
+
+    if (fecha) filtrado = filtrado.filter(x => x.fecha === fecha);
+    if (gestor) filtrado = filtrado.filter(x => x.gestor.toLowerCase().includes(gestor));
+    if (busqueda) filtrado = filtrado.filter(x =>
+        x.texto.toLowerCase().includes(busqueda) ||
+        x.gestor.toLowerCase().includes(busqueda)
+    );
+
+    return filtrado;
+}
+
+/* ============================================================
+   PAGINACIÓN
+============================================================ */
+function mostrarPaginacion(total) {
+    const cont = document.getElementById("paginacion");
+    cont.innerHTML = "";
+
+    const paginas = Math.ceil(total / filasPorPagina);
+
+    for (let i = 1; i <= paginas; i++) {
+        const btn = document.createElement("button");
+        btn.innerText = i;
+        btn.onclick = () => {
+            paginaActual = i;
+            cargarTabla();
+        };
+        cont.appendChild(btn);
+    }
+}
+
+/* ============================================================
+   CARGAR TABLA
+============================================================ */
+function cargarTabla() {
+    const tbody = document.getElementById("tablaComentarios");
+    tbody.innerHTML = "";
+
+    const filtrado = filtrarDatos();
+    mostrarPaginacion(filtrado.length);
+
+    const inicio = (paginaActual - 1) * filasPorPagina;
+    const fin = inicio + filasPorPagina;
+
+    filtrado.slice(inicio, fin).forEach(c => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+            <td>${c.fecha}</td>
+            <td>${c.texto}</td>
+            <td>${c.gestor}</td>
+        `;
+        tbody.appendChild(fila);
+    });
+}
+
+/* ============================================================
+   EXPORTAR A EXCEL (CSV)
+============================================================ */
+function exportarExcel() {
+    const filtrado = filtrarDatos();
+
+    let csv = "Fecha,Comentario,Gestor\n";
+
+    filtrado.forEach(c => {
+        csv += `${c.fecha},${c.texto.replace(/,/g, " ")},${c.gestor}\n`;
+    });
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "historico_comentarios.csv";
+    a.click();
+}
+
+/* ============================================================
+   EVENTOS
+============================================================ */
+document.querySelectorAll(".filtros input")
+    .forEach(el => el.addEventListener("input", () => {
+        paginaActual = 1;
+        cargarTabla();
+    }));
+
+document.getElementById("busqueda").addEventListener("input", () => {
+    paginaActual = 1;
+    cargarTabla();
+});
+
+/* ============================================================
+   INICIO
+============================================================ */
+document.addEventListener("DOMContentLoaded", cargarTabla);
+</script>
+
+</body>
+</html>

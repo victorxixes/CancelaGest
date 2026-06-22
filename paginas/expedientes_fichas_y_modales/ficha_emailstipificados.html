@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Emails Tipificados</title>
+
+    <link rel="stylesheet" href="../css/styles.css">
+
+    <style>
+        body {
+            background: #f1f5f9;
+            padding: 30px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .content {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #084482;
+            margin-bottom: 25px;
+        }
+
+        #buscador {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.35);
+            background: rgba(255,255,255,0.55);
+            backdrop-filter: blur(10px);
+            font-size: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(10,74,138,0.15);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 14px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.55);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 6px 18px rgba(10,74,138,0.15);
+        }
+
+        th {
+            background: #084482;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.35);
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: rgba(255,255,255,0.35);
+            cursor: pointer;
+        }
+
+        .btn-select {
+            background: #084482;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            transition: 0.25s ease;
+            box-shadow: 0 4px 12px rgba(10,74,138,0.15);
+        }
+
+        .btn-select:hover {
+            background: #0A5AA3;
+            transform: translateY(-2px);
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.45);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .modal-inner {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+            animation: scaleIn 0.25s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes scaleIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .campo { margin-bottom: 12px; }
+        .campo label { font-weight: 600; font-size: 14px; }
+
+        textarea {
+            width: 100%;
+            height: 160px;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            resize: vertical;
+        }
+
+        .modal-actions {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+    </style>
+
+</head>
+
+<body class="sidebar-expanded">
+
+<div class="content">
+
+    <h2>Emails Tipificados</h2>
+
+    <button class="btn-select" style="margin-bottom:15px;" onclick="abrirModalNuevoEmail()">
+        ➕ Crear nuevo email
+    </button>
+
+    <input type="text" id="buscador" placeholder="Buscar email por título o categoría...">
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:120px;">Categoría</th>
+                <th>Título</th>
+                <th style="width:150px;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tablaEmails"></tbody>
+    </table>
+
+</div>
+
+<script>
+/* ============================================================
+   SISTEMA DE MODALES
+============================================================ */
+function abrirModal(id) {
+    document.getElementById(id).style.display = "flex";
+}
+function cerrarModal(id) {
+    document.getElementById(id).style.display = "none";
+}
+
+/* ============================================================
+   REPOSITORIO DE EMAILS (MEMORIA)
+============================================================ */
+let emails = [
+    { categoria: "Reclamación", titulo: "Solicitud de documentación", texto: "Estimado cliente, necesitamos la siguiente documentación..." },
+    { categoria: "Cliente", titulo: "Aviso de actualización", texto: "Le informamos que su expediente ha sido actualizado..." }
+];
+
+/* ============================================================
+   RENDERIZAR TABLA
+============================================================ */
+function renderEmails(lista) {
+    const tbody = document.getElementById("tablaEmails");
+    tbody.innerHTML = "";
+
+    lista.forEach((email, index) => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+            <td>${email.categoria}</td>
+            <td>${email.titulo}</td>
+            <td>
+                <button class="btn-select" onclick="verEmail(${index})">👁 Ver</button>
+                <button class="btn-select" onclick="copiarEmail(${index})">📋 Copiar</button>
+            </td>
+        `;
+
+        tbody.appendChild(tr);
+    });
+}
+
+/* ============================================================
+   BUSCADOR
+============================================================ */
+document.addEventListener("DOMContentLoaded", () => {
+    renderEmails(emails);
+
+    document.getElementById("buscador").addEventListener("input", function () {
+        const t = this.value.toLowerCase();
+
+        const filtrados = emails.filter(e =>
+            e.titulo.toLowerCase().includes(t) ||
+            e.categoria.toLowerCase().includes(t)
+        );
+
+        renderEmails(filtrados);
+    });
+});
+
+/* ============================================================
+   MODAL NUEVO EMAIL
+============================================================ */
+function abrirModalNuevoEmail() {
+    abrirModal("modalNuevoEmail");
+}
+
+function guardarEmail() {
+    const categoria = document.getElementById("email_categoria").value.trim();
+    const titulo = document.getElementById("email_titulo").value.trim();
+    const texto = document.getElementById("email_texto").value.trim();
+
+    if (!categoria || !titulo || !texto) {
+        alert("Rellena todos los campos.");
+        return;
+    }
+
+    emails.push({ categoria, titulo, texto });
+    renderEmails(emails);
+
+    cerrarModal("modalNuevoEmail");
+}
+
+/* ============================================================
+   VER EMAIL
+============================================================ */
+function verEmail(index) {
+    const email = emails[index];
+
+    document.getElementById("ver_categoria").innerText = email.categoria;
+    document.getElementById("ver_titulo").innerText = email.titulo;
+    document.getElementById("ver_texto").innerText = email.texto;
+
+    abrirModal("modalVerEmail");
+}
+
+/* ============================================================
+   COPIAR EMAIL
+============================================================ */
+function copiarEmail(index) {
+    navigator.clipboard.writeText(emails[index].texto);
+    alert("Texto copiado al portapapeles.");
+}
+</script>
+
+<!-- ============================
+     MODAL NUEVO EMAIL
+============================= -->
+<div id="modalNuevoEmail" class="modal-overlay">
+    <div class="modal-inner">
+
+        <h3>Crear nuevo email</h3>
+
+        <div class="campo">
+            <label>Categoría</label>
+            <select id="email_categoria" class="compact-input">
+                <option>Reclamación</option>
+                <option>Cliente</option>
+                <option>Notario</option>
+                <option>Interno</option>
+            </select>
+        </div>
+
+        <div class="campo">
+            <label>Título</label>
+            <input type="text" id="email_titulo" class="compact-input">
+        </div>
+
+        <div class="campo">
+            <label>Texto del email</label>
+            <textarea id="email_texto"></textarea>
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn-select" onclick="cerrarModal('modalNuevoEmail')">Cancelar</button>
+            <button class="btn-select" onclick="guardarEmail()">Guardar</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- ============================
+     MODAL VER EMAIL
+============================= -->
+<div id="modalVerEmail" class="modal-overlay">
+    <div class="modal-inner">
+
+        <h3 id="ver_titulo"></h3>
+        <p><strong>Categoría:</strong> <span id="ver_categoria"></span></p>
+        <p id="ver_texto" style="white-space:pre-line;"></p>
+
+        <div class="modal-actions">
+            <button class="btn-select" onclick="cerrarModal('modalVerEmail')">Cerrar</button>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

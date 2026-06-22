@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Registro de la Propiedad</title>
+
+   
+   <!-- DESIGN SYSTEM -->
+    <link rel="stylesheet" href="../../css/ds.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../../css/modules/ds-actividades.css">
+
+
+<body class="sidebar-expanded">
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+
+    <!-- TÍTULO PRINCIPAL -->
+    <h1 class="section-title">Registro de la Propiedad</h1>
+    <span class="header-sub">Gestión de asientos, inscripciones y documentación registral</span>
+
+    <!-- ============================================================
+         CONTENEDOR DE REGISTROS
+    ============================================================ -->
+    <div id="contenedorRegistros">
+
+        <!-- BLOQUE PRINCIPAL -->
+        <div class="card-block registro-bloque">
+            <div class="section-title">Datos registrales</div>
+
+            <div class="grid-2">
+
+                <div class="campo">
+                    <label>Fecha presentación</label>
+                    <input type="date" value="2021-07-06">
+                </div>
+
+                <div class="campo">
+                    <label>Fecha vencimiento asiento</label>
+                    <input type="date" value="1970-03-26">
+                </div>
+
+                <div class="campo">
+                    <label>Fecha inscripción</label>
+                    <input type="date">
+                </div>
+
+                <div class="campo" style="grid-column: span 2;">
+                    <label>Escritura simple de cancelación</label>
+                    <input type="text" placeholder="Escritura simple de cancelación">
+                </div>
+
+                <div class="campo" style="grid-column: span 2;">
+                    <label>Expediente defectuoso</label>
+                    <select>
+                        <option value="NO" selected>NO</option>
+                        <option value="SI">SI</option>
+                    </select>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div> <!-- /contenedorRegistros -->
+
+    <!-- BOTÓN AÑADIR REGISTRO -->
+    <button class="btn-small" onclick="nuevoRegistro()" style="margin-top:10px;">
+        ➕ Añadir nuevo registro
+    </button>
+
+    <!-- BOTÓN FINAL ABSIS PREMIUM -->
+    <button class="btn-absis" style="margin-top:30px;">
+        📤 Enviar al Absis
+    </button>
+
+</div>
+
+<script>
+function nuevoRegistro() {
+    const contenedor = document.getElementById("contenedorRegistros");
+
+    const bloque = document.createElement("div");
+    bloque.classList.add("card-block", "registro-bloque");
+
+    bloque.innerHTML = `
+        <div class="section-title">Datos registrales</div>
+
+        <div class="grid-2">
+
+            <div class="campo">
+                <label>Fecha presentación</label>
+                <input type="date">
+            </div>
+
+            <div class="campo">
+                <label>Fecha vencimiento asiento</label>
+                <input type="date">
+            </div>
+
+            <div class="campo">
+                <label>Fecha inscripción</label>
+                <input type="date">
+            </div>
+
+            <div class="campo" style="grid-column: span 2;">
+                <label>Escritura simple de cancelación</label>
+                <input type="text" placeholder="Escritura simple de cancelación">
+            </div>
+
+            <div class="campo" style="grid-column: span 2;">
+                <label>Expediente defectuoso</label>
+                <select>
+                    <option value="NO" selected>NO</option>
+                    <option value="SI">SI</option>
+                </select>
+            </div>
+
+        </div>
+    `;
+
+    contenedor.appendChild(bloque);
+    bloque.scrollIntoView({ behavior: "smooth" });
+}
+</script>
+
+</body>
+</html>

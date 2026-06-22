@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Ficha del empleado</title>
+
+    <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- DESIGN SYSTEM COMPLETO -->
+    <link rel="stylesheet" href="../../css/ds.css">
+
+    <!-- CSS DEL MÓDULO ESPECÍFICO -->
+    <link rel="stylesheet" href="../../css/modules/ds-auditoria.css">
+</head>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .content {
+            padding: 30px 40px;
+            padding-bottom: 140px;
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            border-bottom: 2px solid rgba(255,255,255,0.35);
+            padding-bottom: 6px;
+        }
+
+        .tab {
+            padding: 10px 18px;
+            background: rgba(255,255,255,0.55);
+            border: 1px solid rgba(255,255,255,0.35);
+            border-radius: 12px 12px 0 0;
+            cursor: pointer;
+            font-weight: 600;
+            color: #084482;
+            transition: 0.25s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab:hover {
+            background: rgba(255,255,255,0.75);
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: #084482;
+            color: white;
+            border-color: #084482;
+        }
+
+        .tab-content {
+            margin-top: 20px;
+            animation: fadeIn 0.25s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* GRID */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        @media (max-width: 1100px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .campo label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #084482;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .campo input,
+        .campo select,
+        .campo textarea {
+            width: 100%;
+        }
+
+        /* FOTO */
+        #fotoPreview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #084482;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: 0.25s ease;
+        }
+
+        #fotoPreview:hover {
+            transform: scale(1.05);
+        }
+
+        /* BOTÓN FIJO */
+        .guardar-fijo {
+            position: fixed;
+            bottom: 0;
+            left: 260px;
+            right: 0;
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(12px);
+            padding: 15px 25px;
+            border-top: 1px solid rgba(255,255,255,0.35);
+            display: flex;
+            justify-content: flex-end;
+            z-index: 999;
+            box-shadow: 0 -4px 18px rgba(10,74,138,0.15);
+        }
+
+        .btn-guardar {
+            background: #084482;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 12px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.25s ease;
+            box-shadow: 0 6px 18px rgba(10,74,138,0.25);
+        }
+
+        .btn-guardar:hover {
+            background: #0A5AA3;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body class="sidebar-expanded">
+
+<div class="content">
+    <h2 class="section-title">👤 Ficha del empleado</h2>
+    <span class="header-sub">Gestión de datos personales, laborales y permisos</span>
+
+    <!-- TABS -->
+    <div class="tabs">
+        <div class="tab active" onclick="showTab('personales', event)">Datos personales</div>
+        <div class="tab" onclick="showTab('empleado', event)">Datos de empleado</div>
+        <div class="tab" onclick="showTab('contrato', event)">Información contractual</div>
+        <div class="tab" onclick="showTab('roles', event)">Roles&Permisos</div>
+    </div>
+
+    <!-- CONTENEDOR DE PESTAÑAS -->
+    <div id="tabContenido">
+<!-- TAB 1 — DATOS PERSONALES -->
+<div id="tab-personales" class="tab-content">
+
+    <div class="card-block">
+        <div class="section-title">Datos personales</div>
+
+        <div class="grid-2">
+
+            <div class="campo">
+                <label>ID</label>
+                <input type="text" id="ID">
+            </div>
+
+            <div class="campo">
+                <label>Nombre</label>
+                <input type="text" id="nombre">
+            </div>
+
+            <div class="campo">
+                <label>Apellidos</label>
+                <input type="text" id="apellidos">
+            </div>
+
+            <div class="campo">
+                <label>DNI</label>
+                <input type="text" id="dni">
+            </div>
+
+            <div class="campo">
+                <label>Teléfono Personal</label>
+                <input type="text" id="telefono_personal">
+            </div>
+
+            <div class="campo">
+                <label>Email Personal</label>
+                <input type="text" id="email_personal">
+            </div>
+
+            <div class="campo">
+                <label>Alergias</label>
+                <input type="text" id="alergias">
+            </div>
+
+            <div class="campo">
+                <label>Persona de contacto</label>
+                <input type="text" id="persona_contacto">
+            </div>
+
+            <div class="campo">
+                <label>Teléfono de contacto</label>
+                <input type="text" id="telefono_contacto">
+            </div>
+
+            <!-- FOTO -->
+            <div class="campo" style="grid-column: 1 / 3; text-align:center;">
+                <img id="fotoPreview" src="../img/usuario.jpg" alt="Foto empleado">
+                <br><br>
+                <input type="file" id="fotoEmpleado" accept="image/*">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- TAB 2 — DATOS DE EMPLEADO -->
+<div id="tab-empleado" class="tab-content" style="display:none;">
+
+    <div class="card-block">
+        <div class="section-title">Datos de empleado</div>
+
+        <div class="grid-2">
+
+            <div class="campo">
+                <label>Departamento</label>
+                <input type="text" id="departamento">
+            </div>
+
+            <div class="campo">
+                <label>Sección</label>
+                <input type="text" id="seccion">
+            </div>
+
+            <div class="campo">
+                <label>Cargo</label>
+                <input type="text" id="cargo">
+            </div>
+
+            <div class="campo">
+                <label>Email empresa</label>
+                <input type="text" id="email_empresa">
+            </div>
+
+            <div class="campo">
+                <label>Extensión</label>
+                <input type="text" id="extension">
+            </div>
+
+            <div class="campo">
+                <label>Fecha de alta</label>
+                <input type="date" id="fecha_alta">
+            </div>
+
+            <div class="campo">
+                <label>Fecha de baja</label>
+                <input type="date" id="fecha_baja">
+            </div>
+<div class="campo">
+    <label>Horario (L–V)</label>
+
+    <div class="horario-grid">
+        <div>
+            <label>Entrada</label>
+            <input type="time" id="horario_entrada" class="input--compact">
+        </div>
+
+        <div>
+            <label>Salida</label>
+            <input type="time" id="horario_salida" class="input--compact">
+        </div>
+    </div>
+</div>
+
+
+        </div>
+
+    </div>
+
+</div>
+<!-- TAB 3 — INFORMACIÓN CONTRACTUAL -->
+<div id="tab-contrato" class="tab-content" style="display:none;">
+
+    <div class="card-block">
+        <div class="section-title">Información contractual</div>
+
+        <div class="grid-2">
+
+            <div class="campo">
+                <label>Nombre</label>
+                <input type="text" id="gestoria_nombre">
+            </div>
+
+            <div class="campo">
+                <label>Alias</label>
+                <input type="text" id="gestoria_alias">
+            </div>
+
+            <div class="campo">
+                <label>Facturación</label>
+                <input type="text" id="gestoria_facturacion">
+            </div>
+
+            <div class="campo">
+                <label>Titular Cuenta Propia</label>
+                <input type="text" id="gestoria_titular">
+            </div>
+
+            <div class="campo">
+                <label>Razón fiscal</label>
+                <input type="text" id="gestoria_razon_fiscal">
+            </div>
+
+            <div class="campo">
+                <label>CIF</label>
+                <input type="text" id="gestoria_cif">
+            </div>
+
+            <div class="campo">
+                <label>Identificación fiscal</label>
+                <input type="text" id="gestoria_identificacion_fiscal">
+            </div>
+
+            <div class="campo">
+                <label>IBAN</label>
+                <input type="text" id="gestoria_iban">
+            </div>
+
+            <div class="campo">
+                <label>IRPF</label>
+                <select id="gestoria_irpf">
+                    <option value="">Seleccionar</option>
+                    <option value="si">Sí</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label>IVA</label>
+                <select id="gestoria_iva">
+                    <option value="">Seleccionar</option>
+                    <option value="21">21%</option>
+                    <option value="10">10%</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label>Honorarios sin provisión</label>
+                <input type="text" id="gestoria_honorarios_sin_provision">
+            </div>
+
+            <div class="campo">
+                <label>Honorarios con provisión</label>
+                <input type="text" id="gestoria_honorarios_con_provision">
+            </div>
+
+            <div class="campo">
+                <label>Honorarios autos</label>
+                <input type="text" id="gestoria_honorarios_autos">
+            </div>
+
+            <div class="campo">
+                <label>Identificación contacto</label>
+                <input type="text" id="gestoria_identificacion_contacto">
+            </div>
+
+            <div class="campo">
+                <label>CP</label>
+                <input type="text" id="gestoria_cp">
+            </div>
+
+            <div class="campo">
+                <label>Dirección</label>
+                <input type="text" id="gestoria_direccion">
+            </div>
+
+            <div class="campo">
+                <label>Municipio</label>
+                <input type="text" id="gestoria_municipio">
+            </div>
+
+            <div class="campo">
+                <label>Responsable</label>
+                <input type="text" id="gestoria_responsable">
+            </div>
+
+            <div class="campo">
+                <label>Responsable Gestoría</label>
+                <input type="text" id="gestoria_responsable_gestoria">
+            </div>
+
+            <div class="campo">
+                <label>Teléfono</label>
+                <input type="text" id="gestoria_telefono">
+            </div>
+
+            <div class="campo">
+                <label>Fax</label>
+                <input type="text" id="gestoria_fax">
+            </div>
+
+            <div class="campo">
+                <label>Email</label>
+                <input type="email" id="gestoria_email">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- TAB 4 — DATOS DE USUARIO -->
+<div id="tab-roles" class="tab-content" style="display:none;">
+
+    <div class="card-block">
+        <div class="section-title">Roles&Permisos</div>
+
+        <div class="grid-2">
+
+            <div class="campo">
+                <label>Nombre usuario</label>
+                <input type="text" id="nombre_usuario">
+            </div>
+
+            <div class="campo">
+                <label>Contraseña</label>
+                <input type="text" id="contraseña">
+            </div>
+
+            <div class="campo">
+                <label>Rol</label>
+                <input type="text" id="rol">
+            </div>
+
+            <div class="campo">
+                <label>Permisos</label>
+                <input type="text" id="permisos">
+            </div>
+
+          <div class="campo">
+    <label>Suspender</label>
+
+    <label class="switch">
+        <input type="checkbox" id="suspender">
+        <span class="slider"></span>
+    </label>
+</div>
+<!-- CAMBIO DE CONTRASEÑA -->
+<div class="campo">
+    <label>Nueva contraseña</label>
+    <input type="password" id="nueva_contraseña" class="input--compact">
+</div>
+
+<div class="campo">
+    <label>Confirmar contraseña</label>
+    <input type="password" id="confirmar_contraseña" class="input--compact">
+</div>
+
+<div class="campo" style="grid-column: span 2; margin-top:10px;">
+    <button class="btn btn-primary w-100" onclick="restablecerPassword()">
+        🔐 Restablecer contraseña
+    </button>
+</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+    </div> <!-- /tabContenido -->
+</div> <!-- /content -->
+
+<!-- BOTÓN GUARDAR FIJO -->
+<div class="guardar-fijo">
+    <button class="btn-guardar" onclick="guardarFicha()">💾 Guardar cambios</button>
+</div>
+
+<!-- SCRIPT -->
+<script>
+function showTab(tab, event) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+
+    document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+    document.getElementById('tab-' + tab).style.display = 'block';
+}
+
+async function cargarEmpleado(id) {
+    if (!id) return;
+
+    try {
+        const res = await fetch(`http://localhost:3000/api/empleados/${id}`);
+        if (!res.ok) return;
+
+        const emp = await res.json();
+
+        for (const key in emp) {
+            const campo = document.getElementById(key);
+            if (campo) campo.value = emp[key] ?? "";
+        }
+
+        if (emp.foto_url) {
+            document.getElementById("fotoPreview").src =
+                "http://localhost:3000" + emp.foto_url;
+        }
+
+    } catch (err) {
+        console.error("Error cargando empleado:", err);
+    }
+}
+
+async function guardarFicha() {
+    const formData = new FormData();
+
+    document.querySelectorAll("input, select").forEach(campo => {
+        if (campo.type !== "file") {
+            formData.append(campo.id, campo.value);
+        }
+    });
+
+    const foto = document.getElementById("fotoEmpleado").files[0];
+    if (foto) formData.append("foto", foto);
+
+    const id = document.getElementById("ID").value.trim();
+    const method = id ? "PUT" : "POST";
+    const url = id
+        ? `http://localhost:3000/api/empleados/${id}`
+        : `http://localhost:3000/api/empleados`;
+
+    try {
+        const res = await fetch(url, { method, body: formData });
+
+        if (res.ok) {
+            alert("✔ Ficha guardada correctamente");
+        } else {
+            alert("❌ Error al guardar");
+        }
+
+    } catch (err) {
+        console.error("Error guardando ficha:", err);
+        alert("❌ Error de conexión con el servidor");
+    }
+}
+
+document.getElementById("fotoEmpleado").addEventListener("change", function() {
+    const file = this.files[0];
+    if (file) {
+        document.getElementById("fotoPreview").src = URL.createObjectURL(file);
+    }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    cargarEmpleado(id);
+});
+</script>
+
+</body>
+</html>

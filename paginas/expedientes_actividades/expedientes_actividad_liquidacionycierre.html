@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Expedientes – Liquidación y cierre</title>
+
+    <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- DESIGN SYSTEM COMPLETO -->
+    <link rel="stylesheet" href="../../css/ds.css">
+    <link rel="stylesheet" href="../../css/modules/ds-auditoria.css">
+
+    <style>
+    /* ============================================================
+       OVERRIDES ESPECÍFICOS — GLASS LUXE 2027
+    ============================================================ */
+
+    body {
+        background: transparent !important;
+    }
+
+    .content {
+        flex: 1;
+        padding: 30px 40px;
+        box-sizing: border-box;
+        width: 100%;
+        max-width: none;
+        margin-left: 260px;
+        transition: margin-left 0.25s ease;
+    }
+
+    body.sidebar-collapsed .content {
+        margin-left: 130px;
+    }
+
+    /* ============================================================
+       KPIS — GLASS LUXE 2027 (compactos)
+    ============================================================ */
+    .kpi-grid-compact {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 25px;
+    }
+
+    .kpi-grid-compact .kpi-card {
+        padding: 14px 16px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .kpi-grid-compact .kpi-icon {
+        font-size: 26px;
+    }
+
+    .kpi-grid-compact .kpi-title {
+        font-size: 13px;
+    }
+
+    .kpi-grid-compact .kpi-value {
+        font-size: 22px;
+        margin-top: 2px;
+    }
+
+    /* ============================================================
+       MODAL PDF
+    ============================================================ */
+    .modal-bg {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.55);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        backdrop-filter: blur(6px);
+    }
+
+    .modal-box {
+        width: 70%;
+        height: 80%;
+        background: var(--glass-bg-strong);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--glass-border);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: var(--shadow-glass);
+        backdrop-filter: blur(14px);
+    }
+
+    .modal-header {
+        background: var(--molsan-primary);
+        color: white;
+        padding: 12px;
+        font-size: 18px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .modal-close {
+        cursor: pointer;
+        font-size: 22px;
+    }
+
+    .modal-content {
+        flex: 1;
+    }
+
+    .ojo-icon {
+        width: 22px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .ojo-icon:hover {
+        transform: scale(1.15);
+    }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+
+    <!-- CONTENIDO -->
+    <div class="layout-content">
+
+        <h1>📘 Expedientes – <span>Liquidación y cierre</span></h1>
+
+        <!-- ============================================================
+             KPIS — GLASS LUXE 2027
+        ============================================================ -->
+        <div class="kpi-grid kpi-grid-compact">
+
+            <div class="kpi-card kpi-red">
+                <div class="kpi-icon">📄</div>
+                <div class="kpi-info">
+                    <div class="kpi-title">Sin factura de notario</div>
+                    <div class="kpi-value" id="kpiSinNotario">0</div>
+                </div>
+            </div>
+
+            <div class="kpi-card kpi-yellow">
+                <div class="kpi-icon">📑</div>
+                <div class="kpi-info">
+                    <div class="kpi-title">Sin factura de registro</div>
+                    <div class="kpi-value" id="kpiSinRegistro">0</div>
+                </div>
+            </div>
+
+            <div class="kpi-card kpi-blue">
+                <div class="kpi-icon">⚠</div>
+                <div class="kpi-info">
+                    <div class="kpi-title">Con saldo negativo</div>
+                    <div class="kpi-value" id="kpiSaldoNegativo">0</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ============================================================
+             BLOQUE DE BÚSQUEDA
+        ============================================================ -->
+        <div class="card bloque-eco">
+            <div class="section-title">Buscar expedientes</div>
+
+            <div class="filters-bar">
+
+                <div><label>Nº Expediente</label><input type="text" id="fExpediente"></div>
+                <div><label>Nº Oficina</label><input type="text" id="fOficina"></div>
+                <div><label>Fecha de alta</label><input type="date" id="fAlta"></div>
+                <div><label>DNI Solicitante</label><input type="text" id="fDni"></div>
+                <div><label>Notario</label><input type="text" id="fNotario"></div>
+
+            </div>
+
+            <div class="filters-actions">
+                <button class="btn-small" id="btnBuscar">Buscar</button>
+            </div>
+        </div>
+
+        <!-- BOTÓN EXCEL -->
+        <div style="display:flex; justify-content:flex-start; margin:20px 0;">
+            <button class="btn-excel" id="btnExcel">📥 Descargar Excel</button>
+        </div>
+
+        <!-- ============================================================
+             LISTADO
+        ============================================================ -->
+        <div class="card bloque-eco">
+
+            <div class="section-title">Listado de expedientes</div>
+
+            <div class="table-wrapper">
+                <table class="sla-table" id="tablaEconomicos">
+                    <thead>
+                        <tr>
+                            <th>Expediente</th>
+                            <th>Nº oficina</th>
+                            <th>Fecha de Alta</th>
+                            <th>Solicitante</th>
+                            <th>DNI</th>
+                            <th>Notario</th>
+                            <th>Protocolo</th>
+                            <th>Fecha de firma</th>
+                            <th>Factura Notario</th>
+                            <th>Hoja entrada</th>
+                            <th>Copia simple</th>
+                            <th>AJD/ITP</th>
+                            <th>Factura Registro</th>
+                            <th>Defectos</th>
+                            <th>Saldo Real</th>
+                            <th>Saldo disponible</th>
+                            <th>Acceder</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="pagination">
+                <div id="paginationInfo"></div>
+                <div class="pagination-controls">
+                    <button id="prevPage">Anterior</button>
+                    <button id="nextPage">Siguiente</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div> <!-- /content -->
+
+<!-- ============================================================
+     MODAL PDF
+============================================================ -->
+<div class="modal-bg" id="modalPDF">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span>Visualizar Documento</span>
+            <span class="modal-close" onclick="cerrarModal()">×</span>
+        </div>
+        <div class="modal-content">
+            <iframe id="visorPDF" src="" width="100%" height="100%"></iframe>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+    const datos = [
+        {
+            expediente: "EXP-7001",
+            oficina: "Barcelona",
+            alta: "2026-05-01",
+            solicitante: "Juan Pérez",
+            dni: "12345678A",
+            notario: "Notario López",
+            protocolo: "1234",
+            firma: "2026-05-05",
+            facturaNotario: "docs/factura_notario_7001.pdf",
+            hojaEntrada: "docs/hoja_entrada_7001.pdf",
+            copiaSimple: "docs/copia_simple_7001.pdf",
+            ajd: "docs/ajd_7001.pdf",
+            facturaRegistro: "docs/factura_registro_7001.pdf",
+            defectos: "docs/defectos_7001.pdf",
+            saldoReal: "1500€",
+            saldoDisponible: "900€"
+        },
+        {
+            expediente: "EXP-7002",
+            oficina: "Madrid",
+            alta: "2026-04-10",
+            solicitante: "Laura Gómez",
+            dni: "87654321B",
+            notario: "Notario Ruiz",
+            protocolo: "5678",
+            firma: "2026-04-12",
+            facturaNotario: "",
+            hojaEntrada: "",
+            copiaSimple: "",
+            ajd: "",
+            facturaRegistro: "",
+            defectos: "",
+            saldoReal: "800€",
+            saldoDisponible: "300€"
+        }
+    ];
+
+    let filtered = [...datos];
+    let currentPage = 1;
+    const rowsPerPage = 10;
+
+    const tbody = document.querySelector("#tablaEconomicos tbody");
+
+    function format(date) {
+        if (!date) return "";
+        const [y,m,d] = date.split("-");
+        return `${d}/${m}/${y}`;
+    }
+
+    function iconoPDF(ruta) {
+        return ruta
+            ? `<img src="img/ojo.png" class="ojo-icon" onclick="verPDF('${ruta}')">`
+            : `<span class="badge-red">✖</span>`;
+    }
+
+    function verPDF(ruta) {
+        document.getElementById("visorPDF").src = ruta;
+        document.getElementById("modalPDF").style.display = "flex";
+    }
+
+    function cerrarModal() {
+        document.getElementById("modalPDF").style.display = "none";
+        document.getElementById("visorPDF").src = "";
+    }
+
+    /* ============================================================
+       KPIs AUTOMÁTICOS
+    ============================================================ */
+    function actualizarKPIsEco() {
+        const sinNotario = filtered.filter(e => !e.facturaNotario).length;
+        const sinRegistro = filtered.filter(e => !e.facturaRegistro).length;
+        const saldoNegativo = filtered.filter(e => parseFloat(e.saldoDisponible) < 0).length;
+
+        document.getElementById("kpiSinNotario").textContent = sinNotario;
+        document.getElementById("kpiSinRegistro").textContent = sinRegistro;
+        document.getElementById("kpiSaldoNegativo").textContent = saldoNegativo;
+    }
+
+    /* ============================================================
+       RENDER TABLA
+    ============================================================ */
+    function render() {
+        tbody.innerHTML = "";
+        const start = (currentPage - 1) * rowsPerPage;
+        const page = filtered.slice(start, start + rowsPerPage);
+
+        page.forEach(e => {
+            tbody.innerHTML += `
+                <tr>
+                    <td>${e.expediente}</td>
+                    <td>${e.oficina}</td>
+                    <td>${format(e.alta)}</td>
+                    <td>${e.solicitante}</td>
+                    <td>${e.dni}</td>
+                    <td>${e.notario}</td>
+                    <td>${e.protocolo}</td>
+                    <td>${format(e.firma)}</td>
+                    <td>${iconoPDF(e.facturaNotario)}</td>
+                    <td>${iconoPDF(e.hojaEntrada)}</td>
+                    <td>${iconoPDF(e.copiaSimple)}</td>
+                    <td>${iconoPDF(e.ajd)}</td>
+                    <td>${iconoPDF(e.facturaRegistro)}</td>
+                    <td>${iconoPDF(e.defectos)}</td>
+                    <td>${e.saldoReal}</td>
+                    <td>${e.saldoDisponible}</td>
+                    <td><a class="btn-ir" href="expediente_detalle.html?id=${e.expediente}">Ir</a></td>
+                </tr>
+            `;
+        });
+
+        const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
+        document.getElementById("paginationInfo").textContent =
+            `Página ${currentPage} de ${totalPages} — ${filtered.length} expediente(s)`;
+
+        document.getElementById("prevPage").disabled = currentPage === 1;
+        document.getElementById("nextPage").disabled = currentPage === totalPages;
+
+        actualizarKPIsEco();
+    }
+
+    document.getElementById("prevPage").onclick = () => { currentPage--; render(); };
+    document.getElementById("nextPage").onclick = () => { currentPage++; render(); };
+
+    render();
+</script>
+
+<script src="../../js/components/ds-sidebar.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Herramientas del Sistema</title>
+
+    <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- DESIGN SYSTEM BASE -->
+    <link rel="stylesheet" href="../../css/ds.css">
+
+    <!-- CSS DEL MÓDULO ESPECÍFICO -->
+    <link rel="stylesheet" href="../../css/modules/ds-herramientas.css">
+
+<style>
+
+
+body {
+    background: #f1f5f9;
+    font-family: 'Inter', sans-serif;
+    padding: 30px;
+}
+
+.content {
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+/* GRID GLASS */
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin-top: 25px;
+}
+
+@media (max-width: 800px) {
+    .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .tools-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* TARJETA GLASS */
+.tool-card {
+    background: rgba(255,255,255,0.55);
+    padding: 22px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.35);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 18px rgba(10,74,138,0.15);
+    transition: 0.25s ease;
+}
+
+.tool-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 26px rgba(10,74,138,0.25);
+}
+
+.tool-card h2 {
+    margin-top: 0;
+    color: #084482;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.tool-card p {
+    color: #475569;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+/* FORMULARIO GLASS */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #084482;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.input,
+textarea.input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(10px);
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(10,74,138,0.15);
+    transition: 0.25s ease;
+}
+
+textarea.input {
+    height: 110px;
+    resize: vertical;
+}
+
+.input:focus,
+textarea.input:focus {
+    border-color: #084482;
+    box-shadow: 0 0 0 3px rgba(8,68,130,0.15);
+    outline: none;
+}
+
+/* BOTONES GLASS */
+.btn,
+.btn-secondary {
+    background: #084482;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.25s ease;
+    box-shadow: 0 4px 12px rgba(10,74,138,0.15);
+}
+
+.btn:hover,
+.btn-secondary:hover {
+    background: #0A5AA3;
+    transform: translateY(-2px);
+}
+
+/* MODAL PROCESANDO */
+.modal-procesando {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(4px);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-procesando .modal-content {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+}
+
+.loader {
+    width: 32px;
+    height: 32px;
+    border: 4px solid #ddd;
+    border-top-color: #084482;
+    border-radius: 50%;
+    margin: 0 auto 12px;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+</style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+    <script src="../../js/components/ds-sidebar.js"></script>
+
+    <!-- CONTENIDO -->
+    <div class="layout-content">
+
+        <!-- HEADER -->
+        <div class="header">
+            <h1>🛠️ Herramientas del Sistema</h1>
+            <span class="header-sub">Panel de configuración y utilidades internas</span>
+        </div>
+
+        <!-- GRID DE BLOQUES -->
+        <div class="tools-grid">
+
+            <!-- PANEL DE NOTICIAS -->
+            <div class="tool-card">
+                <h2>Panel de Noticias</h2>
+                <p>Publica y gestiona noticias corporativas que aparecerán en la Intranet.</p>
+
+                <div class="form-group">
+                    <label>Título</label>
+                    <input type="text" id="tituloNoticia" class="input" placeholder="Título de la noticia">
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="descNoticia" class="input" placeholder="Contenido de la noticia"></textarea>
+                </div>
+
+                <button class="btn" onclick="publicarNoticia()">Publicar noticia</button>
+            </div>
+
+            <!-- SUBIR DOCUMENTOS -->
+            <div class="tool-card">
+                <h2>Subir Documentos</h2>
+                <p>Sube manuales, procedimientos o documentación interna. Se mostrarán en la Intranet.</p>
+
+                <div class="form-group">
+                    <label>Título del documento</label>
+                    <input type="text" id="docTitulo" class="input" placeholder="Ej: Manual de procedimientos">
+                </div>
+
+                <div class="form-group">
+                    <label>Concepto</label>
+                    <input type="text" id="docConcepto" class="input" placeholder="Descripción breve">
+                </div>
+
+                <div class="form-group">
+                    <label>Archivo</label>
+                    <input type="file" id="docArchivo" class="input">
+                </div>
+
+                <button class="btn" onclick="subirDocumento()">Subir documento</button>
+            </div>
+
+            <!-- CONTROL ABSIS -->
+            <div class="tool-card">
+                <h2>Control de Absis</h2>
+                <p>Acceso directo al panel de control de Absis.</p>
+                <button class="btn-secondary" onclick="window.location.href='absis.html'">Entrar</button>
+            </div>
+
+            <!-- CONTROL AUDITORÍA -->
+            <div class="tool-card">
+                <h2>Control de Auditoría</h2>
+                <p>Revisión de logs, accesos y trazabilidad del sistema.</p>
+                <button class="btn-secondary" onclick="window.location.href='auditoria.html'">Entrar</button>
+            </div>
+
+            <!-- PERFIL DE USUARIO -->
+            <div class="tool-card">
+                <h2>Usuarios</h2>
+                <p>Accede a tu configuración personal y datos de usuario.</p>
+                <button class="btn-secondary" onclick="window.location.href='../../paginas/expedientes_fichas_y_modales/ficha_usuarios.html'">Abrir perfil</button>
+            </div>
+
+            <!-- CONFIGURACIÓN GENERAL -->
+            <div class="tool-card">
+                <h2>Configuración General</h2>
+                <p>Ajustes globales del sistema y parámetros internos.</p>
+                <button class="btn-secondary">Configurar</button>
+            </div>
+
+            <!-- IMPORTAR EXPEDIENTES -->
+            <div class="tool-card">
+                <h2>Importar expedientes - Absis</h2>
+                <p>Sube el Excel diario de expedientes para cargar datos reales en el ERP.</p>
+
+                <input type="file" id="inputExcel" accept=".xlsx,.xls" class="input">
+
+                <button class="btn w-100" style="margin-top:10px;" onclick="importarExcelExpedientes()">
+                    📥 Importar Excel
+                </button>
+
+                <div id="resultadoImportacion" style="margin-top:15px;"></div>
+            </div>
+
+        </div> <!-- cierre tools-grid -->
+
+    </div> <!-- cierre layout-content -->
+
+<!-- MODAL PROCESANDO -->
+<div id="modalProcesando" class="modal-procesando">
+    <div class="modal-content">
+        <div class="loader"></div>
+        <p>Procesando Excel…</p>
+    </div>
+</div>
+
+<!-- SCRIPTS GENERALES -->
+<script src="../js/importar.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="importar.js"></script>
+
+<script>
+function publicarNoticia() {
+    const titulo = document.getElementById("tituloNoticia").value.trim();
+    const desc = document.getElementById("descNoticia").value.trim();
+
+    if (!titulo || !desc) {
+        alert("Debes rellenar todos los campos.");
+        return;
+    }
+
+    const noticia = { titulo, desc, fecha: new Date().toLocaleDateString() };
+
+    let noticias = JSON.parse(localStorage.getItem("noticias")) || [];
+    noticias.unshift(noticia);
+    localStorage.setItem("noticias", JSON.stringify(noticias));
+
+    alert("Noticia publicada correctamente.");
+    document.getElementById("tituloNoticia").value = "";
+    document.getElementById("descNoticia").value = "";
+}
+</script>
+
+</body>
+</html>
+
+           

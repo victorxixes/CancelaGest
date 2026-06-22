@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Control de Absis</title>
+
+    <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- DESIGN SYSTEM BASE -->
+    <link rel="stylesheet" href="../../css/ds.css">
+
+    <!-- COMPONENTES NECESARIOS -->
+    <link rel="stylesheet" href="../../css/components/ds-buttons.css">
+    <link rel="stylesheet" href="../../css/components/ds-inputs.css">
+    <link rel="stylesheet" href="../../css/components/ds-cards.css">
+    <link rel="stylesheet" href="../../css/components/ds-grid.css">
+    <link rel="stylesheet" href="../../css/components/ds-badges.css">
+    <link rel="stylesheet" href="../../css/components/ds-tables.css">
+
+    <!-- CSS DEL MÓDULO ESPECÍFICO -->
+    <link rel="stylesheet" href="../../css/modules/ds-auditoria.css">
+
+<style>
+/* GRID PARA LOS KPIs */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin-top: 20px;
+}
+
+/* BLOQUES KPI */
+.kpi-box {
+    padding: 12px;
+    border-radius: 10px;
+    color: white;
+    font-weight: 700;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    backdrop-filter: blur(4px);
+    font-size: 14px;
+}
+
+.kpi-green { background: #16a34a; }
+.kpi-blue { background: #0ea5e9; }
+.kpi-red { background: #dc2626; }
+
+.kpi-title {
+    display: block;
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+.kpi-number {
+    display: block;
+    font-size: 22px;
+    margin-top: 4px;
+}
+
+/* CORRECCIÓN GRID */
+.absis-two-columns {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 22px;
+    margin-top: 10px;
+    min-width: 0;
+}
+
+/* FILTROS PREMIUM */
+.filters-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 15px;
+}
+
+.filters-actions {
+    margin-top: 18px;
+    display: flex;
+    gap: 10px;
+}
+</style>
+</head>
+
+<body>
+
+
+    <!-- CONTENIDO -->
+    <div class="layout-content">
+
+        <!-- BOTÓN VOLVER -->
+        <div style="margin-bottom: 15px;">
+            <button class="btn" onclick="location.href='herramientas.html'">
+                ⬅ Volver a Herramientas
+            </button>
+        </div>
+
+        <h2 class="section-title">📄 Control de Absis</h2>
+
+        <div class="absis-two-columns">
+
+            <!-- ============================
+                 BLOQUE 1: BUSCADOR
+            ============================ -->
+            <article class="card-block compact">
+                <div class="section-title">Buscar movimientos</div>
+
+                <div class="filters-bar">
+
+                    <div class="campo">
+                        <label>ID Movimiento</label>
+                        <input type="text" class="compact-input" placeholder="ID">
+                    </div>
+
+                    <div class="campo">
+                        <label>Expediente</label>
+                        <input type="text" class="compact-input" placeholder="Número de expediente">
+                    </div>
+
+                    <div class="campo">
+                        <label>Estado</label>
+                        <select class="compact-input">
+                            <option value="">Todos</option>
+                            <option>Enviado</option>
+                            <option>Error</option>
+                            <option>Pendiente</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label>Fecha desde</label>
+                        <input type="date" class="compact-input">
+                    </div>
+
+                    <div class="campo">
+                        <label>Fecha hasta</label>
+                        <input type="date" class="compact-input">
+                    </div>
+
+                </div>
+
+                <div class="filters-actions">
+                    <button class="btn compact-btn">Buscar</button>
+                    <button class="btn compact-btn">Exportar Excel</button>
+                </div>
+            </article>
+
+            <!-- ============================
+                 BLOQUE 2: TABLA
+            ============================ -->
+            <article class="card-block compact">
+                <div class="section-title">Movimientos enviados a Absis</div>
+
+                <table class="table table--compact" id="tablaAbsis">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Expediente</th>
+                            <th>Cliente</th>
+                            <th>Tipo</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                       
+                    </tbody>
+                </table>
+            </article>
+
+        </div>
+
+        <!-- ============================
+             KPIs
+        ============================ -->
+        <article class="card-block compact">
+            <div class="section-title">Resumen de movimientos</div>
+
+            <div class="kpi-grid">
+
+                <div class="kpi-box kpi-blue">
+                    <span class="kpi-title">Doc. previa adjudicación</span>
+                    <span class="kpi-number">0</span>
+                    <span class="kpi-title">0 errores</span>
+                </div>
+
+                <div class="kpi-box kpi-blue">
+                    <span class="kpi-title">Doc. previa cancel. con provisión</span>
+                    <span class="kpi-number">5</span>
+                    <span class="kpi-title">0 errores</span>
+                </div>
+
+                <div class="kpi-box kpi-blue">
+                    <span class="kpi-title">Doc. previa cancel. sin provisión</span>
+                    <span class="kpi-number">4</span>
+                    <span class="kpi-title">1 error</span>
+                </div>
+
+                <div class="kpi-box kpi-blue">
+                    <span class="kpi-title">Actualizaciones escrituras</span>
+                    <span class="kpi-number">1</span>
+                    <span class="kpi-title">0 errores</span>
+                </div>
+
+                <div class="kpi-box kpi-blue">
+                    <span class="kpi-title">Actualizaciones garantías</span>
+                    <span class="kpi-number">0</span>
+                    <span class="kpi-title">0 errores</span>
+                </div>
+
+                <div class="kpi-box kpi-blue">
+                    <span class="kpi-title">Liquidación impuestos</span>
+                    <span class="kpi-number">19</span>
+                    <span class="kpi-title">1 error</span>
+                </div>
+
+                <div class="kpi-box kpi-blue">
+                    <span class="kpi-title">Pendiente firma</span>
+                    <span class="kpi-number">0</span>
+                    <span class="kpi-title">0 errores</span>
+                </div>
+
+                <div class="kpi-box kpi-blue">
+                    <span class="kpi-title">Sede notarial</span>
+                    <span class="kpi-number">4</span>
+                    <span class="kpi-title">0 errores</span>
+                </div>
+
+                <div class="kpi-box kpi-blue">
+                    <span class="kpi-title">Sede notarial cancel. sin provisión</span>
+                    <span class="kpi-number">135</span>
+                    <span class="kpi-title">1 error</span>
+                </div>
+
+                <div class="kpi-box kpi-blue">
+                    <span class="kpi-title">Tramitación cierre</span>
+                    <span class="kpi-number">944</span>
+                    <span class="kpi-title">7 errores</span>
+                </div>
+
+                <div class="kpi-box kpi-blue">
+                    <span class="kpi-title">Tramitación inscripción</span>
+                    <span class="kpi-number">46</span>
+                    <span class="kpi-title">1 error</span>
+                </div>
+
+                <div class="kpi-box kpi-blue">
+                    <span class="kpi-title">Cambios de actividad</span>
+                    <span class="kpi-number">9</span>
+                    <span class="kpi-title">0 errores</span>
+                </div>
+
+                <div class="kpi-box kpi-green">
+                    <span class="kpi-title">Nuevas escrituras</span>
+                    <span class="kpi-number">98</span>
+                    <span class="kpi-title">1 error</span>
+                </div>
+
+                <div class="kpi-box kpi-green">
+                    <span class="kpi-title">Nuevas observaciones</span>
+                    <span class="kpi-number">0</span>
+                    <span class="kpi-title">0 errores</span>
+                </div>
+
+                <div class="kpi-box kpi-green">
+                    <span class="kpi-title">Nuevos complementos de pago</span>
+                    <span class="kpi-number">0</span>
+                    <span class="kpi-title">0 errores</span>
+                </div>
+
+                <div class="kpi-box kpi-green">
+                    <span class="kpi-title">Nuevos defectos escrituras</span>
+                    <span class="kpi-number">0</span>
+                    <span class="kpi-title">0 errores</span>
+                </div>
+
+                <div class="kpi-box kpi-green">
+                    <span class="kpi-title">Nuevos documentos de pago</span>
+                    <span class="kpi-number">0</span>
+                    <span class="kpi-title">0 errores</span>
+                </div>
+
+                <div class="kpi-box kpi-green">
+                    <span class="kpi-title">Nuevos pagos</span>
+                    <span class="kpi-number">277</span>
+                    <span class="kpi-title">9 errores</span>
+                </div>
+
+                <div class="kpi-box kpi-green">
+                    <span class="kpi-title">Subsanaciones de defectos</span>
+                    <span class="kpi-number">0</span>
+                    <span class="kpi-title">0 errores</span>
+                </div>
+
+            </div>
+        </article>
+
+    </div>
+
+<script>
+function actualizarKPIs() {
+    const filas = document.querySelectorAll("#tablaAbsis tbody tr");
+
+    let enviados = 0;
+    let pendientes = 0;
+    let errores = 0;
+
+    filas.forEach(fila => {
+        const estado = fila.querySelector("td:nth-child(5)").innerText.trim();
+
+        if (estado.includes("Enviado")) enviados++;
+        if (estado.includes("Pendiente")) pendientes++;
+        if (estado.includes("Error")) errores++;
+    });
+
+    // Si quisieras mostrar estos KPIs arriba, aquí los actualizarías
+}
+
+actualizarKPIs();
+</script>
+
+</body>
+</html>

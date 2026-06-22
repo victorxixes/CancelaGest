@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Listado de empleados</title>
+
+    <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- DESIGN SYSTEM BASE -->
+    <link rel="stylesheet" href="../../css/ds.css">
+
+    <!-- COMPONENTES NECESARIOS -->
+    <link rel="stylesheet" href="../../css/components/ds-buttons.css">
+    <link rel="stylesheet" href="../../css/components/ds-inputs.css">
+    <link rel="stylesheet" href="../../css/components/ds-cards.css">
+    <link rel="stylesheet" href="../../css/components/ds-grid.css">
+    <link rel="stylesheet" href="../../css/components/ds-badges.css">
+    <link rel="stylesheet" href="../../css/components/ds-tables.css">
+
+    <!-- CSS DEL MÓDULO ESPECÍFICO -->
+    <link rel="stylesheet" href="../../css/modules/ds-modals.css">
+
+    <style>
+    body {
+        background: #f1f5f9;
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* BUSCADOR */
+    .search-box {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255,255,255,0.55);
+        padding: 12px 16px;
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.35);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 12px rgba(10,74,138,0.15);
+    }
+    .search-box input {
+        border: none;
+        background: transparent;
+        width: 100%;
+        outline: none;
+        font-size: 15px;
+    }
+
+    /* TABLA */
+    .sla-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: rgba(255,255,255,0.55);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 6px 18px rgba(10,74,138,0.15);
+    }
+    .sla-table th {
+        background: #084482;
+        color: white;
+        padding: 12px;
+        text-align: left;
+        font-size: 14px;
+    }
+    .sla-table td {
+        padding: 12px;
+        border-bottom: 1px solid rgba(255,255,255,0.35);
+        font-size: 14px;
+    }
+    .sla-table tr:hover td {
+        background: rgba(255,255,255,0.35);
+    }
+
+    /* FOTO MINI */
+    .foto-mini {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #084482;
+    }
+
+    /* BOTÓN PEQUEÑO */
+    .btn-small {
+        padding: 8px 12px;
+        background: #084482;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: 0.25s ease;
+        box-shadow: 0 4px 12px rgba(10,74,138,0.15);
+    }
+    .btn-small:hover {
+        background: #0A5AA3;
+        transform: translateY(-2px);
+    }
+
+    /* CARD */
+    .card-block {
+        background: rgba(255,255,255,0.55);
+        padding: 22px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.35);
+        backdrop-filter: blur(10px);
+        margin-bottom: 20px;
+        box-shadow: 0 6px 18px rgba(10,74,138,0.15);
+    }
+
+    /* GRID FORMULARIO */
+    .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .campo label {
+        font-weight: 600;
+        color: #084482;
+    }
+    .campo input,
+    .campo select,
+    .campo textarea {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    .section-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #084482;
+        margin-bottom: 12px;
+    }
+
+    /* SWITCH */
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 46px;
+        height: 22px;
+    }
+    .switch input { display: none; }
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        background-color: #ccc;
+        border-radius: 22px;
+        inset: 0;
+        transition: .3s;
+    }
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 2px;
+        bottom: 2px;
+        background: white;
+        border-radius: 50%;
+        transition: .3s;
+    }
+    input:checked + .slider {
+        background: #0A4A8A;
+    }
+    input:checked + .slider:before {
+        transform: translateX(24px);
+    }
+
+    .horario-grid {
+        display: flex;
+        gap: 12px;
+    }
+
+    .input--compact {
+        padding: 6px 8px;
+    }
+
+    /* MODAL VENTANA EMERGENTE PEQUEÑA */
+    .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .modal-window {
+        background: #ffffff;
+        width: 50%;
+        max-width: 900px;
+        height: 70vh;
+        border-radius: 14px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        animation: modalFade 0.25s ease;
+    }
+
+    @keyframes modalFade {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-header {
+        background: linear-gradient(180deg, #0A4A8A, #083866);
+        color: white;
+        padding: 16px 22px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .modal-close {
+        background: white;
+        color: #0A4A8A;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .modal-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 18px 22px;
+        background: #f8fafc;
+    }
+
+    .modal-tabs {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .modal-tab {
+        padding: 8px 14px;
+        background: #ffffff;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+        border: 1px solid rgba(148,163,184,0.6);
+        font-size: 13px;
+    }
+
+    .modal-tab.active {
+        background: #0A4A8A;
+        color: white;
+        border-color: #0A4A8A;
+    }
+
+    .modal-tab-content {
+        background: #ffffff;
+        padding: 18px;
+        border-radius: 12px;
+        border: 1px solid rgba(148,163,184,0.4);
+        box-shadow: 0 4px 12px rgba(15,23,42,0.12);
+    }
+
+    .hidden { display: none !important; }
+
+    .modal-footer {
+        background: #ffffff;
+        padding: 12px 20px;
+        border-top: 1px solid rgba(148,163,184,0.5);
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .btn-guardar {
+        background: #0A4A8A;
+        color: white;
+        padding: 10px 18px;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    .btn-guardar:hover {
+        background: #1E7CC3;
+    }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+    <script src="../../js/components/ds-sidebar.js"></script>
+
+    <!-- CONTENIDO -->
+    <div class="layout-content">
+    <div class="content">
+
+        <div class="header">
+            <h1>Listado de empleados</h1>
+            <span class="header-sub">Información personal, laboral y contractual</span>
+        </div>
+
+        <!-- BOTÓN NUEVO EMPLEADO -->
+        <div class="card-block">
+            <button class="btn-small" onclick="abrirModalEmpleado()">➕ Nuevo empleado</button>
+        </div>
+
+        <!-- BUSCADOR -->
+        <div class="card-block">
+            <div class="section-title">Buscar empleado</div>
+            <div class="search-box">
+                <span class="icon">🔎</span>
+                <input type="text" id="buscarEmpleado" placeholder="Buscar empleado...">
+            </div>
+        </div>
+
+        <!-- EXPORTACIÓN -->
+        <div class="card-block">
+            <div class="section-title">Exportación</div>
+            <button class="btn-excel">📤 Descargar Excel</button>
+        </div>
+
+        <!-- TABLA -->
+        <div class="card-block">
+            <h2>Listado de empleados</h2>
+
+            <table class="sla-table">
+                <thead>
+                    <tr>
+                        <th>Foto</th>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellidos</th>
+                        <th>DNI</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tablaEmpleados"></tbody>
+            </table>
+        </div>
+
+    </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- MODAL EMPLEADO — VENTANA EMERGENTE PEQUEÑA                -->
+    <!-- ========================================================= -->
+
+    <div id="modalEmpleado" class="modal-overlay">
+
+        <div class="modal-window">
+
+            <!-- CABECERA -->
+            <div class="modal-header">
+                <h2>👤 Ficha del empleado</h2>
+                <button class="modal-close" onclick="cerrarModalEmpleado()">✖</button>
+            </div>
+
+            <!-- CUERPO SCROLL -->
+            <div class="modal-body">
+
+                <!-- TABS -->
+                <div class="modal-tabs">
+                    <div class="modal-tab active" onclick="showTabModal('personales', event)">Datos personales</div>
+                    <div class="modal-tab" onclick="showTabModal('empleado', event)">Datos de empleado</div>
+                    <div class="modal-tab" onclick="showTabModal('contrato', event)">Información contractual</div>
+                    <div class="modal-tab" onclick="showTabModal('roles', event)">Roles & Permisos</div>
+                </div>
+
+                <!-- CONTENIDO DE TABS -->
+                <div id="modalTabsContent">
+
+                    <!-- TAB 1 — DATOS PERSONALES -->
+                    <div id="modal-tab-personales" class="modal-tab-content">
+
+                        <div class="section-title">Datos personales</div>
+
+                        <div class="grid-2">
+
+                            <div class="campo">
+                                <label>ID</label>
+                                <input type="text" id="ID">
+                            </div>
+
+                            <div class="campo">
+                                <label>Nombre</label>
+                                <input type="text" id="nombre">
+                            </div>
+
+                            <div class="campo">
+                                <label>Apellidos</label>
+                                <input type="text" id="apellidos">
+                            </div>
+
+                            <div class="campo">
+                                <label>DNI</label>
+                                <input type="text" id="dni">
+                            </div>
+
+                            <div class="campo">
+                                <label>Teléfono Personal</label>
+                                <input type="text" id="telefono_personal">
+                            </div>
+
+                            <div class="campo">
+                                <label>Email Personal</label>
+                                <input type="text" id="email_personal">
+                            </div>
+
+                            <div class="campo">
+                                <label>Alergias</label>
+                                <input type="text" id="alergias">
+                            </div>
+
+                            <div class="campo">
+                                <label>Persona de contacto</label>
+                                <input type="text" id="persona_contacto">
+                            </div>
+
+                            <div class="campo">
+                                <label>Teléfono de contacto</label>
+                                <input type="text" id="telefono_contacto">
+                            </div>
+
+                            <!-- FOTO -->
+                            <div class="campo" style="grid-column: 1 / 3; text-align:center;">
+                                <img id="fotoPreview" src="../img/usuario.jpg" alt="Foto empleado" style="max-width:140px; border-radius:12px;">
+                                <br><br>
+                                <input type="file" id="fotoEmpleado" accept="image/*">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- TAB 2 — DATOS DE EMPLEADO -->
+                    <div id="modal-tab-empleado" class="modal-tab-content hidden">
+
+                        <div class="section-title">Datos de empleado</div>
+
+                        <div class="grid-2">
+
+                            <div class="campo">
+                                <label>Departamento</label>
+                                <input type="text" id="departamento">
+                            </div>
+
+                            <div class="campo">
+                                <label>Sección</label>
+                                <input type="text" id="seccion">
+                            </div>
+
+                            <div class="campo">
+                                <label>Cargo</label>
+                                <input type="text" id="cargo">
+                            </div>
+
+                            <div class="campo">
+                                <label>Email empresa</label>
+                                <input type="text" id="email_empresa">
+                            </div>
+
+                            <div class="campo">
+                                <label>Extensión</label>
+                                <input type="text" id="extension">
+                            </div>
+
+                            <div class="campo">
+                                <label>Fecha de alta</label>
+                                <input type="date" id="fecha_alta">
+                            </div>
+
+                            <div class="campo">
+                                <label>Fecha de baja</label>
+                                <input type="date" id="fecha_baja">
+                            </div>
+
+                            <div class="campo">
+                                <label>Horario (L–V)</label>
+
+                                <div class="horario-grid">
+                                    <div>
+                                        <label>Entrada</label>
+                                        <input type="time" id="horario_entrada" class="input--compact">
+                                    </div>
+
+                                    <div>
+                                        <label>Salida</label>
+                                        <input type="time" id="horario_salida" class="input--compact">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- TAB 3 — INFORMACIÓN CONTRACTUAL -->
+                    <div id="modal-tab-contrato" class="modal-tab-content hidden">
+
+                        <div class="section-title">Información contractual</div>
+
+                        <div class="grid-2">
+
+                            <div class="campo">
+                                <label>Nombre</label>
+                                <input type="text" id="gestoria_nombre">
+                            </div>
+
+                            <div class="campo">
+                                <label>Alias</label>
+                                <input type="text" id="gestoria_alias">
+                            </div>
+
+                            <div class="campo">
+                                <label>Facturación</label>
+                                <input type="text" id="gestoria_facturacion">
+                            </div>
+
+                            <div class="campo">
+                                <label>Titular Cuenta Propia</label>
+                                <input type="text" id="gestoria_titular">
+                            </div>
+
+                            <div class="campo">
+                                <label>Razón fiscal</label>
+                                <input type="text" id="gestoria_razon_fiscal">
+                            </div>
+
+                            <div class="campo">
+                                <label>CIF</label>
+                                <input type="text" id="gestoria_cif">
+                            </div>
+
+                            <div class="campo">
+                                <label>Identificación fiscal</label>
+                                <input type="text" id="gestoria_identificacion_fiscal">
+                            </div>
+
+                            <div class="campo">
+                                <label>IBAN</label>
+                                <input type="text" id="gestoria_iban">
+                            </div>
+
+                            <div class="campo">
+                                <label>IRPF</label>
+                                <select id="gestoria_irpf">
+                                    <option value="">Seleccionar</option>
+                                    <option value="si">Sí</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+
+                            <div class="campo">
+                                <label>IVA</label>
+                                <select id="gestoria_iva">
+                                    <option value="">Seleccionar</option>
+                                    <option value="21">21%</option>
+                                    <option value="10">10%</option>
+                                </select>
+                            </div>
+
+                            <div class="campo">
+                                <label>Honorarios sin provisión</label>
+                                <input type="text" id="gestoria_honorarios_sin_provision">
+                            </div>
+
+                            <div class="campo">
+                                <label>Honorarios con provisión</label>
+                                <input type="text" id="gestoria_honorarios_con_provision">
+                            </div>
+
+                            <div class="campo">
+                                <label>Honorarios autos</label>
+                                <input type="text" id="gestoria_honorarios_autos">
+                            </div>
+
+                            <div class="campo">
+                                <label>Identificación contacto</label>
+                                <input type="text" id="gestoria_identificacion_contacto">
+                            </div>
+
+                            <div class="campo">
+                                <label>CP</label>
+                                <input type="text" id="gestoria_cp">
+                            </div>
+
+                            <div class="campo">
+                                <label>Dirección</label>
+                                <input type="text" id="gestoria_direccion">
+                            </div>
+
+                            <div class="campo">
+                                <label>Municipio</label>
+                                <input type="text" id="gestoria_municipio">
+                            </div>
+
+                            <div class="campo">
+                                <label>Responsable</label>
+                                <input type="text" id="gestoria_responsable">
+                            </div>
+
+                            <div class="campo">
+                                <label>Responsable Gestoría</label>
+                                <input type="text" id="gestoria_responsable_gestoria">
+                            </div>
+
+                            <div class="campo">
+                                <label>Teléfono</label>
+                                <input type="text" id="gestoria_telefono">
+                            </div>
+
+                            <div class="campo">
+                                <label>Fax</label>
+                                <input type="text" id="gestoria_fax">
+                            </div>
+
+                            <div class="campo">
+                                <label>Email</label>
+                                <input type="email" id="gestoria_email">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- TAB 4 — ROLES & PERMISOS -->
+                    <div id="modal-tab-roles" class="modal-tab-content hidden">
+
+                        <div class="section-title">Roles & Permisos</div>
+
+                        <div class="grid-2">
+
+                            <div class="campo">
+                                <label>Nombre usuario</label>
+                                <input type="text" id="nombre_usuario">
+                            </div>
+
+                            <div class="campo">
+                                <label>Contraseña</label>
+                                <input type="text" id="contraseña">
+                            </div>
+
+                            <div class="campo">
+                                <label>Rol</label>
+                                <input type="text" id="rol">
+                            </div>
+
+                            <div class="campo">
+                                <label>Permisos</label>
+                                <input type="text" id="permisos">
+                            </div>
+
+                            <div class="campo">
+                                <label>Suspender</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="suspender">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="campo">
+                                <label>Nueva contraseña</label>
+                                <input type="password" id="nueva_contraseña" class="input--compact">
+                            </div>
+
+                            <div class="campo">
+                                <label>Confirmar contraseña</label>
+                                <input type="password" id="confirmar_contraseña" class="input--compact">
+                            </div>
+
+                            <div class="campo" style="grid-column: span 2; margin-top:10px;">
+                                <button class="btn btn-primary w-100" onclick="restablecerPassword()">
+                                    🔐 Restablecer contraseña
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-footer">
+                <button class="btn-guardar" onclick="guardarEmpleado()">💾 Guardar cambios</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- JS DEL MODAL                                               -->
+    <!-- ========================================================= -->
+
+    <script>
+    function abrirModalEmpleado(id = null) {
+        const modal = document.getElementById("modalEmpleado");
+        modal.style.display = "flex";
+        limpiarFormularioEmpleado();
+        // reset tab activa siempre a "personales"
+        document.querySelectorAll(".modal-tab").forEach(t => t.classList.remove("active"));
+        document.querySelector(".modal-tab[onclick*='personales']").classList.add("active");
+        document.querySelectorAll(".modal-tab-content").forEach(c => c.classList.add("hidden"));
+        document.getElementById("modal-tab-personales").classList.remove("hidden");
+        if (id) cargarEmpleado(id);
+    }
+
+    function cerrarModalEmpleado() {
+        document.getElementById("modalEmpleado").style.display = "none";
+    }
+
+    function showTabModal(tab, event) {
+        document.querySelectorAll(".modal-tab").forEach(t => t.classList.remove("active"));
+        event.target.classList.add("active");
+
+        document.querySelectorAll(".modal-tab-content").forEach(c => c.classList.add("hidden"));
+        document.getElementById("modal-tab-" + tab).classList.remove("hidden");
+    }
+
+    function limpiarFormularioEmpleado() {
+        document.querySelectorAll("#modalEmpleado input, #modalEmpleado select").forEach(c => {
+            if (c.type === "checkbox") {
+                c.checked = false;
+            } else if (c.type !== "file") {
+                c.value = "";
+            }
+        });
+        const foto = document.getElementById("fotoPreview");
+        if (foto) foto.src = "../img/usuario.jpg";
+    }
+
+    async function cargarEmpleado(id) {
+        try {
+            const res = await fetch(`http://localhost:3000/api/empleados/${id}`);
+            if (!res.ok) return;
+
+            const emp = await res.json();
+
+            for (const key in emp) {
+                const campo = document.getElementById(key);
+                if (!campo) continue;
+                if (campo.type === "checkbox") {
+                    campo.checked = Boolean(emp[key]);
+                } else {
+                    campo.value = emp[key] ?? "";
+                }
+            }
+
+            if (emp.foto_url) {
+                const foto = document.getElementById("fotoPreview");
+                if (foto) foto.src = "http://localhost:3000" + emp.foto_url;
+            }
+
+        } catch (err) {
+            console.error("Error cargando empleado:", err);
+        }
+    }
+
+    async function guardarEmpleado() {
+        const formData = new FormData();
+
+        document.querySelectorAll("#modalEmpleado input, #modalEmpleado select").forEach(campo => {
+            if (campo.type === "file") return;
+            if (campo.type === "checkbox") {
+                formData.append(campo.id, campo.checked ? "1" : "0");
+            } else {
+                formData.append(campo.id, campo.value);
+            }
+        });
+
+        const foto = document.getElementById("fotoEmpleado")?.files[0];
+        if (foto) formData.append("foto", foto);
+
+        const id = document.getElementById("ID").value.trim();
+        const method = id ? "PUT" : "POST";
+        const url = id
+            ? `http://localhost:3000/api/empleados/${id}`
+            : `http://localhost:3000/api/empleados`;
+
+        try {
+            const res = await fetch(url, { method, body: formData });
+
+            if (res.ok) {
+                cerrarModalEmpleado();
+                alert("✔ Ficha guardada correctamente");
+            } else {
+                alert("❌ Error al guardar");
+            }
+
+        } catch (err) {
+            console.error("Error guardando:", err);
+            alert("❌ Error de conexión");
+        }
+    }
+
+    document.addEventListener("change", e => {
+        if (e.target.id === "fotoEmpleado") {
+            const file = e.target.files[0];
+            if (file) document.getElementById("fotoPreview").src = URL.createObjectURL(file);
+        }
+    });
+
+    // placeholder para evitar error si aún no implementas esta función
+    function restablecerPassword() {
+        alert("Función de restablecer contraseña pendiente de implementar.");
+    }
+    </script>
+
+</body>
+</html>
+

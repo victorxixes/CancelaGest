@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Buscador de expedientes</title>
+
+    <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- DESIGN SYSTEM BASE -->
+    <link rel="stylesheet" href="../../../css/ds.css">
+
+    <!-- COMPONENTES (NECESARIOS PARA ESTA PÁGINA) -->
+    <link rel="stylesheet" href="../../../css/components/ds-buttons.css">
+    <link rel="stylesheet" href="../../../css/components/ds-inputs.css">
+    <link rel="stylesheet" href="../../../css/components/ds-tables.css">
+    <link rel="stylesheet" href="../../../css/components/ds-cards.css">
+    <link rel="stylesheet" href="../../../css/components/ds-badges.css">
+    <link rel="stylesheet" href="../../../css/components/ds-grid.css">
+    <link rel="stylesheet" href="../../../css/components/ds-modals.css">
+
+    <!-- CSS DEL MÓDULO ESPECÍFICO -->
+    <link rel="stylesheet" href="../../../css/modules/ds-auditoria.css">
+
+    <style>
+        /* Anular animaciones */
+        * {
+            animation: none !important;
+            transition: none !important;
+        }
+
+        /* Buscador unificado */
+        .exp-searchbar {
+            background: rgba(255,255,255,0.55);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.35);
+            padding: 14px 18px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 20px rgba(10,74,138,0.15);
+        }
+
+        .exp-searchbar input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .exp-searchbar .icon {
+            font-size: 20px;
+            opacity: 0.7;
+        }
+
+        .exp-searchbar button {
+            padding: 8px 14px;
+        }
+
+        /* Panel plegable */
+        .exp-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px 0;
+        }
+
+        .exp-panel-header span {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .exp-toggle-btn {
+            background: rgba(255,255,255,0.55);
+            border: 1px solid rgba(255,255,255,0.35);
+            padding: 6px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .exp-panel-content {
+            display: none;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR NUEVO -->
+    <div id="sidebar-container"></div>
+
+    <!-- CONTENIDO -->
+    <div class="layout-content">
+
+        <h2 style="margin-top:10px;">🔍 Buscador de expedientes</h2>
+        <span class="header-sub">Panel de control y filtrado avanzado</span>
+
+        <!-- 🔵 BUSCADOR SIMPLE ARRIBA -->
+        <div class="exp-searchbar">
+            <span class="icon">🔍</span>
+            <input type="text" id="busquedaGeneral" placeholder="Buscar por expediente, solicitante, DNI...">
+            <button class="btn-small" onclick="buscarGeneral()">Buscar</button>
+        </div>
+
+        <!-- PANEL DE CONSULTA (PLEGABLE) -->
+        <div class="card-block" style="margin-top:20px;">
+
+            <div class="exp-panel-header" onclick="togglePanelExp()">
+                <span class="section-title">Filtros avanzados</span>
+                <button class="exp-toggle-btn" id="btnToggleExp">Mostrar filtros ▼</button>
+            </div>
+
+            <div class="exp-panel-content" id="panelExp">
+
+                <div class="filters-bar">
+
+                    <div class="campo">
+                        <label>Buscador</label>
+                        <input type="text" id="search" placeholder="Buscar expediente, solicitante, DNI...">
+                    </div>
+
+                    <div class="campo">
+                        <label>Oficina</label>
+                        <select id="filterOficina">
+                            <option value="">Todas</option>
+                            <option>Barcelona</option>
+                            <option>Madrid</option>
+                            <option>Valencia</option>
+                            <option>Sevilla</option>
+                            <option>Bilbao</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label>Constituido</label>
+                        <select id="filterConst">
+                            <option value="">Todos</option>
+                            <option>Sí</option>
+                            <option>No</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label>Fecha alta (desde)</label>
+                        <input type="date" id="filterDesde">
+                    </div>
+
+                    <div class="campo">
+                        <label>Fecha alta (hasta)</label>
+                        <input type="date" id="filterHasta">
+                    </div>
+
+                </div>
+
+                <div class="filters-actions">
+                    <button class="btn-small" id="btnLimpiar">Limpiar</button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- EXPORTACIÓN -->
+        <div class="card-block" style="margin-top:20px; margin-bottom:20px;">
+            <div class="section-title">Exportación</div>
+
+            <button class="btn-excel" id="btnDescargarExpedientes">
+                📤 Descargar Excel
+            </button>
+        </div>
+
+        <!-- TABLA PRINCIPAL -->
+        <div class="card-block">
+            <div class="section-title">Listado de Expedientes</div>
+
+            <table class="table sla-table glass-table mt-15">
+                <thead>
+                    <tr>
+                        <th>Expediente</th>
+                        <th>F. Alta</th>
+                        <th>Oficina</th>
+                        <th>Solicitante</th>
+                        <th>DNI</th>
+                        <th>Tipo documento</th>
+                        <th>Provisión</th>
+                        <th>Estado</th>
+                        <th>Ir</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tablaDatos">
+                    <!-- Se rellenará por JS -->
+                </tbody>
+            </table>
+
+            <div class="pagination">
+                <div id="paginationInfo"></div>
+
+                <div class="pagination-controls">
+                    <button id="prevPage">Anterior</button>
+                    <button id="nextPage">Siguiente</button>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- layout-content -->
+
+    <!-- JS DEL SIDEBAR -->
+    <script src="../../../js/components/ds-sidebar.js"></script>
+
+    <!-- MODAL PDF -->
+    <div class="modal-overlay" id="modalPDF">
+        <div class="glass-modal">
+
+            <div class="modal-header">
+                <span>Visualizar Documento</span>
+                <span class="modal-close" onclick="cerrarModal()">×</span>
+            </div>
+
+            <div class="modal-content">
+                <iframe id="visorPDF" src="" width="100%" height="100%"></iframe>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SCRIPT PRINCIPAL -->
+    <script>
+
+        /* Buscador simple */
+        function buscarGeneral() {
+            const q = document.getElementById("busquedaGeneral").value.toLowerCase();
+
+            document.querySelectorAll("#tablaDatos tr").forEach(row => {
+                const texto = row.innerText.toLowerCase();
+                row.style.display = texto.includes(q) ? "" : "none";
+            });
+        }
+
+        /* Panel plegable */
+        function togglePanelExp() {
+            const panel = document.getElementById("panelExp");
+            const btn = document.getElementById("btnToggleExp");
+
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+                btn.textContent = "Mostrar filtros ▼";
+            } else {
+                panel.style.display = "block";
+                btn.textContent = "Ocultar filtros ▲";
+            }
+        }
+
+        /* Modal PDF */
+        function verPDF(ruta) {
+            document.getElementById("visorPDF").src = ruta;
+            document.getElementById("modalPDF").style.display = "flex";
+        }
+
+        function cerrarModal() {
+            document.getElementById("modalPDF").style.display = "none";
+            document.getElementById("visorPDF").src = "";
+        }
+
+    </script>
+
+</body>
+</html>

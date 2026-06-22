@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Sede notarial sin protocolo</title>
+
+    <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- DESIGN SYSTEM COMPLETO -->
+    <link rel="stylesheet" href="../../css/ds.css">
+    <link rel="stylesheet" href="../../css/modules/ds-expedientes.css">
+
+    <style>
+        /* ============================
+           KPIS COMPACTOS
+        ============================ */
+        .kpi-grid-compact {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .kpi-grid-compact .kpi-card {
+            padding: 14px 16px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .kpi-grid-compact .kpi-icon {
+            font-size: 26px;
+        }
+
+        .kpi-grid-compact .kpi-title {
+            font-size: 13px;
+        }
+
+        .kpi-grid-compact .kpi-value {
+            font-size: 22px;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+
+    <!-- CONTENIDO -->
+    <div class="layout-content">
+
+        <h1>📘 Expedientes en <span>Sede notarial sin protocolo</span></h1>
+
+        <!-- ============================================================
+             KPIS — FORMATO GLASS LUXE 2027 (compactos)
+        ============================================================ -->
+        <div class="kpi-grid kpi-grid-compact">
+
+            <div class="kpi-card kpi-blue">
+                <div class="kpi-icon">📄</div>
+                <div class="kpi-info">
+                    <div class="kpi-title">Con Nº Solicitud PNC</div>
+                    <div class="kpi-value" id="kpiPNC">0</div>
+                </div>
+            </div>
+
+            <div class="kpi-card kpi-red">
+                <div class="kpi-icon">⛔</div>
+                <div class="kpi-info">
+                    <div class="kpi-title">Sin Fecha de firma</div>
+                    <div class="kpi-value" id="kpiSinFirma">0</div>
+                </div>
+            </div>
+
+            <div class="kpi-card kpi-green">
+                <div class="kpi-icon">✔</div>
+                <div class="kpi-info">
+                    <div class="kpi-title">Con Fecha de firma</div>
+                    <div class="kpi-value" id="kpiConFirma">0</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ============================================================
+             BLOQUE DE BÚSQUEDA
+        ============================================================ -->
+        <div class="card">
+            <div class="section-title">Buscar expedientes</div>
+
+            <div class="filters-bar">
+
+                <div>
+                    <label>Nº Expediente</label>
+                    <input type="text" id="fExpediente">
+                </div>
+
+                <div>
+                    <label>Nº Oficina</label>
+                    <input type="text" id="fOficina">
+                </div>
+
+                <div>
+                    <label>Fecha de alta</label>
+                    <input type="date" id="fAlta">
+                </div>
+
+                <div>
+                    <label>DNI Solicitante</label>
+                    <input type="text" id="fDni">
+                </div>
+
+                <div>
+                    <label>Tipo documento</label>
+                    <select id="fTipo">
+                        <option value="">Todos</option>
+                        <option>Cancelación</option>
+                        <option>Herencia</option>
+                        <option>Poder</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Notario</label>
+                    <input type="text" id="fNotario">
+                </div>
+
+                <div>
+                    <label>Apoderado</label>
+                    <input type="text" id="fApoderado">
+                </div>
+
+            </div>
+
+            <div class="filters-actions">
+                <button class="btn-small" id="btnBuscar">Buscar</button>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             BLOQUE LISTADO
+        ============================================================ -->
+        <div class="card card-full">
+
+            <div class="section-title">Listado de expedientes</div>
+
+            <div class="excel-bar">
+                <button class="btn-excel" id="btnExcel">📥 Descargar Excel</button>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="sla-table" id="tablaNotaria">
+                    <thead>
+                        <tr>
+                            <th>Expediente</th>
+                            <th>F. alta</th>
+                            <th>Oficina</th>
+                            <th>Solicitante</th>
+                            <th>DNI</th>
+                            <th>Tipo documento</th>
+                            <th>Notario</th>
+                            <th>Fecha envío notaría</th>
+                            <th>Apoderado</th>
+                            <th>Tipo de firma</th>
+                            <th>Nº Solicitud PNC</th>
+                            <th>Fecha Solicitud PNC</th>
+                            <th>Fecha de Firma</th>
+                            <th>Días</th>
+                            <th>Acceder</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="pagination">
+                <div id="paginationInfo"></div>
+                <div class="pagination-controls">
+                    <button id="prevPage">Anterior</button>
+                    <button id="nextPage">Siguiente</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div> <!-- /content -->
+
+    <!-- ============================================================
+         JAVASCRIPT
+    ============================================================ -->
+    <script src="../../js/components/ds-sidebar.js"></script>
+
+    <script>
+        const datos = [
+            {
+                expediente: "EXP-2001",
+                alta: "2026-04-01",
+                oficina: "Barcelona",
+                solicitante: "Juan Pérez",
+                dni: "12345678A",
+                tipo: "Cancelación",
+                notario: "Notario López",
+                envio: "2026-04-05",
+                apoderado: "Sí",
+                firma: "Digital",
+                pnc: "PNC-8899",
+                fechaPNC: "2026-04-06",
+                fechaFirma: "2026-04-10"
+            },
+            {
+                expediente: "EXP-2002",
+                alta: "2026-03-20",
+                oficina: "Madrid",
+                solicitante: "Laura Gómez",
+                dni: "87654321B",
+                tipo: "Herencia",
+                notario: "Notario Ruiz",
+                envio: "2026-03-25",
+                apoderado: "No",
+                firma: "Presencial",
+                pnc: "",
+                fechaPNC: "",
+                fechaFirma: ""
+            }
+        ];
+
+        let filtered = [...datos];
+        let currentPage = 1;
+        const rowsPerPage = 10;
+
+        const tbody = document.querySelector("#tablaNotaria tbody");
+
+        function format(date) {
+            if (!date) return "";
+            const [y,m,d] = date.split("-");
+            return `${d}/${m}/${y}`;
+        }
+
+        function diasDesde(fecha) {
+            if (!fecha) return 0;
+            const f1 = new Date(fecha);
+            const f2 = new Date();
+            return Math.floor((f2 - f1) / (1000*60*60*24));
+        }
+
+        function alertaDias(fecha) {
+            const dias = diasDesde(fecha);
+            return dias > 10
+                ? `<span class="alert-danger">⚠ ${dias} días</span>`
+                : `${dias} días`;
+        }
+
+        function render() {
+            tbody.innerHTML = "";
+            const start = (currentPage - 1) * rowsPerPage;
+            const page = filtered.slice(start, start + rowsPerPage);
+
+            page.forEach(e => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${e.expediente}</td>
+                        <td>${format(e.alta)}</td>
+                        <td>${e.oficina}</td>
+                        <td>${e.solicitante}</td>
+                        <td>${e.dni}</td>
+                        <td>${e.tipo}</td>
+                        <td>${e.notario}</td>
+                        <td>${format(e.envio)}</td>
+                        <td>${e.apoderado}</td>
+                        <td>${e.firma}</td>
+                        <td>${e.pnc || "-"}</td>
+                        <td>${format(e.fechaPNC)}</td>
+                        <td>${format(e.fechaFirma)}</td>
+                        <td>${alertaDias(e.alta)}</td>
+                        <td><button class="btn-small" onclick="abrirExpediente('${e.expediente}')">Ir</button></td>
+                    </tr>
+                `;
+            });
+
+            const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
+            document.getElementById("paginationInfo").textContent =
+                `Página ${currentPage} de ${totalPages} — ${filtered.length} expediente(s)`;
+
+            document.getElementById("prevPage").disabled = currentPage === 1;
+            document.getElementById("nextPage").disabled = currentPage === totalPages;
+        }
+
+        document.getElementById("prevPage").onclick = () => { currentPage--; render(); };
+        document.getElementById("nextPage").onclick = () => { currentPage++; render(); };
+
+        function abrirExpediente(id) {
+            window.location.href = "expediente_detalle.html?id=" + id;
+        }
+
+        render();
+    </script>
+
+</body>
+</html>

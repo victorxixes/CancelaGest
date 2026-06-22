@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Seleccionar Acción</title>
+
+   <!-- DESIGN SYSTEM -->
+    <link rel="stylesheet" href="../../css/ds.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../../css/modules/ds-actividades.css">
+
+
+    <!-- COMPONENTES DEL DS -->
+    <link rel="stylesheet" href="../../css/components/ds-buttons.css">
+    <link rel="stylesheet" href="../../css/components/ds-inputs.css">
+    <link rel="stylesheet" href="../../css/components/ds-tables.css">
+    <link rel="stylesheet" href="../../css/components/ds-modal.css">
+    <link rel="stylesheet" href="../../css/components/ds-progress.css">
+    <link rel="stylesheet" href="../../css/components/ds-scroll.css">
+    <link rel="stylesheet" href="../../css/components/ds-steps.css">
+    <link rel="stylesheet" href="../../css/components/ds-cards.css">
+    <link rel="stylesheet" href="../../css/components/ds-grid.css">
+    <link rel="stylesheet" href="../../css/components/ds-badges.css">
+    <link rel="stylesheet" href="../../css/components/ds-observaciones.css">
+
+    
+
+<body>
+
+<div class="content-card">
+
+    <h2>📋 Seleccionar Acción</h2>
+
+    <button class="btn-select" onclick="abrirModalNuevaAccion()">
+        ➕ Añadir acción
+    </button>
+
+    <input type="text" id="buscador" class="input--compact w-100"
+           placeholder="Buscar acción por ID o descripción...">
+
+    <table class="glass-table mt-15">
+        <thead>
+            <tr>
+                <th style="width:80px;">ID</th>
+                <th>Descripción</th>
+                <th style="width:200px;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tablaAcciones"></tbody>
+    </table>
+
+</div>
+
+<script>
+
+/* ---------------------------
+   LISTADO DE ACCIONES (PARTE 1)
+----------------------------*/
+const acciones = [
+    { id: 267, desc: "ABSIS GTG - ACTUALIZADO" },
+    { id: 262, desc: "ABSIS GTG - Cerrada" },
+    { id: 274, desc: "ABSIS GTG - Cerrada CON INSCRIP. (sin escritura)" },
+    { id: 277, desc: "ABSIS GTG - Cerrada en TIC" },
+    { id: 280, desc: "ABSIS GTG - Cerrada por OPS" },
+    { id: 276, desc: "ABSIS GTG - En proceso cierre desde TIC" },
+    { id: 275, desc: "ABSIS GTG - Pdte cierre CON INSCRIP." },
+    { id: 261, desc: "ABSIS GTG - Pendiente cierre" },
+    { id: 263, desc: "ABSIS GTG - Sin provision Pdte Copia Simple" },
+    { id: 303, desc: "BUZON CANCELA - Certificado con incidencia" },
+    { id: 304, desc: "BUZON CANCELA - Certificado correcto Recibido" },
+    { id: 286, desc: "BUZON CANCELA - Pdte alta secundaria" },
+    { id: 302, desc: "BUZON CANCELA - Recibida documentación" },
+    { id: 287, desc: "BUZON CANCELA - Recibida secundaria" },
+    { id: 301, desc: "BUZON CANCELA - Reclamada documentación" },
+    { id: 295, desc: "CARGA VIGENTE FALTA CS0" },
+    { id: 300, desc: "CARGA VIGENTE FALTA CS0 CAIXABANK" },
+    { id: 223, desc: "CLIENTE.- Provision de fondos: Recibida" },
+    { id: 224, desc: "CLIENTE.- Provision de fondos: Solicitada" },
+    { id: 253, desc: "CONTABILIZADO - INMOCAIXA" },
+    { id: 298, desc: "CRANDON Escritura Entregada" },
+    { id: 271, desc: "CRANDON Liquidacion Enviada" },
+    { id: 272, desc: "CRANDON Liquidacion Pagada" },
+    { id: 270, desc: "CRANDON Liquidacion Preparada" },
+    { id: 213, desc: "CREDIT AGRICOLE.- Provision de fondos: Recibida" },
+    { id: 212, desc: "CREDIT AGRICOLE.- Provision de fondos: Solicitada" },
+    { id: 246, desc: "DEFECTOS.- ALTA" },
+    { id: 247, desc: "DEFECTOS.- R.P. RECOGER DOC." },
+    { id: 248, desc: "DEFECTOS.- RECLAMACIÓN" },
+    { id: 252, desc: "DEFECTOS.- REMITIDA ADICIÓN A R.P." },
+    { id: 249, desc: "DEFECTOS.- REMITIDO A PROFESIONAL SUBSANAR" },
+    { id: 250, desc: "DEFECTOS.- SUBSANADO" },
+    { id: 235, desc: "ERROR ESCRITURA / FACTURAS" },
+    { id: 282, desc: "FACTURADO/CERRADO SP - SIN DATOS EN ABSIS" },
+    { id: 284, desc: "GALILEO - No reclamada por incidencia" },
+    { id: 228, desc: "GDS - CUSA .- AUTORIZACIÓN FIRMA OFICINA" },
+    { id: 80, desc: "GDS - CUSA.- Certificado: solicitado" },
+    { id: 186, desc: "GDS - CUSA.- Defectos Reg. gestionados por GDS." },
+    { id: 78, desc: "GDS - CUSA.- GTG - INCIDENCIA SAP ALTA UR NO TESTIMONIO" },
+    { id: 123, desc: "GDS - CUSA.- INCIDENCIA.- Autos.- Fase inicial.- Véase 'observaciones'." },
+    { id: 124, desc: "GDS - CUSA.- INFORMADA: Excedido SLA. Propuesta de baja" },
+    { id: 182, desc: "GDS - CUSA.- Provisión de fondos: Recibida" },
+    { id: 82, desc: "GDS - CUSA.- Provisión de fondos: solicitada" },
+    { id: 309, desc: "KOPS.- CONSTITUCION CXBK INCIDENCIA" },
+    { id: 306, desc: "KOPS.- FIRMADA" },
+    { id: 310, desc: "KOPS.- INCIDENCIA CARGAS PREVIAS" },
+    { id: 307, desc: "KOPS.- INSCRITA" },
+    { id: 308, desc: "KOPS.- PDTE FIRMA" },
+    { id: 143, desc: "MENSAJERIA.- Retirando documentación" },
+    { id: 84, desc: "MOLSAN.- Apoderamiento: Instando impulso firma." },
+    { id: 23, desc: "MOLSAN.- CANC EN TRAMITE.- Impulso a la gestión de firma." },
+    { id: 72, desc: "MOLSAN.- Copia simple: en carpeta" },
+    { id: 73, desc: "MOLSAN.- Copia simple: en escaner" },
+    { id: 68, desc: "MOLSAN.- Copia simple: subida imagen" },
+    { id: 11, desc: "MOLSAN.- INCIDENCIA contable" },
+    { id: 188, desc: "MOLSAN.- INCIDENCIA EN GESTION" },
+    { id: 28, desc: "MOLSAN.- INCIDENCIA pre-firma." },
+    { id: 116, desc: "MOLSAN.- INCIDENCIA RESUELTA" },
+    { id: 10, desc: "MOLSAN.- INCIDENCIA RESUELTA: Recibida escritura" },
+    { id: 18, desc: "MOLSAN.- INCIDENCIA.- En trámite localización escritura" },
+    { id: 26, desc: "MOLSAN.- INCIDENCIA.- En trámite localización expediente" },
+    { id: 226, desc: "MOLSAN.- INCIDENCIA.- Escritura con pf. MOLSAN no gestiona." },
+    { id: 222, desc: "MOLSAN.- INCIDENCIA.- Escritura recibida fuera de plazo para liquidar." },
+    { id: 115, desc: "MOLSAN.- INCIDENCIA.- Pdte imagenes en GTG" },
+    { id: 184, desc: "MOLSAN.- Liquidada con INFORME" },
+    { id: 258, desc: "MOLSAN.- NO CANCELABLE" },
+    { id: 71, desc: "MOLSAN.- Notaria: Enviada doc. para firmar." },
+    { id: 305, desc: "MOLSAN.- Pdte Solicitar Nota Simple" },
+    { id: 55, desc: "MOLSAN.- Pf de uso restringido .- Bloquear" },
+    { id: 57, desc: "MOLSAN.- Pf NO agrupada / vinculada.- Véase apartado de observaciones." },
+    { id: 257, desc: "MOLSAN.- RECLAMACION" },
+    { id: 164, desc: "MOLSAN.- Revisado exp. SIN ESCRITURA, para liquidar pf." },
+    { id: 162, desc: "MOLSAN.- Subida de imagenes en TIC y SAP" },
+    { id: 293, desc: "NO DOCU EN ABSIS.- NO SIA" },
+    { id: 1, desc: "NOTARIA Escritura Reclamada" },
+    { id: 278, desc: "NOTARIA - Nota Simple: reclamada" },
+    { id: 2, desc: "NOTARIA Escritura Recibida" },
+    { id: 88, desc: "NOTARIA.- Borrador: reclamado" },
+    { id: 70, desc: "NOTARIA.- Copia simple: Recibida" },
+    { id: 69, desc: "NOTARIA.- Copia simple: Reclamada" },
+    { id: 197, desc: "NOTARIA.- Defectos Registrales.- Reclamación subsanación escritura." },
+    { id: 110, desc: "NOTARIA.- Escritura NO firmada.- Reclamada. Impulsada firma." },
+    { id: 135, desc: "NOTARIA.- Factura: CONDONADA" },
+    { id: 111, desc: "NOTARIA.- Factura: Incorrecta. En trámite de rectificación." },
+    { id: 100, desc: "NOTARIA.- Factura: Pagada" },
+    { id: 113, desc: "NOTARIA.- Factura: Recibida." },
+    { id: 3, desc: "NOTARIA.- Factura: Reclamada" },
+    { id: 9, desc: "NOTARIA.- Incidencia.- Devuelta escritura para su subsanación." },
+    { id: 85, desc: "NOTARIA.- Mensajería retirando documentación." },
+    { id: 185, desc: "OF LIQUID. Y REG. PROP.- Escritura: Remitidos" },
+    { id: 191, desc: "OF LIQUID. Y REG. PROP.- Instancia/Mandamiento: Remitidos" },
+    { id: 169, desc: "OF LIQUIDADORA.- Presentacion Telematica" },
+    { id: 93, desc: "OF LIQUIDADORA.- Auto y Mandamiento: Recibidos" },
+    { id: 53, desc: "OF LIQUIDADORA.- Auto y Mandamiento: Remitidos" },
+    { id: 92, desc: "OF LIQUIDADORA.- Escritura: recibida" },
+    { id: 4, desc: "OF LIQUIDADORA.- Escritura: remitida" },
+    { id: 180, desc: "OF LIQUIDADORA.- Instancia presentación telemática" },
+    { id: 203, desc: "OF LIQUIDADORA.- Instancia/Mandamiento: Recibidos" },
+    { id: 202, desc: "OF LIQUIDADORA.- Instancia/Mandamiento: Remitidos" },
+    { id: 238, desc: "OF LIQUIDADORA.- Pago Telematico" },
+    { id: 227, desc: "OFICINA - AUTORIZACIÓN FIRMA GDS" },
+    { id: 260, desc: "OFICINA - CANCELACION FIRMADA" },
+    { id: 251, desc: "OFICINA - COPIA SIMPLE RECLAMADA" },
+    { id: 209, desc: "OFICINA - Documentación no Recepcionada" },
+    { id: 229, desc: "OFICINA - Mandamiento / Instancia recibido por oficina" },
+    { id: 215, desc: "OFICINA - PROVISIÓN SIN GESTIÓN" },
+    { id: 285, desc: "OFICINA - Reclamada documentación" },
+    { id: 279, desc: "OFICINA - Solicitud escritura en papel" },
+    { id: 25, desc: "OFICINA.- Complemento de saldo: Solicitado" },
+    { id: 41, desc: "OFICINA.- Documentación no recepcionada. SLA excedido. Informado GTG" },
+    { id: 27, desc: "OFICINA.- Escritura inscrita: enviada" },
+    { id: 67, desc: "OFICINA.- Mandamiento de Cancelación: Reclamado" },
+    { id: 236, desc: "ORGANISMO - Mandamiento de cancelación Reclamado" },
+    { id: 144, desc: "ORGANISMO.- Mandamiento de cancelacion Recibido" },
+    { id: 297, desc: "PREFIRMA. - Certificado Entidad con discrepancias" },
+    { id: 208, desc: "PREFIRMA. - Certificado Entidad Externa recibido" },
+    { id: 207, desc: "PREFIRMA. - Certificado Entidad Externa reclamado" },
+    { id: 234, desc: "PREFIRMA. - Datos del solicitante incorrectos" },
+    { id: 210, desc: "PREFIRMA. - Expediente en incidencia" },
+    { id: 296, desc: "PREFIRMA.- Certificado con discrepancias" },
+    { id: 36, desc: "PREFIRMA.- Certificado de Cancelación reclamado" },
+    { id: 35, desc: "PREFIRMA.- Certificado Manual: Reclamado" },
+    { id: 291, desc: "PREFIRMA.- Documentacion Reclamada a Oficina" },
+    { id: 65, desc: "PREFIRMA.- Nota Simple: reclamada" },
+    { id: 299, desc: "PREFIRMA.- Pendiente asignar notaria" },
+    { id: 292, desc: "PREFIRMA.- Pendiente autorizacion cliente" },
+    { id: 89, desc: "PREFIRMA.- Pendiente de alta secundaria" },
+    { id: 66, desc: "PREFIRMA.- Solicitud de cancelación: Reclamada" },
+    { id: 49, desc: "R. PROPIEDAD.- Auto y mandamiento : Revisado y conforme." },
+    { id: 61, desc: "R. PROPIEDAD.- Auto y Mandamiento: Recibidos" },
+    { id: 52, desc: "R. PROPIEDAD.- Auto y Mandamiento: Remitidos" },
+    { id: 50, desc: "R. PROPIEDAD.- Auto y Mandamiento: Revisado y NO conforme." },
+    { id: 294, desc: "R. PROPIEDAD.- Carga cancelada" },
+    { id: 166, desc: "R. PROPIEDAD.- Defecto previa. Remitido requerimiento." }
+];
+
+/* ---------------------------
+   SISTEMA DE MODALES
+----------------------------*/
+function abrirModal(id) {
+    document.getElementById(id).style.display = "flex";
+}
+
+function cerrarModal(id) {
+    document.getElementById(id).style.display = "none";
+}
+
+function abrirModalNuevaAccion() {
+    abrirModal("modalNuevaAccion");
+}
+function editarAccion(id) {
+    const accion = acciones.find(a => a.id == id);
+    if (!accion) return;
+
+    // Rellenar modal de edición
+    document.getElementById("accion_id").value = accion.id;
+    document.getElementById("accion_desc").value = accion.desc;
+
+    // Abrir modal
+    abrirModal("modalNuevaAccion");
+
+    // Cambiar botón Guardar → Actualizar
+    const btn = document.querySelector("#modalNuevaAccion .modal-actions button:last-child");
+    btn.textContent = "Actualizar";
+    btn.onclick = function () { actualizarAccion(id); };
+}
+
+/* ---------------------------
+   GUARDAR NUEVA ACCIÓN
+----------------------------*/
+function guardarNuevaAccion() {
+    const id = document.getElementById("accion_id").value.trim();
+    const desc = document.getElementById("accion_desc").value.trim();
+
+    if (!id || !desc) {
+        alert("Debes rellenar ID y Descripción.");
+        return;
+    }
+
+    const tbody = document.getElementById("tablaAcciones");
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+        <td>${id}</td>
+        <td>${desc}</td>
+<td>
+    <button class="btn-select"
+        onclick="seleccionarAccion('${acc.id}', '${acc.desc.replace(/'/g, "\\'")}')">
+        Seleccionar
+    </button>
+
+    <button class="btn-select btn-edit"
+        onclick="editarAccion('${acc.id}')">
+        ✏ Editar
+    </button>
+
+    <button class="btn-select btn-delete"
+        onclick="eliminarAccion('${acc.id}')">
+        🗑 Eliminar
+    </button>
+</td>
+
+    `;
+
+    tbody.appendChild(tr);
+
+    cerrarModal("modalNuevaAccion");
+}
+function actualizarAccion(idOriginal) {
+    const id = document.getElementById("accion_id").value.trim();
+    const desc = document.getElementById("accion_desc").value.trim();
+
+    if (!id || !desc) {
+        alert("Debes rellenar ID y Descripción.");
+        return;
+    }
+
+    const accion = acciones.find(a => a.id == idOriginal);
+    if (!accion) return;
+
+    accion.id = id;
+    accion.desc = desc;
+
+    renderTabla(acciones);
+    cerrarModal("modalNuevaAccion");
+
+    // Restaurar botón Guardar
+    const btn = document.querySelector("#modalNuevaAccion .modal-actions button:last-child");
+    btn.textContent = "Guardar";
+    btn.onclick = guardarNuevaAccion;
+}
+
+/* ---------------------------
+   SELECCIONAR ACCIÓN
+----------------------------*/
+function seleccionarAccion(id, descripcion) {
+    alert("Has seleccionado: " + id + " - " + descripcion);
+}
+
+/* ---------------------------
+   RENDERIZAR TABLA + BUSCADOR
+----------------------------*/
+function renderTabla(lista) {
+    const tbody = document.getElementById("tablaAcciones");
+    tbody.innerHTML = "";
+
+    lista.forEach(acc => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+            <td>${acc.id}</td>
+            <td>${acc.desc}</td>
+            <td>
+                <button class="btn-select"
+                    onclick="seleccionarAccion('${acc.id}', '${acc.desc.replace(/'/g, "\\'")}')">
+                    Seleccionar
+                </button>
+            </td>
+        `;
+
+        tbody.appendChild(tr);
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (typeof acciones !== "undefined") {
+        renderTabla(acciones);
+
+        const buscador = document.getElementById("buscador");
+
+        buscador.addEventListener("input", function () {
+            const texto = this.value.toLowerCase();
+
+            const filtradas = acciones.filter(a =>
+                a.desc.toLowerCase().includes(texto) ||
+                a.id.toString().includes(texto)
+            );
+
+            renderTabla(filtradas);
+        });
+    }
+});
+</script>
+
+<!-- ============================
+     MODAL NUEVA ACCIÓN
+============================= -->
+<div id="modalNuevaAccion" class="modal-overlay">
+    <div class="modal-inner">
+
+        <h3>Nueva acción</h3>
+
+        <div class="campo">
+            <label>ID Acción</label>
+            <input type="text" id="accion_id" class="compact-input">
+        </div>
+
+        <div class="campo">
+            <label>Descripción</label>
+            <input type="text" id="accion_desc" class="compact-input">
+        </div>
+
+        <div class="campo">
+            <label>Observaciones</label>
+            <textarea id="accion_obs" class="compact-input" rows="3"></textarea>
+        </div>
+
+        <div class="campo">
+            <label>Tipo</label>
+            <select id="accion_tipo" class="compact-input">
+                <option value="General">General</option>
+                <option value="Interna">Interna</option>
+                <option value="Cliente">Cliente</option>
+            </select>
+        </div>
+
+        <div class="campo">
+            <label>Fecha</label>
+            <input type="date" id="accion_fecha" class="compact-input">
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn-select" onclick="cerrarModal('modalNuevaAccion')">Cancelar</button>
+            <button class="btn-select" onclick="guardarNuevaAccion()">Guardar</button>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

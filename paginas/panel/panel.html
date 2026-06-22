@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Panel de Programas</title>
+
+    <!-- CSS GLOBAL -->
+    <link rel="stylesheet" href="../../css/styles.css">
+
+    <style>
+        body {
+            background: #f1f5f9;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        /* CONTENIDO PRINCIPAL */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            margin-left: 260px;
+            transition: margin-left 0.3s ease;
+        }
+
+        body.sidebar-collapsed .main-content {
+            margin-left: 80px;
+        }
+
+        /* TOP BAR */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .top-bar img {
+            height: 70px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(10,74,138,0.15);
+        }
+
+        .top-title h1 {
+            margin: 0;
+            font-size: 30px;
+            font-weight: 700;
+            color: #084482;
+        }
+
+        .top-title span {
+            font-size: 15px;
+            color: #475569;
+        }
+
+        /* GRID */
+        .program-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            margin-top: 25px;
+        }
+
+        @media (max-width: 900px) {
+            .program-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* TARJETAS GLASS LUXE */
+        .program-card {
+            background: rgba(255,255,255,0.55);
+            padding: 28px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.35);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            cursor: pointer;
+            transition: 0.25s ease;
+            box-shadow: 0 6px 18px rgba(10,74,138,0.15);
+        }
+
+        .program-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 26px rgba(10,74,138,0.25);
+        }
+
+        .program-card .icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .program-card h2 {
+            margin: 0;
+            font-size: 22px;
+            color: #084482;
+            font-weight: 700;
+        }
+
+        .program-card p {
+            margin-top: 10px;
+            color: #475569;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="main-content">
+
+        <!-- LOGO + TÍTULO -->
+        <div class="top-bar">
+            <img src="../../img/logo.jpg" alt="Logo CancelaGest">
+
+            <div class="top-title">
+                <h1>Panel Selección de Programas</h1>
+                <span>Acceso exclusivo para administradores</span>
+            </div>
+        </div>
+
+        <!-- GRID DE PROGRAMAS -->
+        <div class="program-grid">
+
+            <!-- CANCELA GEST -->
+            <div class="program-card" onclick="window.location.href='../dashboard/dashboard.html'">
+                <div class="icon">🔏</div>
+                <h2>CancelaGest</h2>
+                <p>Acceso al sistema principal de gestión de expedientes.</p>
+            </div>
+
+            <!-- APODERA GEST -->
+            <div class="program-card" onclick="window.location.href='apoderagest.html'">
+                <div class="icon">‍💼</div>
+                <h2>ApoderaGest</h2>
+                <p>Panel de gestión para apoderados y representantes.</p>
+            </div>
+
+            <!-- NOTAR GEST -->
+            <div class="program-card" onclick="window.location.href='notargest.html'">
+                <div class="icon">✒️</div>
+                <h2>NotarGest</h2>
+                <p>Gestión avanzada para notarios y protocolo notarial.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

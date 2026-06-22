@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Carpeta Digital</title>
+
+    <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- DESIGN SYSTEM (archivo maestro) -->
+    <link rel="stylesheet" href="../../css/ds.css">
+
+    <!-- MÓDULO ESPECÍFICO -->
+    <link rel="stylesheet" href="../../css/modules/ds-carpeta-digital.css">
+</head>
+
+<body>
+
+<div class="layout-content">
+
+    <!-- BOTÓN VOLVER -->
+    <button class="btn btn-small" onclick="window.history.back()">⬅ Volver</button>
+
+    <h2 class="section-title">📁 Carpeta Digital</h2>
+    <span class="header-sub">Gestión de documentos del expediente</span>
+
+    <div class="card documentos-expediente">
+
+        <div class="section-title">Documentos del expediente</div>
+        <p>Seleccione los documentos necesarios que desea subir al expediente.</p>
+
+        <!-- TABLA PREMIUM -->
+        <div class="file-table-wrapper">
+            <table class="file-table">
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Nº documentos</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaConceptos"></tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- DRAWER PREMIUM -->
+<div id="panel" class="drawer drawer-right">
+
+    <button class="drawer-close" onclick="cerrarPanel()">Cerrar</button>
+
+    <h2 id="panelTitulo" class="drawer-title"></h2>
+
+    <div class="input-group">
+        <label>Subir fichero</label>
+        <input class="input" type="file" id="fileInput">
+    </div>
+
+    <button class="btn-upload" onclick="subirFichero()">⬆ Subir fichero</button>
+
+    <h3 class="section-title">Documentos</h3>
+    <div id="listaFicheros"></div>
+
+    <h3 class="section-title">Previsualización</h3>
+    <iframe id="visorPDF" class="pdf-viewer"></iframe>
+
+</div>
+
+<script>
+/* ============================================================
+   LISTA DE CONCEPTOS
+============================================================ */
+const conceptos = [
+    "Documentos Absis",
+    "Solicitud de cancelación notarial",
+    "Certificado de cancelación administrativa",
+    "Nota Simple Registral",
+    "Mails de la Oficina",
+    "Borrador de escritura",
+    "Copia simple",
+    "Asiento presentación",
+    "Modelo 600 AJD/ITP",
+    "NotarGest - Factura Notario",
+    "Calificación escritura",
+    "NotarGest - Factura Registro",
+    "Documento Inscripción",
+    "Otros gastos",
+    "Honorarios Gestoría",
+    "Expediente digital completo"
+];
+
+let ficheros = JSON.parse(localStorage.getItem("carpetaDigital")) || {};
+let conceptoActual = "";
+
+/* ============================================================
+   CARGAR TABLA PRINCIPAL
+============================================================ */
+function cargarConceptos() {
+    const tbody = document.getElementById("tablaConceptos");
+    tbody.innerHTML = "";
+
+    conceptos.forEach(c => {
+        if (!ficheros[c]) ficheros[c] = [];
+
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+            <td>${c}</td>
+            <td>(${ficheros[c].length})</td>
+        `;
+        fila.onclick = () => abrirPanel(c);
+        tbody.appendChild(fila);
+    });
+
+    localStorage.setItem("carpetaDigital", JSON.stringify(ficheros));
+}
+
+document.addEventListener("DOMContentLoaded", cargarConceptos);
+
+/* ============================================================
+   PANEL LATERAL (DRAWER)
+============================================================ */
+function abrirPanel(concepto) {
+    conceptoActual = concepto;
+    document.getElementById("panelTitulo").innerText = concepto;
+    document.getElementById("panel").classList.add("open");
+    cargarFicheros();
+}
+
+function cerrarPanel() {
+    document.getElementById("panel").classList.remove("open");
+}
+
+/* ============================================================
+   CARGAR FICHEROS
+============================================================ */
+function cargarFicheros() {
+    const cont = document.getElementById("listaFicheros");
+    cont.innerHTML = "";
+
+    ficheros[conceptoActual].forEach((f, i) => {
+        const div = document.createElement("div");
+        div.className = "file-item";
+        div.innerHTML = `
+            <strong>${f.nombre}</strong><br>
+            <button class="btn-small" onclick="verPDF('${f.url}')">Ver</button>
+            <button class="btn-small" style="background:#dc2626;" onclick="eliminarFichero(${i})">Eliminar</button>
+        `;
+        cont.appendChild(div);
+    });
+}
+
+/* ============================================================
+   SUBIR FICHERO (INTEGRADO CON EXPEDIENTE)
+============================================================ */
+function subirFichero() {
+    const input = document.getElementById("fileInput");
+    if (!input.files.length) return alert("Seleccione un fichero.");
+
+    const archivo = input.files[0];
+
+    const nuevo = {
+        nombre: archivo.name,
+        url: URL.createObjectURL(archivo)
+    };
+
+    ficheros[conceptoActual].push(nuevo);
+    localStorage.setItem("carpetaDigital", JSON.stringify(ficheros));
+
+    cargarConceptos();
+    cargarFicheros();
+
+    // 🔥 ENVÍO COMPLETO AL EXPEDIENTE
+    window.parent.postMessage({
+        tipo: "documentoSubido",
+        nombre: archivo.name,
+        url: nuevo.url
+    }, "*");
+}
+
+/* ============================================================
+   VER PDF
+============================================================ */
+function verPDF(url) {
+    document.getElementById("visorPDF").src = url;
+}
+
+/* ============================================================
+   ELIMINAR FICHERO (INTEGRADO CON EXPEDIENTE)
+============================================================ */
+function eliminarFichero(index) {
+    if (!confirm("¿Eliminar este fichero?")) return;
+
+    const nombre = ficheros[conceptoActual][index]?.nombre;
+
+    // 🔥 AVISAR AL EXPEDIENTE
+    window.parent.postMessage({
+        tipo: "documentoEliminado",
+        nombre: nombre
+    }, "*");
+
+    ficheros[conceptoActual].splice(index, 1);
+    localStorage.setItem("carpetaDigital", JSON.stringify(ficheros));
+
+    cargarConceptos();
+    cargarFicheros();
+}
+</script>
+
+</body>
+</html>

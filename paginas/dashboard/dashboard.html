@@ -1,0 +1,512 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Dashboard General</title>
+
+    <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- DESIGN SYSTEM BASE -->
+    <link rel="stylesheet" href="../../css/ds.css">
+
+    <!-- SIDEBAR -->
+    <link rel="stylesheet" href="../../css/layout/cg-sidebar.css">
+
+    <!-- MÓDULO AUDITORÍA (usa estilos premium) -->
+    <link rel="stylesheet" href="../../css/modules/ds-auditoria.css">
+
+    <!-- CHART.JS (OBLIGATORIO ANTES DE USARLO) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- SIDEBAR UNIVERSAL -->
+    <script src="../../js/components/ds-sidebar.js" defer></script>
+
+<style>
+
+/* ============================================================
+   LAYOUT GENERAL
+============================================================ */
+.layout {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+#sidebar-container {
+    width: 260px;
+    flex-shrink: 0;
+}
+
+.content {
+    flex: 1;
+    padding: 30px 40px;
+    box-sizing: border-box;
+    width: 100%;
+    transition: margin-left 0.25s ease;
+}
+
+body.sidebar-collapsed .content {
+    margin-left: 0;
+}
+
+/* Contenedor centrado para bloques */
+.bloque-dashboard {
+    max-width: 85%;
+}
+
+/* ============================================================
+   KPIs GRANDES (Dashboard principal)
+============================================================ */
+.dashboard-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    margin-top: 25px;
+}
+
+.dashboard-kpi {
+    padding: 22px;
+    border-radius: 16px;
+    color: white;
+    font-weight: 300;
+    text-align: left;
+    box-shadow: 0 10px 25px rgba(15,76,117,0.25);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Degradados premium */
+.kpi-blue    { background: linear-gradient(135deg,#0f4c75,#3282b8); }
+.kpi-green   { background: linear-gradient(135deg,#059669,#10b981); }
+.kpi-yellow  { background: linear-gradient(135deg,#f59e0b,#fbbf24); color:#1f2933; }
+.kpi-red     { background: linear-gradient(135deg,#b91c1c,#ef4444); }
+
+.kpi-icon   { font-size: 26px; opacity: 0.9; }
+.kpi-title  { font-size: 14px; opacity: 0.9; }
+.kpi-number { font-size: 30px; }
+.kpi-trend  { font-size: 12px; opacity: 0.9; }
+
+/* ============================================================
+   KPIs COMPACTOS (7 en una línea)
+============================================================ */
+.dashboard-kpi-grid-compact {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.dashboard-kpi-compact {
+    background: #ffffff;
+    padding: 10px 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-kpi-compact:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
+
+/* Bordes compactos */
+.kpi-compact-blue  { border-left: 3px solid #0f5bb5; }
+.kpi-compact-green { border-left: 3px solid #10b981; }
+.kpi-compact-yellow{ border-left: 3px solid #eab308; }
+.kpi-compact-red   { border-left: 3px solid #ef4444; }
+
+.kpi-icon-compact   { font-size: 20px; }
+.kpi-title-compact  { font-size: 11px; font-weight: 600; color: #475569; text-align: center; }
+.kpi-number-compact { font-size: 18px; font-weight: 700; color: #0f4c75; }
+
+/* ============================================================
+   GRIDS SECUNDARIOS
+============================================================ */
+.dashboard-grid-2 {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 22px;
+    margin-top: 25px;
+}
+
+.dashboard-grid-2-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 22px;
+    margin-top: 25px;
+}
+
+/* ============================================================
+   TABLAS
+============================================================ */
+.sla-table th {
+    background: #0f4c75;
+    color: white;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.tabla-apoderados {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.tabla-apoderados th,
+.tabla-apoderados td {
+    white-space: nowrap;
+    padding: 6px 8px;
+}
+
+/* ============================================================
+   CABECERA TABLA + FILTRO
+============================================================ */
+.table-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.table-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.table-title h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #084482;
+}
+
+.table-icon {
+    font-size: 20px;
+}
+
+.table-filters {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+}
+
+.table-filters select {
+    padding: 5px 8px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-size: 13px;
+    background: #fff;
+}
+
+/* ============================================================
+   ALERTAS
+============================================================ */
+.alert-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.alert-list li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    font-size: 14px;
+}
+
+.alert-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+}
+
+.alert-red    { background:#ef4444; }
+.alert-yellow { background:#fbbf24; }
+.alert-blue   { background:#3b82f6; }
+
+/* Mini tabla con scroll */
+.mini-table-wrapper {
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+</style>
+</head>
+
+<body>
+
+
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+
+    <!-- CONTENIDO -->
+    <div class="content">
+
+        <h1>📊 Dashboard General</h1>
+        <p class="header-sub">Resumen global de la situación de Molsan</p>
+
+<!-- ============================
+     KPIs — Ciclo Notarial (Compacto)
+============================ -->
+<div class="dashboard-kpi-grid-compact bloque-dashboard">
+
+    <div class="dashboard-kpi-compact kpi-blue">
+        <span class="kpi-icon-compact">📄</span>
+        <span class="kpi-title-compact">Doc. previa</span>
+        <span class="kpi-number-compact">124</span>
+    </div>
+
+    <div class="dashboard-kpi-compact kpi-green">
+        <span class="kpi-icon-compact">🏛️</span>
+        <span class="kpi-title-compact">Sin protocolo</span>
+        <span class="kpi-number-compact">89</span>
+    </div>
+
+    <div class="dashboard-kpi-compact kpi-yellow">
+        <span class="kpi-icon-compact">📜</span>
+        <span class="kpi-title-compact">Con protocolo</span>
+        <span class="kpi-number-compact">22</span>
+    </div>
+
+    <div class="dashboard-kpi-compact kpi-yellow">
+        <span class="kpi-icon-compact">💰</span>
+        <span class="kpi-title-compact">Impuestos</span>
+        <span class="kpi-number-compact">22</span>
+    </div>
+
+    <div class="dashboard-kpi-compact kpi-yellow">
+        <span class="kpi-icon-compact">📬</span>
+        <span class="kpi-title-compact">Registro</span>
+        <span class="kpi-number-compact">22</span>
+    </div>
+
+    <div class="dashboard-kpi-compact kpi-red">
+        <span class="kpi-icon-compact">⚠️</span>
+        <span class="kpi-title-compact">Defectos</span>
+        <span class="kpi-number-compact">13</span>
+    </div>
+
+    <div class="dashboard-kpi-compact kpi-red">
+        <span class="kpi-icon-compact">🔚</span>
+        <span class="kpi-title-compact">Cierre</span>
+        <span class="kpi-number-compact">13</span>
+    </div>
+
+</div>
+
+<!-- ============================
+     PROVISIONES FIRMADAS POR APODERADOS — 2026
+============================ -->
+<div class="card bloque-dashboard">
+
+    <div class="table-header-flex">
+        <div class="table-title">
+            <span class="table-icon">📊</span>
+            <h3>Provisiones firmadas por Apoderados</h3>
+        </div>
+
+        <div class="table-filters">
+            <label>Año:</label>
+            <select id="filtroAnio">
+                <option value="2025">Año anterior</option>
+                <option value="2026" selected>2026</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="sla-table tabla-apoderados">
+            <thead>
+                <tr>
+                    <th>Apoderado</th>
+                    <th>Ene</th><th>Feb</th><th>Mar</th><th>Abr</th><th>May</th><th>Jun</th>
+                    <th>Jul</th><th>Ago</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dic</th>
+                    <th>Total</th>
+                    <th>%</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>Carlos Barbera García</td>
+                    <td>414</td><td>661</td><td>631</td><td>457</td><td>436</td><td>186</td>
+                    <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                    <td>2.785</td><td>12,8%</td>
+                </tr>
+
+                <tr>
+                    <td>Oficina CaixaBank</td>
+                    <td>62</td><td>51</td><td>64</td><td>47</td><td>39</td><td>1</td>
+                    <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                    <td>264</td><td>1,2%</td>
+                </tr>
+
+                <tr>
+                    <td>Víctor Tomás Castellsagué</td>
+                    <td>44</td><td>66</td><td>56</td><td>43</td><td>48</td><td>11</td>
+                    <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                    <td>268</td><td>1,2%</td>
+                </tr>
+
+                <tr>
+                    <td>GESTCANARIAS</td>
+                    <td>242</td><td>306</td><td>379</td><td>321</td><td>223</td><td>59</td>
+                    <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                    <td>1.530</td><td>7,0%</td>
+                </tr>
+
+                <tr>
+                    <td>GESTORIA MAS</td>
+                    <td>141</td><td>130</td><td>201</td><td>128</td><td>136</td><td>25</td>
+                    <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                    <td>761</td><td>3,5%</td>
+                </tr>
+
+                <tr>
+                    <td>CASTILLO 11</td>
+                    <td>26</td><td>40</td><td>45</td><td>22</td><td>25</td><td>-</td>
+                    <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                    <td>158</td><td>0,7%</td>
+                </tr>
+
+                <tr>
+                    <td>JULIO CUESTA</td>
+                    <td>302</td><td>332</td><td>315</td><td>259</td><td>224</td><td>110</td>
+                    <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                    <td>1.542</td><td>7,1%</td>
+                </tr>
+
+                <tr>
+                    <td>GESGALICIA</td>
+                    <td>77</td><td>51</td><td>48</td><td>54</td><td>32</td><td>4</td>
+                    <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                    <td>266</td><td>1,2%</td>
+                </tr>
+
+                <tr>
+                    <td>YARZA GESTION</td>
+                    <td>635</td><td>782</td><td>714</td><td>597</td><td>654</td><td>170</td>
+                    <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                    <td>3.552</td><td>16,3%</td>
+                </tr>
+
+                <tr>
+                    <td>Yolanda Vives Solsona</td>
+                    <td>5</td><td>1</td><td>2</td><td>1</td><td>-</td><td>2</td>
+                    <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                    <td>11</td><td>0,1%</td>
+                </tr>
+
+                <tr>
+                    <td>Pedro Pérez Sola</td>
+                    <td>307</td><td>479</td><td>518</td><td>383</td><td>400</td><td>78</td>
+                    <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                    <td>2.165</td><td>9,9%</td>
+                </tr>
+
+                <tr>
+                    <td>GASTON BEGUIRISTAIN AMORIN</td>
+                    <td>758</td><td>1.287</td><td>1.091</td><td>1.036</td><td>958</td><td>287</td>
+                    <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                    <td>5.417</td><td>24,8%</td>
+                </tr>
+
+                <tr>
+                    <td>ALBERTO LOPEZ RODRIGUEZ</td>
+                    <td>499</td><td>528</td><td>613</td><td>549</td><td>490</td><td>142</td>
+                    <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                    <td>2.821</td><td>12,9%</td>
+                </tr>
+
+                <tr>
+                    <td>Pendiente de Asignar</td>
+                    <td>1</td><td>1</td><td>-</td><td>1</td><td>-</td><td>1</td>
+                    <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                    <td>4</td><td>0,0%</td>
+                </tr>
+
+                <tr>
+                    <td>Oficina Otra entidad</td>
+                    <td>30</td><td>54</td><td>48</td><td>68</td><td>73</td><td>12</td>
+                    <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                    <td>285</td><td>1,3%</td>
+                </tr>
+
+                <tr>
+                    <td>BEGOÑA DE PACO MOR</td>
+                    <td>-</td><td>2</td><td>4</td><td>2</td><td>-</td><td>-</td>
+                    <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+                    <td>8</td><td>0,0%</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+        <!-- ============================
+             ALERTAS + MINI TABLA
+        ============================ -->
+        <div class="dashboard-grid-2-bottom bloque-dashboard">
+
+            <div class="card">
+                <h3>Alertas recientes</h3>
+                <ul class="alert-list">
+                    <li><span class="alert-dot alert-red"></span> 3 expedientes con defectos graves</li>
+                    <li><span class="alert-dot alert-yellow"></span> 5 expedientes pendientes de firma</li>
+                    <li><span class="alert-dot alert-blue"></span> 2 expedientes con documentación nueva</li>
+                </ul>
+            </div>
+</div> <!-- /layout -->
+
+<script>
+/* ============================
+   GRÁFICOS
+============================ */
+new Chart(document.getElementById("chart1"), {
+    type: "line",
+    data: {
+        labels: ["Ene","Feb","Mar","Abr","May","Jun"],
+        datasets: [{
+            label: "Expedientes",
+            data: [20,30,25,40,35,50],
+            borderColor: "#0f4c75",
+            backgroundColor: "rgba(15,76,117,0.25)",
+            tension: 0.3
+        }]
+    }
+});
+
+new Chart(document.getElementById("chart2"), {
+    type: "doughnut",
+    data: {
+        labels: ["Activos","Pendientes","Completados"],
+        datasets: [{
+            data: [40,22,89],
+            backgroundColor: ["#3282b8","#fbbf24","#10b981"]
+        }]
+    }
+});
+</script>
+
+</body>
+</html>

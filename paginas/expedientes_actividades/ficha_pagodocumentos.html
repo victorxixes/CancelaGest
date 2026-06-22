@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ficha de pago - CancelaGest 2.0</title>
+
+    <!-- CSS BASE DEL DESIGN SYSTEM -->
+    <link rel="stylesheet" href="../../css/ds.css">
+
+    <!-- COMPONENTES DEL DS -->
+    <link rel="stylesheet" href="../../css/components/ds-buttons.css">
+    <link rel="stylesheet" href="../../css/components/ds-inputs.css">
+    <link rel="stylesheet" href="../../css/components/ds-tables.css">
+    <link rel="stylesheet" href="../../css/components/ds-modal.css">
+    <link rel="stylesheet" href="../../css/components/ds-progress.css">
+    <link rel="stylesheet" href="../../css/components/ds-scroll.css">
+    <link rel="stylesheet" href="../../css/components/ds-steps.css">
+    <link rel="stylesheet" href="../../css/components/ds-observaciones.css">
+<!-- MODULOS DEL DS -->
+    <link rel="stylesheet" href="../../css/modules/ds-facturacion.css">
+</head>
+
+<body>
+
+<style>
+/* ============================
+   PDF VIEWER
+============================ */
+.pdf-viewer {
+    width: 100%;
+    height: 420px;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(8,68,130,0.35);
+    background: rgba(255,255,255,0.45);
+}
+
+</style>
+
+</head>
+
+<body>
+<h2>💳 Realizar Pago</h2>
+
+<div class="grid-pago-2col">
+
+    <!-- BLOQUE 1 -->
+    <div class="bloque bloque-expandible">
+        <div class="bloque-header" onclick="toggleBloque(this)">
+            <h3>📄 Documento o escritura a pagar</h3>
+            <span class="toggle-icon">➕</span>
+        </div>
+
+        <div class="bloque-content">
+            <div class="campo">
+                <label>Concepto del gasto</label>
+                <select class="input--compact">
+                    <option>FACTURA NOTARIO</option>
+                    <option>FACTURA REGISTRO</option>
+                    <option>IMPUESTOS</option>
+                    <option>OTROS GASTOS IMPUTADOS</option>
+                </select>
+            </div>
+
+            <div class="campo"><label>Pagador</label><input class="input--compact" type="text"></div>
+            <div class="campo"><label>NIF/CIF/NIE</label><input class="input--compact" type="text"></div>
+            <div class="campo"><label>Buscar</label><input class="input--compact" type="text"></div>
+            <div class="campo"><label>Nombre</label><input class="input--compact" type="text"></div>
+            <div class="campo"><label>Cuentas</label><input class="input--compact" type="text"></div>
+        </div>
+    </div>
+
+    <!-- BLOQUE 3 (PDF) -->
+    <div class="bloque bloque-digital">
+        <h3>📑 Documento digital</h3>
+
+        <div class="pdf-viewer">
+            <iframe id="visorFacturaHonorarios" style="width:100%; height:100%; border:none;"></iframe>
+        </div>
+
+        <button class="btn btn-primary w-100" onclick="descargarFacturaHonorarios()">
+            📄 Descargar PDF
+        </button>
+    </div>
+
+    <!-- BLOQUE 2 -->
+    <div class="bloque bloque-expandible">
+        <div class="bloque-header" onclick="toggleBloque(this)">
+            <h3>🧾 Datos del gasto</h3>
+            <span class="toggle-icon">➕</span>
+        </div>
+
+        <div class="bloque-content">
+            <div class="campo"><label>Medio de pago</label><input class="input--compact" type="text"></div>
+            <div class="campo"><label>Fecha</label><input class="input--compact" type="date"></div>
+            <div class="campo"><label>Núm. Factura</label><input class="input--compact" type="text"></div>
+            <div class="campo"><label>Fecha de la factura</label><input class="input--compact" type="date"></div>
+            <div class="campo"><label>Importe total bruto</label><input class="input--compact" type="text"></div>
+            <div class="campo"><label>Base exenta</label><input class="input--compact" type="text"></div>
+            <div class="campo"><label>Base sujeta</label><input class="input--compact" type="text"></div>
+            <div class="campo"><label>Impuesto</label><input class="input--compact" type="text"></div>
+            <div class="campo"><label>Tipo</label><input class="input--compact" type="text"></div>
+            <div class="campo"><label>Retención</label><input class="input--compact" type="text"></div>
+            <div class="campo"><label>Importe resultante</label><input class="input--compact" type="text"></div>
+
+</div>
+            <button class="btn btn-primary w-100" style="margin-top:10px;" onclick="registrarPago(this)">
+                💳 Realizar pago
+            </button>
+        </div>
+    </div>
+
+</div>
+<script>
+function toggleBloque(header) {
+    const bloque = header.parentElement;
+    const content = bloque.querySelector(".bloque-content");
+    const icon = header.querySelector(".toggle-icon");
+
+    // Alternar clase
+    bloque.classList.toggle("open");
+
+    if (bloque.classList.contains("open")) {
+        content.style.maxHeight = content.scrollHeight + "px";
+        icon.textContent = "➖";
+    } else {
+        content.style.maxHeight = "0px";
+        icon.textContent = "➕";
+    }
+}
+</script>

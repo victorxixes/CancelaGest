@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Actividad – Sede notarial con protocolo / ITP</title>
+
+   
+   <!-- DESIGN SYSTEM -->
+    <link rel="stylesheet" href="../../css/ds.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../../css/modules/ds-actividades.css">
+
+
+<body class="sidebar-expanded">
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+
+
+    <!-- TÍTULO PRINCIPAL -->
+    <h1 class="section-title">Sede notarial con protocolo</h1>
+    <span class="header-sub">Información de la sede notarial</span>
+
+    <!-- ============================================================
+         BLOQUE — DATOS NOTARIALES Y REGISTRALES
+    ============================================================ -->
+    <div class="card-block" style="margin-top:20px;">
+        <div class="section-title">Datos notariales y registrales</div>
+
+        <div class="grid-2">
+
+            <div class="campo">
+                <label>Escritura</label>
+                <input type="text" placeholder="Número de escritura">
+            </div>
+
+            <div class="campo">
+                <label>Notario</label>
+                <input type="text" placeholder="Nombre del notario">
+            </div>
+
+            <div class="campo">
+                <label>Fecha firma</label>
+                <input type="date">
+            </div>
+
+            <div class="campo">
+                <label>Apoderado</label>
+                <input type="text" placeholder="Nombre del apoderado">
+            </div>
+
+            <div class="campo">
+                <label>Asiento presentación</label>
+                <input type="text" placeholder="Asiento presentación">
+            </div>
+
+            <div class="campo">
+                <label>Libro diario</label>
+                <input type="text" placeholder="Libro diario">
+            </div>
+
+            <div class="campo">
+                <label>Fecha presentación</label>
+                <input type="date">
+            </div>
+
+            <div class="campo">
+                <label>Número de entrada</label>
+                <input type="text" placeholder="Número de entrada">
+            </div>
+
+            <div class="campo">
+                <label>Año</label>
+                <input type="text" placeholder="Año">
+            </div>
+
+            <div class="campo">
+                <label>Fecha recogida Notario / presentación telemática</label>
+                <input type="date">
+            </div>
+
+            <!-- NUEVO CAMPO: COPIA SIMPLE (PDF) -->
+            <div class="campo" style="grid-column: span 2;">
+                <label>Copia simple escritura (PDF)</label>
+                <input type="file" accept="application/pdf">
+            </div>
+
+            <!-- NUEVO CAMPO: HOJA DE ENTRADA (PDF) -->
+            <div class="campo" style="grid-column: span 2;">
+                <label>Hoja de entrada (PDF)</label>
+                <input type="file" accept="application/pdf">
+            </div>
+
+        </div>
+
+        <!-- BOTÓN PARA AÑADIR SEDES ADICIONALES -->
+        <button class="btn-small" onclick="agregarSedeAdicional()" style="margin-top:25px; width:100%;">
+            ➕ Añadir sedes adicionales
+        </button>
+
+        <!-- CONTENEDOR DONDE SE AÑADIRÁN LAS SEDES -->
+        <div id="sedesAdicionales"></div>
+
+        <!-- BOTONES -->
+        <div style="display:flex; justify-content:center; gap:25px; margin-top:30px;">
+            
+            <!-- BOTÓN GUARDAR -->
+            <button class="btn" style="padding:14px 32px; font-size:16px;" onclick="guardarDatosNotariales()">
+                💾 Guardar
+            </button>
+
+            <!-- BOTÓN ABSIS PREMIUM -->
+            <button class="btn-absis" onclick="enviarAbsisNotarial()">
+                📤 Enviar al Absis
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function guardarDatosNotariales() {
+    console.log("Datos notariales guardados");
+}
+
+function enviarAbsisNotarial() {
+    console.log("Datos enviados al Absis");
+}
+
+function agregarSedeAdicional() {
+    const cont = document.getElementById("sedesAdicionales");
+
+    const bloque = document.createElement("div");
+    bloque.classList.add("card-block", "sede-bloque");
+
+    bloque.innerHTML = `
+        <div class="section-title">Sede adicional</div>
+
+        <div class="grid-2">
+
+            <div class="campo">
+                <label>Escritura</label>
+                <input type="text" placeholder="Número de escritura">
+            </div>
+
+            <div class="campo">
+                <label>Notario</label>
+                <input type="text" placeholder="Nombre del notario">
+            </div>
+
+            <div class="campo">
+                <label>Fecha firma</label>
+                <input type="date">
+            </div>
+
+            <div class="campo">
+                <label>Apoderado</label>
+                <input type="text" placeholder="Nombre del apoderado">
+            </div>
+
+            <div class="campo">
+                <label>Asiento presentación</label>
+                <input type="text" placeholder="Asiento presentación">
+            </div>
+
+            <div class="campo">
+                <label>Libro diario</label>
+                <input type="text" placeholder="Libro diario">
+            </div>
+
+            <div class="campo">
+                <label>Fecha presentación</label>
+                <input type="date">
+            </div>
+
+            <div class="campo">
+                <label>Número de entrada</label>
+                <input type="text" placeholder="Número de entrada">
+            </div>
+
+            <div class="campo">
+                <label>Año</label>
+                <input type="text" placeholder="Año">
+            </div>
+
+            <div class="campo">
+                <label>Fecha recogida Notario / presentación telemática</label>
+                <input type="date">
+            </div>
+
+            <div class="campo" style="grid-column: span 2;">
+                <label>Copia simple escritura (PDF)</label>
+                <input type="file" accept="application/pdf">
+            </div>
+
+            <div class="campo" style="grid-column: span 2;">
+                <label>Hoja de entrada (PDF)</label>
+                <input type="file" accept="application/pdf">
+            </div>
+
+        </div>
+    `;
+
+    cont.appendChild(bloque);
+    bloque.scrollIntoView({ behavior: "smooth" });
+}
+</script>
+
+</body>
+</html>
+

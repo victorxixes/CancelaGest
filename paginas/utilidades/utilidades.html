@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Utilidades</title>
+
+    <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- DESIGN SYSTEM BASE -->
+    <link rel="stylesheet" href="../../css/ds.css">
+
+    <!-- COMPONENTES NECESARIOS -->
+    <link rel="stylesheet" href="../../css/components/ds-buttons.css">
+    <link rel="stylesheet" href="../../css/components/ds-inputs.css">
+    <link rel="stylesheet" href="../../css/components/ds-cards.css">
+    <link rel="stylesheet" href="../../css/components/ds-grid.css">
+    <link rel="stylesheet" href="../../css/components/ds-badges.css">
+    <link rel="stylesheet" href="../../css/components/ds-tables.css">
+
+    <!-- CSS DEL MÓDULO ESPECÍFICO -->
+    <link rel="stylesheet" href="../../css/modules/ds-auditoria.css">
+
+<style>
+/* Anular animaciones */
+* {
+    animation: none !important;
+    transition: none !important;
+}
+
+body {
+    background: #f1f5f9;
+    font-family: 'Inter', sans-serif;
+}
+
+.content {
+    padding: 25px;
+    width: 100%;
+}
+
+/* GRID GLASS */
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+    margin-top: 25px;
+}
+
+@media (max-width: 1100px) {
+    .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .tools-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* TARJETAS GLASS */
+.tool-card {
+    background: rgba(255,255,255,0.55);
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.35);
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 18px rgba(10,74,138,0.15);
+    transition: 0.25s ease;
+    cursor: pointer;
+}
+
+.tool-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 26px rgba(10,74,138,0.25);
+    border-color: #084482;
+}
+
+.tool-card h2 {
+    font-size: 18px;
+    color: #084482;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.tool-card p {
+    font-size: 14px;
+    color: #475569;
+    margin: 0;
+}
+
+/* TÍTULO SECCIÓN */
+.section-title {
+    background: linear-gradient(180deg, #0B3A66 0%, #06294D 100%);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+</style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+    <script src="../../js/components/ds-sidebar.js"></script>
+
+    <!-- CONTENIDO -->
+    <div class="layout-content">
+
+        <!-- HEADER -->
+        <div class="header">
+            <h1>⚙️ Utilidades del Sistema</h1>
+            <span class="header-sub">Accesos rápidos a módulos internos</span>
+        </div>
+
+        <h2 style="margin-top:25px; color:#084482; font-size:20px; font-weight:700;">
+            Módulos disponibles
+        </h2>
+
+        <!-- GRID DE TARJETAS -->
+        <div class="tools-grid">
+
+            <!-- CORRESPONDENCIA -->
+            <div class="tool-card" onclick="window.location.href='ficha_emailstipificados.html'">
+                <h2>Correspondencia Tipificada</h2>
+                <p>Creador para textos y correos electrónicos reutilizables.</p>
+            </div>
+
+            <!-- ENTIDADES BANCARIAS -->
+            <div class="tool-card" onclick="window.location.href='ficha_entidadesbancarias.html'">
+                <h2>Entidades Bancarias</h2>
+                <p>Listado de entidades bancarias operativas según el Banco de España.</p>
+            </div>
+
+            <!-- ASIGNACIONES NO DIRECTAS -->
+            <div class="tool-card" onclick="window.location.href='ficha_asginacionesnodirectas.html'">
+                <h2>Asignaciones notariales</h2>
+                <p>Asignaciones de altas con notario del Cancela.</p>
+            </div>
+
+            <!-- ACCIONES -->
+            <div class="tool-card" onclick="window.location.href='ficha_acciones.html'">
+                <h2>Acciones</h2>
+                <p>Acciones de reclamaciones.</p>
+            </div>
+
+            <!-- REGISTROS DE LA PROPIEDAD -->
+            <div class="tool-card" onclick="window.location.href='ficha_registrospropiedad.html'">
+                <h2>Registro de la Propiedad</h2>
+                <p>Listado de Registros de la propiedad.</p>
+            </div>
+
+        </div>
+
+    </div> <!-- /layout-content -->
+
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Documentación Previa</title>
+
+    <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- DESIGN SYSTEM COMPLETO -->
+    <link rel="stylesheet" href="../../css/ds.css">
+
+
+</head>
+<style>
+/* GRID COMPACTA PARA KPIS */
+.kpi-grid-compact {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px; /* más juntos */
+    margin-bottom: 25px;
+}
+
+/* TARJETAS KPI MÁS COMPACTAS */
+.kpi-grid-compact .kpi-card {
+    padding: 14px 16px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ICONO MÁS PEQUEÑO */
+.kpi-grid-compact .kpi-icon {
+    font-size: 26px;
+}
+
+/* TÍTULO MÁS COMPACTO */
+.kpi-grid-compact .kpi-title {
+    font-size: 13px;
+}
+
+/* VALOR MÁS EQUILIBRADO */
+.kpi-grid-compact .kpi-value {
+    font-size: 22px;
+    margin-top: 2px;
+}
+</style>
+<body>
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+
+    <!-- CONTENIDO -->
+    <div class="layout-content">
+
+        <h1>📘 Expedientes en <span>Documentación Previa</span></h1>
+
+        <!-- ============================================================
+             KPIS — FORMATO GLASS LUXE 2027
+        ============================================================ -->
+       
+            <div class="kpi-grid kpi-grid-compact">
+
+    <div class="kpi-card kpi-blue">
+        <div class="kpi-icon">❗</div>
+        <div class="kpi-info">
+            <div class="kpi-title">Sin documentación</div>
+            <div class="kpi-value" id="kpisindocumentacion">0</div>
+        </div>
+    </div>
+
+    <div class="kpi-card kpi-yellow">
+        <div class="kpi-icon">📄</div>
+        <div class="kpi-info">
+            <div class="kpi-title">Certificados erróneos</div>
+            <div class="kpi-value" id="kpicertificadoserroneos">0</div>
+        </div>
+    </div>
+
+    <div class="kpi-card kpi-purple">
+        <div class="kpi-icon">🕒</div>
+        <div class="kpi-info">
+            <div class="kpi-title">Pendiente notas simples</div>
+            <div class="kpi-value" id="kpipendientenotassimples">0</div>
+        </div>
+    </div>
+
+    <div class="kpi-card kpi-green">
+        <div class="kpi-icon">📦</div>
+        <div class="kpi-info">
+            <div class="kpi-title">Total expedientes</div>
+            <div class="kpi-value" id="kpiTotal">0</div>
+        </div>
+    </div>
+
+</div>
+
+        <!-- ============================================================
+             BLOQUE DE BÚSQUEDA
+        ============================================================ -->
+        <div class="card">
+            <div class="section-title">Buscar expedientes</div>
+
+            <div class="grid grid-cols-7 gap-md">
+                <div><label>Nº Expediente</label><input class="input" type="text" id="fExpediente"></div>
+                <div><label>Nº Oficina</label><input class="input" type="text" id="fOficina"></div>
+                <div><label>Fecha de alta</label><input class="input" type="date" id="fAlta"></div>
+                <div><label>DNI Solicitante</label><input class="input" type="text" id="fDni"></div>
+                <div>
+
+            </div>
+
+            <div class="mt-md">
+                <button class="btn btn-small" id="btnBuscar">Buscar</button>
+            </div>
+        </div>
+
+<div class="card">
+        
+<button class="btn-excel mt-md" id="btnExcel">📥 Descargar Excel</button>
+   </div>
+        </div>
+        <!-- ============================================================
+             LISTADO
+        ============================================================ -->
+        <div class="card card-full">
+            <div class="section-title">Listado de expedientes</div>
+
+            <div class="table-wrapper">
+                <table class="table table--compact" id="tablaPrevios">
+                    <thead>
+                        <tr>
+                            <th>Nº Expediente</th>
+                            <th>Oficina</th>
+                            <th>Fecha alta</th>
+                            <th>DNI</th>
+                            <th>Solicitud</th>
+                            <th>Certificado</th>
+                            <th>Nota Simple</th>
+                            <th>Acceder</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- EJEMPLO -->
+                        <tr>
+                            <td>EXP-2026-0012</td>
+                            <td>OF-12</td>
+                            <td>2026-05-20</td>
+                            <td>12345678A</td>
+                            <td>Sí</td>
+                            <td>No</td>
+                            <td>Sí</td>
+                            <td>
+                                <button class="btn-small" onclick="abrirExpediente('EXP-2026-0012')">Ir</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination">
+                <div id="paginationInfo"></div>
+                <div class="pagination-controls">
+                    <button class="btn btn-small" id="prevPage">Anterior</button>
+                    <button class="btn btn-small" id="nextPage">Siguiente</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================
+         JS
+    ============================================================ -->
+    <script src="../../js/components/ds-sidebar.js"></script>
+
+    <script>
+    function abrirExpediente(id) {
+        window.location.href = "../expedientes/expediente.html?id=" + id;
+    }
+    </script>
+
+</body>
+</html>

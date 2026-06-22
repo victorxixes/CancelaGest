@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Servicios de Mensajería - CancelaGest 2.0</title>
+
+    <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- DESIGN SYSTEM COMPLETO -->
+    <link rel="stylesheet" href="../../css/ds.css">
+
+    <!-- CSS DEL MÓDULO ESPECÍFICO -->
+    <link rel="stylesheet" href="../../css/modules/ds-mensajeria.css">
+   <link rel="stylesheet" href="../../css/components/ds-buttons.css">
+ 
+<style>
+/* GRID DE ESTADOS */
+.estado-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin-top: 20px;
+}
+
+/* CAJA BASE */
+.estado-box {
+    padding: 22px;
+    border-radius: 16px;
+    text-align: center;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: 0 6px 18px rgba(10,74,138,0.15);
+    transition: 0.25s ease;
+}
+
+.estado-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(10,74,138,0.25);
+}
+
+.estado-num {
+    font-size: 38px;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+.estado-label {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* COLORES PREMIUM */
+.estado-realizados {
+    background: rgba(14,165,233,0.35);
+    color: #075985;
+}
+
+.estado-curso {
+    background: rgba(234,179,8,0.35);
+    color: #78350f;
+}
+
+.estado-anulados {
+    background: rgba(220,38,38,0.35);
+    color: #7f1d1d;
+}
+
+/* CORRECCIÓN LAYOUT GLASS LUXE */
+.content {
+    flex: 1;
+    padding: 30px 40px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: none;
+    margin-left: 260px;
+    transition: margin-left 0.25s ease;
+}
+
+body.sidebar-collapsed .content {
+    margin-left: 130px;
+}
+
+/* TARJETAS GLASS */
+.card {
+    background: rgba(255,255,255,0.55);
+    padding: 22px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.35);
+    backdrop-filter: blur(10px);
+    margin-top: 25px;
+    box-shadow: 0 6px 18px rgba(10,74,138,0.15);
+}
+
+.section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #084482;
+    margin-bottom: 20px;
+}
+
+/* GRID DE FILTROS */
+.filters-bar {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 18px;
+}
+
+.filters-bar label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #084482;
+}
+
+.filters-bar input,
+.filters-bar select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(10px);
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(10,74,138,0.15);
+}
+
+/* BOTONES */
+.btn-small,
+.btn-nuevo {
+    background: #084482;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.25s ease;
+    box-shadow: 0 4px 12px rgba(10,74,138,0.15);
+}
+
+.btn-small:hover,
+.btn-nuevo:hover {
+    background: #0A5AA3;
+    transform: translateY(-2px);
+}
+
+.btn-nuevo {
+    background: #0A5AA3;
+}
+.btn-excel {
+    background: linear-gradient(135deg, #22c55e, #15803d);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.25s ease;
+    box-shadow: 0 4px 12px rgba(34,197,94,0.35);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-excel:hover {
+    background: linear-gradient(135deg, #16a34a, #166534);
+    transform: translateY(-2px);
+}
+
+/* TABLA GLASS */
+.sla-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 14px rgba(10,74,138,0.15);
+}
+
+.sla-table th {
+    background: #084482;
+    color: white;
+    padding: 12px;
+    font-size: 14px;
+    text-align: left;
+}
+
+.sla-table td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.35);
+}
+
+.sla-table tr:hover td {
+    background: rgba(255,255,255,0.35);
+}
+
+/* BOTÓN IR */
+.btn-ir {
+    background: #084482;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    text-decoration: none;
+    transition: 0.25s ease;
+}
+
+.btn-ir:hover {
+    background: #0A5AA3;
+}
+
+/* PAGINACIÓN */
+.pagination {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pagination-controls button {
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.55);
+    color: #084482;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+    backdrop-filter: blur(10px);
+}
+
+.pagination-controls button:hover:not(:disabled) {
+    background: rgba(255,255,255,0.75);
+}
+
+.pagination-controls button:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+</style>
+</head>
+
+<body class="sidebar-expanded">
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+<script src="../../js/components/ds-sidebar.js"></script>
+
+    <div class="content">
+
+        <h2 style="color:#084482; font-size:28px; margin-bottom:10px;">📦 Servicios de Mensajería</h2>
+<!-- BLOQUES DE ESTADO -->
+<!-- ============================================================
+     KPIS MENSAJERÍA — FORMATO GLASS LUXE 2027
+============================================================ -->
+<div class="kpi-grid">
+
+    <div class="kpi-card kpi-blue">
+        <div class="kpi-icon">📦</div>
+        <div class="kpi-info">
+            <div class="kpi-title">Servicios realizados</div>
+            <div class="kpi-value" id="kpiRealizados">0</div>
+        </div>
+    </div>
+
+    <div class="kpi-card kpi-yellow">
+        <div class="kpi-icon">🚚</div>
+        <div class="kpi-info">
+            <div class="kpi-title">En curso</div>
+            <div class="kpi-value" id="kpiCurso">0</div>
+        </div>
+    </div>
+
+    <div class="kpi-card kpi-red">
+        <div class="kpi-icon">❌</div>
+        <div class="kpi-info">
+            <div class="kpi-title">Anulados</div>
+            <div class="kpi-value" id="kpiAnulados">0</div>
+        </div>
+    </div>
+
+</div>
+
+        <!-- BLOQUE 1 — BUSCADOR -->
+        <div class="card">
+            <div class="section-title">🔍Buscar servicios</div>
+
+            <div class="filters-bar">
+
+                <div>
+                    <label>Nº Expediente</label>
+                    <input type="text" id="f_exp">
+                </div>
+
+                <div>
+                    <label>Tipo de servicio</label>
+                    <select id="f_tipo">
+                        <option value="">Todos</option>
+                        <option>Recogida</option>
+                        <option>Entrega</option>
+                        <option>Urgente</option>
+                        <option>Documentación</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Fecha de servicio</label>
+                    <input type="date" id="f_fecha">
+                </div>
+
+                <div>
+                    <label>Nº de servicio</label>
+                    <input type="text" id="f_num">
+                </div>
+
+                <div>
+                    <label>Estado del servicio</label>
+                    <select id="f_estado">
+                        <option value="">Todos</option>
+                        <option>Pendiente</option>
+                        <option>En curso</option>
+                        <option>Completado</option>
+                        <option>Cancelado</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="filters-actions" style="margin-top:15px;">
+
+      <!-- BLOQUE 2 — EXPORTACIÓN + NUEVO SERVICIO -->
+<div class="card">
+    <div class="section-title">Acciones</div>
+
+    <button class="btn-excel" id="btnExcel">📤 Descargar Excel</button>
+
+    <button class="btn-nuevo" onclick="abrirModalMensajeria()">➕ Nuevo servicio</button>
+</div>
+
+
+        <!-- BLOQUE 3 — LISTADO -->
+      <div class="card">
+    <div class="section-title">Listado de servicios</div>
+
+    <div class="tabla-scroll">
+        <table class="sla-table" id="tablaMensajeria">
+            <thead>
+                <tr>
+                    <th>Nº Expediente</th>
+                    <th>Tipo de servicio</th>
+                    <th>Fecha de servicio</th>
+                    <th>Nº de servicio</th>
+                    <th>Estado del servicio</th>
+                    <th>Acceder</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <div id="paginationInfo"></div>
+        <div class="pagination-controls">
+            <button id="prevPage">Anterior</button>
+            <button id="nextPage">Siguiente</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+const datos = [
+    { exp: "EXP-1001", tipo: "Recogida", fecha: "2026-05-20", num: "SVC-001", estado: "Pendiente" },
+    { exp: "EXP-1002", tipo: "Entrega", fecha: "2026-05-21", num: "SVC-002", estado: "En curso" },
+    { exp: "EXP-1003", tipo: "Urgente", fecha: "2026-05-22", num: "SVC-003", estado: "Completado" }
+];
+
+let filtered = [...datos];
+let currentPage = 1;
+const rowsPerPage = 10;
+
+const tbody = document.querySelector("#tablaMensajeria tbody");
+
+function render() {
+    tbody.innerHTML = "";
+    const start = (currentPage - 1) * rowsPerPage;
+    const page = filtered.slice(start, start + rowsPerPage);
+
+    page.forEach(e => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${e.exp}</td>
+                <td>${e.tipo}</td>
+                <td>${e.fecha}</td>
+                <td>${e.num}</td>
+                <td>${e.estado}</td>
+                <td><a class="btn-ir" href="ficha_mensajeria.html?id=${e.num}">Ir</a></td>
+            </tr>
+        `;
+    });
+
+    const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
+    document.getElementById("paginationInfo").textContent =
+        \`Página ${currentPage} de ${totalPages} — ${filtered.length} servicio(s)\`;
+
+    document.getElementById("prevPage").disabled = currentPage === 1;
+    document.getElementById("nextPage").disabled = currentPage === totalPages;
+}
+
+document.getElementById("prevPage").onclick = () => {
+    if (currentPage > 1) { currentPage--; render(); }
+};
+
+document.getElementById("nextPage").onclick = () => {
+    const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
+    if (currentPage < totalPages) { currentPage++; render(); }
+};
+
+render();
+</script>
+
+
+<!-- ============================================================
+     MODAL MENSAJERÍA
+============================================================ -->
+<div id="modalMensajeria" class="modal-overlay">
+    <div class="glass-modal modal-mensajeria">
+
+        <h2 class="section-title">📦 Nuevo Servicio de Mensajería</h2>
+        <button class="btn-small" onclick="cerrarModalMensajeria()">⬅ Cerrar</button>
+
+        <!-- 🔵 BLOQUE 1 — DATOS DEL SERVICIO -->
+        <div class="card-block" style="margin-top:20px;">
+            <div class="section-title">Datos del servicio</div>
+
+            <div class="form-grid">
+                <div class="campo">
+                    <label>Tipo de servicio</label>
+                    <select id="tipoServicio">
+                        <option>Urgente</option>
+                        <option>Normal</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label>Persona que solicita el servicio</label>
+                    <select id="solicitante">
+                        <option>Víctor</option>
+                        <option>Yolanda</option>
+                        <option>Melisa</option>
+                        <option>Pedro</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🔵 BLOQUE 2 — RECOGIDA Y ENTREGA -->
+        <div class="card-block">
+            <div class="section-title">Lugar de recogida</div>
+
+            <div class="form-grid">
+                <div class="campo"><label>Nombre</label><input type="text"></div>
+                <div class="campo"><label>Dirección</label><input type="text"></div>
+                <div class="campo"><label>Código Postal</label><input type="text"></div>
+                <div class="campo"><label>Población</label><input type="text"></div>
+                <div class="campo"><label>Provincia</label><input type="text"></div>
+                <div class="campo"><label>Horario</label><input type="text"></div>
+                <div class="campo"><label>Teléfono</label><input type="text"></div>
+                <div class="campo"><label>Email</label><input type="email"></div>
+                <div class="campo"><label>Persona de contacto</label><input type="text"></div>
+                <div class="campo"><label>Documento a recoger</label><input type="text"></div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="section-title">Lugar de entrega</div>
+
+            <div class="form-grid">
+                <div class="campo"><label>Nombre</label><input type="text"></div>
+                <div class="campo"><label>Dirección</label><input type="text"></div>
+                <div class="campo"><label>Código Postal</label><input type="text"></div>
+                <div class="campo"><label>Población</label><input type="text"></div>
+                <div class="campo"><label>Provincia</label><input type="text"></div>
+                <div class="campo"><label>Horario</label><input type="text"></div>
+                <div class="campo"><label>Teléfono</label><input type="text"></div>
+                <div class="campo"><label>Email</label><input type="email"></div>
+                <div class="campo"><label>Persona de contacto</label><input type="text"></div>
+                <div class="campo"><label>Documento a entregar</label><input type="text"></div>
+            </div>
+        </div>
+
+        <!-- 🔵 BLOQUE 3 — OBSERVACIONES -->
+        <div class="card-block">
+            <div class="section-title">Observaciones</div>
+
+            <textarea id="observaciones" placeholder="Escribe aquí cualquier detalle adicional..."></textarea>
+
+            <br><br>
+
+            <button class="btn-sas">Guardar</button>
+            <button class="btn-sas">Deshacer</button>
+            <button class="btn-sas" onclick="cerrarModalMensajeria()">Cancelar</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+function abrirModalMensajeria() {
+    document.getElementById("modalMensajeria").style.display = "flex";
+}
+
+function cerrarModalMensajeria() {
+    document.getElementById("modalMensajeria").style.display = "none";
+}
+</script>
+
+<script src="../../js/components/ds-sidebar.js"></script>
+
+</body>
+</html>

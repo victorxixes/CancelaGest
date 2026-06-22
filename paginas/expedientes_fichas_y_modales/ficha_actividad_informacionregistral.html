@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Información Registral – CancelaGest 2.0</title>
+
+   <!-- DESIGN SYSTEM -->
+    <link rel="stylesheet" href="../../css/ds.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../../css/modules/ds-actividades.css">
+
+<body class="sidebar-expanded">
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+
+
+        <h2 class="actividades-title" style="margin-bottom:20px;">Información registral</h2>
+
+        <p style="margin-bottom:25px; color: var(--text-soft); font-size:15px;">
+            Cumplimente los campos para informar correctamente de la garantía del préstamo objeto de cancelación.
+        </p>
+
+        <!-- CONTENEDOR DE TODAS LAS FINCAS -->
+        <div id="contenedorFincas">
+
+            <!-- FINCA BASE (SE CLONA) -->
+            <div class="actividades-card finca-bloque">
+
+                <h3 style="color:#084482; margin-bottom:15px; font-size:20px;">Información de la finca</h3>
+
+                <div class="actividades-grid-2">
+
+                    <div class="campo">
+                        <label>Fecha de la nota</label>
+                        <input class="actividades-date campo-fechaNota" type="date">
+                    </div>
+
+                    <div class="campo">
+                        <label>Nº de finca</label>
+                        <input class="actividades-input campo-numFinca" type="text">
+                    </div>
+
+                    <div class="campo">
+                        <label>Nº de Sección</label>
+                        <input class="actividades-input campo-numSeccion" type="text">
+                    </div>
+
+                    <div class="campo">
+                        <label>IDUFIR / CRU</label>
+                        <input class="actividades-input campo-idufir" type="text">
+                    </div>
+
+                    <div class="campo">
+                        <label>Provincia</label>
+                        <select class="actividades-select campo-provincia">
+                            <option value="">Seleccione</option>
+                            <option>Barcelona</option>
+                            <option>Girona</option>
+                            <option>Lleida</option>
+                            <option>Tarragona</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label>Población</label>
+                        <select class="actividades-select campo-poblacion">
+                            <option value="">Seleccione</option>
+                            <option>Barcelona</option>
+                            <option>Hospitalet</option>
+                            <option>Badalona</option>
+                            <option>Sabadell</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label>Registro propiedad</label>
+                        <select class="actividades-select campo-registro">
+                            <option value="">Seleccione</option>
+                            <option>Registro 1</option>
+                            <option>Registro 2</option>
+                            <option>Registro 3</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label>Capital inscrito</label>
+                        <input class="actividades-input campo-capital" type="text">
+                    </div>
+
+                    <div class="campo">
+                        <label>Nº de Inscripción</label>
+                        <input class="actividades-input campo-numInscripcion" type="text">
+                    </div>
+
+                    <div class="campo">
+                        <label>Nº de Contrato</label>
+                        <input class="actividades-input campo-numContrato" type="text">
+                    </div>
+
+                    <div class="campo">
+                        <label>Fecha de constitución</label>
+                        <input class="actividades-date campo-fechaConstitucion" type="date">
+                    </div>
+
+                    <div class="campo">
+                        <label>Existen modificaciones</label>
+                        <select class="actividades-select campo-modificaciones">
+                            <option>No</option>
+                            <option>Sí</option>
+                        </select>
+                    </div>
+
+                    <div class="campo" style="grid-column: span 2;">
+                        <label>Entidad de origen</label>
+                        <select class="actividades-select campo-entidadOrigen">
+                            <option value="">Seleccione</option>
+                            <option>CaixaBank</option>
+                            <option>Santander</option>
+                            <option>BBVA</option>
+                            <option>Sabadell</option>
+                        </select>
+                    </div>
+
+                </div>
+
+            </div> <!-- /finca-bloque -->
+
+        </div> <!-- /contenedorFincas -->
+
+        <!-- BOTÓN AÑADIR FINCA -->
+        <button class="btn-add" onclick="nuevaFinca()" style="margin-top:20px;">
+            ➕ Añadir finca adicional
+        </button>
+
+        <!-- BOTÓN GUARDAR -->
+        <button class="btn btn-blue" onclick="guardarInformacionRegistral()" style="margin-top:30px; width:100%;">
+            ✔ Guardar información registral
+        </button>
+
+    </div> <!-- /layout-content -->
+
+    <script src="/js/components/ds-sidebar.js"></script>
+
+<script>
+/* ============================================================
+   AÑADIR NUEVA FINCA
+============================================================ */
+function nuevaFinca() {
+    const contenedor = document.getElementById("contenedorFincas");
+    const original = document.querySelector(".finca-bloque");
+
+    const clon = original.cloneNode(true);
+    contenedor.appendChild(clon);
+
+    clon.scrollIntoView({ behavior: "smooth" });
+}
+
+/* ============================================================
+   GUARDAR TODAS LAS FINCAS
+============================================================ */
+function guardarInformacionRegistral() {
+
+    const bloques = document.querySelectorAll(".finca-bloque");
+    const fincas = [];
+
+    bloques.forEach(b => {
+        fincas.push({
+            fechaNota: b.querySelector(".campo-fechaNota").value,
+            numFinca: b.querySelector(".campo-numFinca").value,
+            numSeccion: b.querySelector(".campo-numSeccion").value,
+            idufir: b.querySelector(".campo-idufir").value,
+            provincia: b.querySelector(".campo-provincia").value,
+            poblacion: b.querySelector(".campo-poblacion").value,
+            registro: b.querySelector(".campo-registro").value,
+            capital: b.querySelector(".campo-capital").value,
+            numInscripcion: b.querySelector(".campo-numInscripcion").value,
+            numContrato: b.querySelector(".campo-numContrato").value,
+            fechaConstitucion: b.querySelector(".campo-fechaConstitucion").value,
+            modificaciones: b.querySelector(".campo-modificaciones").value,
+            entidadOrigen: b.querySelector(".campo-entidadOrigen").value
+        });
+    });
+
+    localStorage.setItem("informacionRegistral", JSON.stringify(fincas));
+
+    alert("Información registral guardada correctamente.");
+    window.location.href = "expediente_detalle.html";
+}
+</script>
+
+</body>
+</html>

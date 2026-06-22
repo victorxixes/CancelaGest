@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Expedientes – Inscripción Registral</title>
+
+    <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- DESIGN SYSTEM COMPLETO -->
+    <link rel="stylesheet" href="../../css/ds.css">
+    <link rel="stylesheet" href="../../css/modules/ds-auditoria.css">
+
+    <style>
+    body {
+        background: transparent !important;
+    }
+
+    .content {
+        flex: 1;
+        padding: 30px 40px;
+        box-sizing: border-box;
+        width: 100%;
+        max-width: none;
+        margin-left: 260px;
+        transition: margin-left 0.25s ease;
+    }
+
+    body.sidebar-collapsed .content {
+        margin-left: 130px;
+    }
+
+    .kpi-grid-compact {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 25px;
+    }
+
+    .kpi-grid-compact .kpi-card {
+        padding: 14px 16px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .kpi-grid-compact .kpi-icon {
+        font-size: 26px;
+    }
+
+    .kpi-grid-compact .kpi-title {
+        font-size: 13px;
+    }
+
+    .kpi-grid-compact .kpi-value {
+        font-size: 22px;
+        margin-top: 2px;
+    }
+
+    .modal-bg {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.55);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        backdrop-filter: blur(6px);
+    }
+
+    .modal-box {
+        width: 80%;
+        height: 90%;
+        background: var(--glass-bg-strong);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--glass-border);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: var(--shadow-glass);
+        backdrop-filter: blur(14px);
+    }
+
+    .modal-header {
+        background: var(--molsan-primary);
+        color: white;
+        padding: 12px;
+        font-size: 18px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .modal-close {
+        cursor: pointer;
+        font-size: 22px;
+    }
+
+    .modal-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+    }
+
+    .ojo-icon {
+        width: 22px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .ojo-icon:hover {
+        transform: scale(1.15);
+    }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+
+    <!-- CONTENIDO -->
+    <div class="layout-content">
+
+        <h1>📘 Expedientes en <span>Inscripción Registral</span></h1>
+
+        <!-- KPIS -->
+        <div class="kpi-grid kpi-grid-compact">
+
+            <div class="kpi-card kpi-red">
+                <div class="kpi-icon">📄</div>
+                <div class="kpi-info">
+                    <div class="kpi-title">Fecha presentación sin informar</div>
+                    <div class="kpi-value" id="kpiSinPresentacion">0</div>
+                </div>
+            </div>
+
+            <div class="kpi-card kpi-yellow">
+                <div class="kpi-icon">⏳</div>
+                <div class="kpi-info">
+                    <div class="kpi-title">Asientos vencidos</div>
+                    <div class="kpi-value" id="kpiAsientosVencidos">0</div>
+                </div>
+            </div>
+
+            <div class="kpi-card kpi-blue">
+                <div class="kpi-icon">⚠</div>
+                <div class="kpi-info">
+                    <div class="kpi-title">Fuera de inscripción</div>
+                    <div class="kpi-value" id="kpiFueraInscripcion">0</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- BLOQUE DE BÚSQUEDA -->
+        <div class="card">
+            <div class="section-title">Buscar expedientes</div>
+
+            <div class="filters-bar">
+                <div><label>Nº Expediente</label><input type="text" id="fExpediente"></div>
+                <div><label>Nº Oficina</label><input type="text" id="fOficina"></div>
+                <div><label>Fecha de alta</label><input type="date" id="fAlta"></div>
+                <div><label>DNI Solicitante</label><input type="text" id="fDni"></div>
+                <div>
+                    <label>Tipo documento</label>
+                    <select id="fTipo">
+                        <option value="">Todos</option>
+                        <option>Cancelación</option>
+                        <option>Herencia</option>
+                        <option>Poder</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="filters-actions">
+                <button class="btn-small" id="btnBuscar">Buscar</button>
+            </div>
+        </div>
+
+        <!-- BOTÓN EXCEL -->
+        <div style="display:flex; justify-content:flex-start; margin:20px 0;">
+            <button class="btn-excel" id="btnExcel">📥 Descargar Excel</button>
+        </div>
+
+        <!-- LISTADO -->
+        <div class="card card-full">
+            <div class="section-title">Listado de expedientes</div>
+
+            <div class="table-wrapper">
+                <table class="sla-table" id="tablaInscripcion">
+                    <thead>
+                        <tr>
+                            <th>Expediente</th>
+                            <th>F. alta</th>
+                            <th>Oficina</th>
+                            <th>Solicitante</th>
+                            <th>DNI</th>
+                            <th>Tipo documento</th>
+                            <th>Fecha Presentación</th>
+                            <th>Fecha vencimiento asiento</th>
+                            <th>Fecha inscripción</th>
+                            <th>Inscripción</th>
+                            <th>Garantías</th>
+                            <th>Acceder</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="pagination">
+                <div id="paginationInfo"></div>
+                <div class="pagination-controls">
+                    <button id="prevPage">Anterior</button>
+                    <button id="nextPage">Siguiente</button>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- /content -->
+
+<!-- MODAL PDF -->
+<div class="modal-bg" id="modalPDF">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span>Visualizar Inscripción</span>
+            <span class="modal-close" onclick="cerrarModal()">×</span>
+        </div>
+        <div class="modal-content">
+            <iframe id="visorPDF" src="" width="100%" height="100%"></iframe>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL GARANTÍAS -->
+<div class="modal-bg" id="modalGarantias">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span>Garantías del expediente</span>
+            <span class="modal-close" onclick="cerrarModalGarantias()">×</span>
+        </div>
+        <div class="modal-content" id="contenidoGarantias"></div>
+    </div>
+</div>
+
+<script>
+/* DATOS DE EJEMPLO */
+const datos = [
+    {
+        expediente: "EXP-5001",
+        alta: "2026-05-01",
+        oficina: "Barcelona",
+        solicitante: "Juan Pérez",
+        dni: "12345678A",
+        tipo: "Cancelación",
+        presentacion: "2026-05-10",
+        vencimiento: "2026-06-10",
+        inscripcion: "2026-06-15",
+        docInscripcion: "docs/inscripcion_5001.pdf"
+    },
+    {
+        expediente: "EXP-5002",
+        alta: "2026-04-10",
+        oficina: "Madrid",
+        solicitante: "Laura Gómez",
+        dni: "87654321B",
+        tipo: "Herencia",
+        presentacion: "2026-04-15",
+        vencimiento: "2026-05-15",
+        inscripcion: "",
+        docInscripcion: ""
+    }
+];
+
+let filtered = [...datos];
+let currentPage = 1;
+const rowsPerPage = 10;
+const tbody = document.querySelector("#tablaInscripcion tbody");
+
+function format(date) {
+    if (!date) return "";
+    const [y,m,d] = date.split("-");
+    return `${d}/${m}/${y}`;
+}
+
+function diasEntre(presentacion, inscripcion) {
+    if (!presentacion || !inscripcion) return 0;
+    const f1 = new Date(presentacion);
+    const f2 = new Date(inscripcion);
+    return Math.floor((f2 - f1) / (1000*60*60*24));
+}
+
+function alertaInscripcion(presentacion, inscripcion) {
+    if (!inscripcion)
+        return `<span class="alert-danger">⚠ Falta inscripción</span>`;
+
+    const dias = diasEntre(presentacion, inscripcion);
+
+    return dias > 30
+        ? `<span class="alert-danger">⚠ ${dias} días</span>`
+        : `${dias} días`;
+}
+
+function iconoPDF(ruta) {
+    return ruta
+        ? `<img src="img/ojo.png" class="ojo-icon" onclick="verPDF('${ruta}')">`
+        : `<span class="badge-red">✖</span>`;
+}
+
+function verPDF(ruta) {
+    document.getElementById("visorPDF").src = ruta;
+    document.getElementById("modalPDF").style.display = "flex";
+}
+
+function cerrarModal() {
+    document.getElementById("modalPDF").style.display = "none";
+    document.getElementById("visorPDF").src = "";
+}
+
+/* PLANTILLA GARANTÍAS */
+const plantillaGarantias = `
+<h1 class="section-title">📄 Garantías Registrales</h1>
+
+<div class="grid-2">
+
+    <section class="card-block compact">
+        <h3 class="compact-title">Finca del contrato</h3>
+
+        <div class="form-grid">
+            <div class="form-label">Domicilio</div>
+            <div class="form-field">
+                <input type="text" class="compact-input" value="AVENIDA NAVARRA 4 4ª A">
+            </div>
+
+            <div class="form-label">Localidad</div>
+            <div class="form-field">
+                <input type="text" class="compact-input" value="PAMPLONA/IRUÑA">
+            </div>
+
+            <div class="form-label">Código postal</div>
+            <div class="form-field">
+                <input type="text" class="compact-input" value="31012">
+            </div>
+
+            <div class="form-label">Provincia</div>
+            <div class="form-field">
+                <input type="text" class="compact-input" value="Navarra">
+            </div>
+
+            <div class="form-label">Datos pendientes</div>
+            <div class="form-field">
+                <select class="compact-input">
+                    <option selected>Sí</option>
+                    <option>No</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <section class="card-block compact">
+        <h3 class="compact-title">Identificación del registro</h3>
+
+        <div class="form-grid">
+            <div class="form-label">Provincia</div>
+            <div class="form-field">
+                <input type="text" class="compact-input" value="Navarra">
+            </div>
+
+            <div class="form-label">Población</div>
+            <div class="form-field">
+                <input type="text" class="compact-input" value="PAMPLONA/IRUÑA">
+            </div>
+
+            <div class="form-label">Registro (Número)</div>
+            <div class="form-field">
+                <input type="text" class="compact-input">
+            </div>
+
+            <div class="form-label">Nº sección</div>
+            <div class="form-field">
+                <input type="text" class="compact-input">
+            </div>
+
+            <div class="form-label">Registro (Nombre)</div>
+            <div class="form-field">
+                <input type="text" class="compact-input">
+            </div>
+        </div>
+    </section>
+
+<section class="card-block compact">
+        <h3 class="compact-title">Datos de la garantía</h3>
+
+        <div class="form-grid">
+            <div class="form-label">IDUFIR/CRU</div>
+            <div class="form-field">
+                <input type="text" class="compact-input" value="0128750068965">
+            </div>
+
+            <div class="form-label">Nº finca registral</div>
+            <div class="form-field">
+                <input type="text" class="compact-input" value="6598">
+            </div>
+
+            <div class="form-label">Fecha inscripción</div>
+            <div class="form-field">
+                <input type="text" class="compact-input">
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<footer class="final-buttons compact-final">
+    <button class="btn btn-secondary compact-btn" onclick="cerrarModalGarantias()">Cancelar</button>
+    <button class="btn compact-btn">Aceptar</button>
+</footer>
+
+<button class="btn-absis">📨 Enviar al Absis</button>
+`;
+
+/* MODAL GARANTÍAS */
+function abrirGarantias(expediente) {
+    document.getElementById("contenidoGarantias").innerHTML = plantillaGarantias;
+    document.getElementById("modalGarantias").style.display = "flex";
+}
+
+function cerrarModalGarantias() {
+    document.getElementById("modalGarantias").style.display = "none";
+    document.getElementById("contenidoGarantias").innerHTML = "";
+}
+
+/* KPIs */
+function actualizarKPIsIR() {
+    const sinPresentacion = filtered.filter(e => !e.presentacion).length;
+    const asientosVencidos = filtered.filter(e => e.vencimiento && new Date(e.vencimiento) < new Date()).length;
+    const fueraInscripcion = filtered.filter(e => !e.inscripcion).length;
+
+    document.getElementById("kpiSinPresentacion").textContent = sinPresentacion;
+    document.getElementById("kpiAsientosVencidos").textContent = asientosVencidos;
+    document.getElementById("kpiFueraInscripcion").textContent = fueraInscripcion;
+}
+
+/* RENDER TABLA */
+function render() {
+    tbody.innerHTML = "";
+    const start = (currentPage - 1) * rowsPerPage;
+    const page = filtered.slice(start, start + rowsPerPage);
+
+    page.forEach(e => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${e.expediente}</td>
+                <td>${format(e.alta)}</td>
+                <td>${e.oficina}</td>
+                <td>${e.solicitante}</td>
+                <td>${e.dni}</td>
+                <td>${e.tipo}</td>
+                <td>${format(e.presentacion)}</td>
+                <td>${format(e.vencimiento)}</td>
+                <td>${format(e.inscripcion)} ${alertaInscripcion(e.presentacion, e.inscripcion)}</td>
+                <td>${iconoPDF(e.docInscripcion)}</td>
+                <td><button class="btn-small" onclick="abrirGarantias('${e.expediente}')">Ver</button></td>
+                <td><a class="btn-ir" href="expediente_detalle.html?id=${e.expediente}">Ir</a></td>
+            </tr>
+        `;
+    });
+
+    const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
+    document.getElementById("paginationInfo").textContent =
+        `Página ${currentPage} de ${totalPages} — ${filtered.length} expediente(s)`;
+
+    document.getElementById("prevPage").disabled = currentPage === 1;
+    document.getElementById("nextPage").disabled = currentPage === totalPages;
+
+    actualizarKPIsIR();
+}
+
+document.getElementById("prevPage").onclick = () => { currentPage--; render(); };
+document.getElementById("nextPage").onclick = () => { currentPage++; render(); };
+
+render();
+</script>
+
+<script src="../../js/components/ds-sidebar.js"></script>
+
+</body>
+</html>
+

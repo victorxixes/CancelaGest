@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Impuestos AJD / ITP</title>
+
+   <!-- DESIGN SYSTEM -->
+    <link rel="stylesheet" href="../../css/ds.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../../css/modules/ds-actividades.css">
+
+
+<body class="sidebar-expanded">
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+
+
+        <!-- HEADER -->
+        <div class="section-header" style="margin-bottom: 18px;">
+            <div>
+                <h2 class="section-title">🧾 Impuestos AJD / ITP</h2>
+                <span class="header-sub">Gestión tributaria del expediente</span>
+            </div>
+        </div>
+
+        <!-- CONTENEDOR DE IMPUESTOS -->
+        <div id="contenedorImpuestos">
+
+            <!-- BLOQUE PRINCIPAL -->
+            <div class="actividades-card impuesto-bloque">
+                <div class="actividades-header">
+                    <h3 class="actividades-title">Datos tributarios</h3>
+                </div>
+
+                <div class="actividades-grid-2">
+
+                    <div class="campo">
+                        <label>Fecha presentación tributaria</label>
+                        <input class="actividades-date" type="date" value="2021-07-06">
+                    </div>
+
+                    <div class="campo">
+                        <label>Fecha liquidación tributaria</label>
+                        <input class="actividades-date" type="date" value="2021-07-06">
+                    </div>
+
+                    <div class="campo">
+                        <label>Oficina liquidadora</label>
+                        <input class="actividades-input" type="text" value="BALEARES">
+                    </div>
+
+                    <div class="campo">
+                        <label>Base imponible</label>
+                        <input class="actividades-input" type="text" value="194.232,00">
+                    </div>
+
+                    <div class="campo">
+                        <label>Tributación</label>
+                        <input class="actividades-input" type="text" value="Exento">
+                    </div>
+
+                    <div class="campo">
+                        <label>Impuesto (AJD / ITP)</label>
+                        <input class="actividades-input" type="text" placeholder="Tipo de impuesto">
+                    </div>
+
+                </div>
+            </div>
+
+        </div> <!-- /contenedorImpuestos -->
+
+        <!-- BOTÓN AÑADIR IMPUESTO -->
+        <button class="btn-add" onclick="nuevoImpuesto()">
+            ➕ Añadir nuevo impuesto
+        </button>
+
+        <!-- BOTÓN FINAL -->
+        <button class="btn btn-blue" style="margin-top:30px; width:100%;">
+            🔄 Enviar al Absis
+        </button>
+
+    </div> <!-- /layout-content -->
+
+    <!-- SIDEBAR JS -->
+    <script src="/js/components/ds-sidebar.js"></script>
+
+<script>
+function nuevoImpuesto() {
+    const contenedor = document.getElementById("contenedorImpuestos");
+
+    const bloque = document.createElement("div");
+    bloque.classList.add("actividades-card", "impuesto-bloque");
+
+    bloque.innerHTML = `
+        <div class="actividades-header">
+            <h3 class="actividades-title">Datos tributarios</h3>
+        </div>
+
+        <div class="actividades-grid-2">
+
+            <div class="campo">
+                <label>Fecha presentación tributaria</label>
+                <input class="actividades-date" type="date">
+            </div>
+
+            <div class="campo">
+                <label>Fecha liquidación tributaria</label>
+                <input class="actividades-date" type="date">
+            </div>
+
+            <div class="campo">
+                <label>Oficina liquidadora</label>
+                <input class="actividades-input" type="text" placeholder="Oficina liquidadora">
+            </div>
+
+            <div class="campo">
+                <label>Base imponible</label>
+                <input class="actividades-input" type="text" placeholder="Ej: 120.000,00">
+            </div>
+
+            <div class="campo">
+                <label>Tributación</label>
+                <input class="actividades-input" type="text" placeholder="Ej: Exento, Sujeto, No sujeto">
+            </div>
+
+            <div class="campo">
+                <label>Impuesto (AJD / ITP)</label>
+                <input class="actividades-input" type="text" placeholder="Tipo de impuesto">
+            </div>
+
+        </div>
+    `;
+
+    contenedor.appendChild(bloque);
+    bloque.scrollIntoView({ behavior: "smooth" });
+}
+</script>
+
+</body>
+</html>

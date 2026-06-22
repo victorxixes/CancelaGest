@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Expedientes</title>
+
+    <!-- DESIGN SYSTEM COMPLETO -->
+    <link rel="stylesheet" href="../../css/ds.css">
+
+
+    <!-- SIDEBAR -->
+    <script src="../../js/components/ds-sidebar.js"></script>
+
+
+<body>
+
+    <!-- SIDEBAR NUEVO -->
+    <div id="sidebar-container"></div>
+
+    <!-- CONTENIDO -->
+    <div class="layout-content">
+
+        <h2 class="section-title">📂 Gestión de Expedientes</h2>
+        <span class="header-sub">Panel central de control y seguimiento</span>
+
+  <!-- ============================================================
+     BÚSQUEDA SIMPLE (Compacta + Autocompletado)
+============================================================ -->
+<div class="card-block" style="margin-top:20px;">
+    <div class="section-title">Búsqueda simple</div>
+
+    <div class="filters-bar-horizontal">
+
+        <!-- ID ABSIS -->
+        <div class="campo autocomplete">
+            <label>ID Absis / Nº SIA</label>
+            <input type="text" id="s_absis" placeholder="Ej: 55421 / SIA-9981"
+                   oninput="autoBuscar(this, 'absis')" autocomplete="off">
+            <div class="autocomplete-list" id="auto-s_absis"></div>
+        </div>
+
+        <!-- EXPEDIENTE -->
+        <div class="campo autocomplete">
+            <label>Expediente</label>
+            <input type="text" id="s_expediente" placeholder="Ej: EXP-2026-0012"
+                   oninput="autoBuscar(this, 'expedientes')" autocomplete="off">
+            <div class="autocomplete-list" id="auto-s_expediente"></div>
+        </div>
+
+        <!-- DNI -->
+        <div class="campo autocomplete">
+            <label>DNI / CIF</label>
+            <input type="text" id="s_dni" placeholder="Ej: 12345678A"
+                   oninput="autoBuscar(this, 'dni')" autocomplete="off">
+            <div class="autocomplete-list" id="auto-s_dni"></div>
+        </div>
+
+        <!-- CONTRATO -->
+        <div class="campo autocomplete">
+            <label>Nº Contrato</label>
+            <input type="text" id="s_contrato" placeholder="Ej: 778899"
+                   oninput="autoBuscar(this, 'contratos')" autocomplete="off">
+            <div class="autocomplete-list" id="auto-s_contrato"></div>
+        </div>
+
+        <!-- PROTOCOLO -->
+        <div class="campo autocomplete">
+            <label>Protocolo</label>
+            <input type="text" id="s_protocolo" placeholder="Ej: 112233"
+                   oninput="autoBuscar(this, 'protocolos')" autocomplete="off">
+            <div class="autocomplete-list" id="auto-s_protocolo"></div>
+        </div>
+
+        <!-- BOTÓN BÚSQUEDA AVANZADA -->
+        <button class="btn-advanced" onclick="abrirModalBusqueda()">🔍 Búsqueda avanzada</button>
+
+    </div>
+</div>
+
+
+        <!-- ============================================================
+             MODAL BÚSQUEDA AVANZADA
+        ============================================================ -->
+        <div id="modalBusqueda" class="modal-overlay">
+            <div class="glass-modal modal-large">
+
+                <h2 class="section-title">Búsqueda avanzada</h2>
+
+                <div class="filters-bar modal-grid">
+
+                    <div class="campo">
+                        <label>Estado del expediente</label>
+                        <select id="e_estado">
+                            <option value="">Todos</option>
+                            <option>Liquidado</option>
+                            <option>En curso</option>
+                            <option>Ambos</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label>Actividad del expediente</label>
+                        <input type="text" id="e_actividad" placeholder="Ej: Hipoteca, Cancelación…">
+                    </div>
+
+                    <div class="campo">
+                        <label>Gestor</label>
+                        <input type="text" id="e_gestor" placeholder="Nombre del gestor">
+                    </div>
+
+                    <div class="campo">
+                        <label>Nombre / Apellidos / Razón Social</label>
+                        <input type="text" id="e_nombre" placeholder="Texto libre">
+                    </div>
+
+                    <div class="campo">
+                        <label>Notario</label>
+                        <input type="text" id="e_notario" placeholder="Nombre del notario">
+                    </div>
+
+                    <div class="campo">
+                        <label>DNI Notario</label>
+                        <input type="text" id="e_dni_notario" placeholder="Ej: 12345678A">
+                    </div>
+
+                    <div class="campo">
+                        <label>Fecha firma desde</label>
+                        <input type="date" id="e_firma_desde">
+                    </div>
+
+                    <div class="campo">
+                        <label>Fecha firma hasta</label>
+                        <input type="date" id="e_firma_hasta">
+                    </div>
+
+                    <div class="campo">
+                        <label>Auto judicial</label>
+                        <input type="text" id="e_auto" placeholder="Número de auto">
+                    </div>
+
+                    <div class="campo">
+                        <label>Demanda</label>
+                        <input type="text" id="e_demanda" placeholder="Número de demanda">
+                    </div>
+
+                    <div class="campo">
+                        <label>Juzgado</label>
+                        <input type="text" id="e_juzgado" placeholder="Ej: Juzgado nº 12">
+                    </div>
+
+                    <div class="campo">
+                        <label>Procurador</label>
+                        <input type="text" id="e_procurador" placeholder="Nombre procurador">
+                    </div>
+
+                    <div class="campo">
+                        <label>Registro de la propiedad</label>
+                        <input type="text" id="e_registro" placeholder="Ej: RP Barcelona nº 3">
+                    </div>
+
+                    <div class="campo">
+                        <label>Nº Finca</label>
+                        <input type="text" id="e_finca" placeholder="Ej: 221-B">
+                    </div>
+
+                    <div class="campo">
+                        <label>Factura Gestoría</label>
+                        <input type="text" id="e_factura" placeholder="Número factura">
+                    </div>
+
+                    <div class="campo">
+                        <label>Año</label>
+                        <input type="number" id="e_anio" placeholder="Ej: 2026">
+                    </div>
+
+                    <div class="campo">
+                        <label>Nº Oficina</label>
+                        <input type="text" id="e_oficina" placeholder="Ej: BCN-01">
+                    </div>
+
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn" onclick="cerrarModalBusqueda()">Aplicar filtros</button>
+                    <button class="btn-small" onclick="cerrarModalBusqueda()">Cerrar</button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ============================================================
+             EXPORTACIÓN
+        ============================================================ -->
+        <div class="card-block" style="margin-top:20px; margin-bottom:20px;">
+            <div class="section-title">Exportación</div>
+            <button class="btn-excel">📤 Descargar Excel</button>
+        </div>
+
+  <!-- ============================================================
+     TABLA PRINCIPAL
+============================================================ -->
+<div class="card-block">
+    <div class="section-title">Listado de Expedientes</div>
+
+    <table class="sla-table glass-table mt-15 tabla-expedientes">
+        <thead>
+            <tr>
+                <th>Expediente</th>
+                <th>F. Alta</th>
+                <th>Oficina</th>
+                <th>Cliente</th>
+                <th>DNI</th>
+                <th>Actividad</th>
+                <th>Gestor</th>
+                <th>Ir</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>EXP-2026-0012</td>
+                <td>03/05/2026</td>
+                <td>BCN-01</td>
+                <td>María López</td>
+                <td>12345678A</td>
+                <td>Hipoteca</td>
+                <td>Laura Gómez</td>
+                <td><button class="btn-small">Ir</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+    <script>
+
+// ===============================
+// DATOS SIMULADOS
+// ===============================
+const datos = {
+    expedientes: [
+        "EXP-2026-0012",
+        "EXP-2026-0013",
+        "EXP-2026-0014",
+        "EXP-2026-0201",
+        "EXP-2026-0202"
+    ],
+    dni: [
+        "12345678A",
+        "99887766B",
+        "11223344C"
+    ],
+    absis: ["55421", "55422", "55423"],
+    contratos: ["778899", "778900", "778901"],
+    protocolos: ["112233", "112234", "112235"]
+};
+
+// ===============================
+// AUTOCOMPLETADO
+// ===============================
+function autoBuscar(input, tipo) {
+    const lista = document.getElementById("auto-" + input.id);
+    const valor = input.value.toLowerCase();
+
+    if (valor.length < 2) {
+        lista.style.display = "none";
+        return;
+    }
+
+    const resultados = datos[tipo].filter(item =>
+        item.toLowerCase().includes(valor)
+    );
+
+    lista.innerHTML = "";
+    resultados.forEach(r => {
+        const div = document.createElement("div");
+        div.classList.add("autocomplete-item");
+        div.textContent = r;
+        div.onclick = () => {
+            input.value = r;
+            lista.style.display = "none";
+        };
+        lista.appendChild(div);
+    });
+
+    lista.style.display = resultados.length ? "block" : "none";
+}
+
+// ===============================
+// NAVEGAR A EXPEDIENTE
+// ===============================
+function irExpediente(id) {
+    window.location.href = "expediente.html?id=" + id;
+}
+
+// ===============================
+// MODAL BÚSQUEDA AVANZADA
+// ===============================
+function abrirModalBusqueda() {
+    const modal = document.getElementById("modalBusqueda");
+    modal.style.display = "flex";
+}
+
+function cerrarModalBusqueda() {
+    const modal = document.getElementById("modalBusqueda");
+    modal.style.display = "none";
+}
+</script>
+
+
+</body>
+</html>

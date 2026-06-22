@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Agenda Mensual</title>
+
+     <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- DESIGN SYSTEM COMPLETO -->
+    <link rel="stylesheet" href="../../css/ds.css">
+
+    <!-- CSS DEL MÓDULO ESPECÍFICO -->
+    <link rel="stylesheet" href="../../css/modules/ds-agenda.css">
+</head>
+
+
+
+     <!-- JS DEL SIDEBAR (RUTA ABSOLUTA) -->
+    <script src="../../js/components/ds-sidebar.js"></script>
+
+    <!-- SIDEBAR NUEVO -->
+    <div id="sidebar-container"></div>
+
+    <!-- CONTENIDO -->
+    <div class="layout-content">
+
+        <h2 class="section-title">📅 Agenda Mensual de Apoderados</h2>
+
+        <!-- BLOQUE  LISTADO -->
+        <div class="agenda-grid">
+
+<!-- ============================
+     KPIS DE FIRMAS (MES ACTUAL)
+============================ -->
+<div class="kpi-container">
+
+    <!-- KPI VC -->
+    <div class="kpi-box">
+        <div class="kpi-icon">🎥</div>
+        <div class="kpi-info">
+            <div class="kpi-value" id="kpiFirmasVC">0</div>
+            <div class="kpi-label">Firmas por VC</div>
+        </div>
+    </div>
+
+    <!-- KPI PRESENCIALES -->
+    <div class="kpi-box">
+        <div class="kpi-icon">🏛️</div>
+        <div class="kpi-info">
+            <div class="kpi-value" id="kpiFirmasPresenciales">0</div>
+            <div class="kpi-label">Firmas Presenciales</div>
+        </div>
+    </div>
+
+</div>
+
+            <!-- LISTADO -->
+            <div class="card-block">
+                <div class="section-title">Listado de próximas firmas</div>
+
+                <table class="sla-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Apoderado</th>
+                            <th>Notaría</th>
+                            <th>Tipo</th>
+                            <th>Estado</th>                            
+                        </tr>
+                    </thead>
+                    <tbody id="tablaListado">
+                        <tr>
+                            <td>03/06/2026</td>
+                            <td>10:00</td>
+                            <td>María López</td>
+                            <td>Notaría Bonet</td>
+                            <td><span class="badge badge-blue">Presencial</span></td>
+                            <td><span class="badge badge-yellow">En curso</span></td>                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <!-- CALENDARIO -->
+        <div class="card-block">
+            <div class="section-title">Calendario Mensual</div>
+
+            <div class="calendar-month">
+                <div class="calendar-header">Lunes</div>
+                <div class="calendar-header">Martes</div>
+                <div class="calendar-header">Miércoles</div>
+                <div class="calendar-header">Jueves</div>
+                <div class="calendar-header">Viernes</div>
+                <div class="calendar-header">Sábado</div>
+                <div class="calendar-header">Domingo</div>
+
+                <div class="calendar-day empty"></div>
+                <div class="calendar-day empty"></div>
+
+                <div class="calendar-day"><span class="day-number">1</span></div>
+                <div class="calendar-day"><span class="day-number">2</span></div>
+
+                <div class="calendar-day">
+                    <span class="day-number">3</span>
+                    <div class="cal-item presencial">10:00 – M. López (Bonet)</div>
+                </div>
+
+                <div class="calendar-day"><span class="day-number">4</span></div>
+                <div class="calendar-day"><span class="day-number">5</span></div>
+
+                <div class="calendar-day"><span class="day-number">6</span></div>
+                <div class="calendar-day"><span class="day-number">7</span></div>
+                <div class="calendar-day"><span class="day-number">8</span></div>
+                <div class="calendar-day"><span class="day-number">9</span></div>
+                <div class="calendar-day"><span class="day-number">10</span></div>
+                <div class="calendar-day"><span class="day-number">11</span></div>
+                <div class="calendar-day"><span class="day-number">12</span></div>
+
+                <div class="calendar-day"><span class="day-number">13</span></div>
+                <div class="calendar-day"><span class="day-number">14</span></div>
+                <div class="calendar-day"><span class="day-number">15</span></div>
+                <div class="calendar-day"><span class="day-number">16</span></div>
+                <div class="calendar-day"><span class="day-number">17</span></div>
+                <div class="calendar-day"><span class="day-number">18</span></div>
+                <div class="calendar-day"><span class="day-number">19</span></div>
+
+                <div class="calendar-day"><span class="day-number">20</span></div>
+                <div class="calendar-day"><span class="day-number">21</span></div>
+                <div class="calendar-day"><span class="day-number">22</span></div>
+                <div class="calendar-day"><span class="day-number">23</span></div>
+                <div class="calendar-day"><span class="day-number">24</span></div>
+                <div class="calendar-day"><span class="day-number">25</span></div>
+                <div class="calendar-day"><span class="day-number">26</span></div>
+
+                <div class="calendar-day"><span class="day-number">27</span></div>
+                <div class="calendar-day"><span class="day-number">28</span></div>
+                <div class="calendar-day"><span class="day-number">29</span></div>
+                <div class="calendar-day"><span class="day-number">30</span></div>
+                <div class="calendar-day"><span class="day-number">31</span></div>
+                <div class="calendar-day empty"></div>
+                <div class="calendar-day empty"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MODAL CREAR CITA -->
+    <div id="modalCrearCita" class="modal-overlay">
+        <div class="glass-modal">
+            <h2 class="section-title">Nueva cita</h2>
+
+            <div class="campo">
+                <label>Apoderado</label>
+                <select id="citaApoderado">
+                    <option value="">Seleccionar…</option>
+                    <option>María López</option>
+                    <option>Carlos Pérez</option>
+                    <option>Laura Sánchez</option>
+                    <option>Javier Ruiz</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label>Notaría</label>
+                <select id="citaNotaria">
+                    <option value="">Seleccionar…</option>
+                    <option>Notaría Bonet</option>
+                    <option>Notaría Serra</option>
+                    <option>Notaría Ferrer</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label>Hora inicio</label>
+                <input type="time" id="citaInicio">
+            </div>
+
+            <div class="campo">
+                <label>Hora fin</label>
+                <input type="time" id="citaFin">
+            </div>
+
+            <div class="campo">
+                <label>Expedientes</label>
+                <button class="btn-small" type="button" onclick="abrirModalExpedientes()">Seleccionar expedientes</button>
+                <div id="expedientesSeleccionados"></div>
+            </div>
+
+            <div class="campo">
+                <label>Observaciones</label>
+                <textarea id="citaObs" rows="3"></textarea>
+            </div>
+
+            <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:10px;">
+                <button class="btn" type="button" onclick="guardarCitaAgenda()">Guardar cita</button>
+                <button class="btn-small" type="button" onclick="cerrarModalCita()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL EXPEDIENTES -->
+    <div id="modalExpedientes" class="modal-overlay">
+        <div class="glass-modal">
+            <h2 class="section-title">Seleccionar expedientes</h2>
+
+            <div class="campo">
+                <label>Buscar</label>
+                <input type="text" id="buscarExp" placeholder="Buscar expediente…">
+            </div>
+
+            <div id="listaExpedientes" class="glass-list"></div>
+
+            <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:10px;">
+                <button class="btn" type="button" onclick="confirmarExpedientes()">Añadir</button>
+                <button class="btn-small" type="button" onclick="cerrarModalExpedientes()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let citas = [];
+        let fechaSeleccionada = null;
+        let expedientesTemp = [];
+        let expedientesSeleccionados = [];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // Insertar botón + en cada día
+            document.querySelectorAll(".calendar-day").forEach(day => {
+                const num = day.querySelector(".day-number");
+                if (!num) return;
+                const dia = parseInt(num.textContent.trim(), 10);
+
+                const btn = document.createElement("button");
+                btn.className = "add-cita-btn";
+                btn.textContent = "+";
+                btn.onclick = e => {
+                    e.stopPropagation();
+                    abrirModalCita(dia);
+                };
+                day.appendChild(btn);
+            });
+
+            // Buscar expedientes
+            document.getElementById("buscarExp").addEventListener("input", function () {
+                const filtro = this.value.toLowerCase();
+                document.querySelectorAll("#listaExpedientes div").forEach(item => {
+                    item.style.display = item.textContent.toLowerCase().includes(filtro) ? "block" : "none";
+                });
+            });
+        });
+
+        function abrirModalCita(dia) {
+            fechaSeleccionada = dia;
+            document.getElementById("modalCrearCita").style.display = "flex";
+        }
+
+        function cerrarModalCita() {
+            document.getElementById("modalCrearCita").style.display = "none";
+            document.getElementById("citaApoderado").value = "";
+            document.getElementById("citaNotaria").value = "";
+            document.getElementById("citaInicio").value = "";
+            document.getElementById("citaFin").value = "";
+            document.getElementById("citaObs").value = "";
+            expedientesSeleccionados = [];
+            document.getElementById("expedientesSeleccionados").innerHTML = "";
+        }
+
+        function abrirModalExpedientes() {
+            document.getElementById("modalExpedientes").style.display = "flex";
+            cargarListaExpedientes();
+        }
+
+        function cerrarModalExpedientes() {
+            document.getElementById("modalExpedientes").style.display = "none";
+            expedientesTemp = [];
+        }
+
+        function cargarListaExpedientes() {
+            const lista = [
+                "EXP-2026-0012 — Hipoteca",
+                "EXP-2026-0044 — Compraventa",
+                "EXP-2026-0099 — Cancelación",
+                "EXP-2026-0101 — Herencia",
+                "EXP-2026-0115 — Donación"
+            ];
+
+            const cont = document.getElementById("listaExpedientes");
+            cont.innerHTML = "";
+            expedientesTemp = [];
+
+            lista.forEach(exp => {
+                const div = document.createElement("div");
+                div.textContent = exp;
+                div.onclick = () => {
+                    if (!expedientesTemp.includes(exp)) {
+                        expedientesTemp.push(exp);
+                        div.classList.add("selected-exp");
+                    } else {
+                        expedientesTemp = expedientesTemp.filter(e => e !== exp);
+                        div.classList.remove("selected-exp");
+                    }
+                };
+                cont.appendChild(div);
+            });
+        }
+
+        function confirmarExpedientes() {
+            expedientesSeleccionados = [...expedientesTemp];
+            const cont = document.getElementById("expedientesSeleccionados");
+            cont.innerHTML = "";
+            expedientesSeleccionados.forEach(exp => {
+                const div = document.createElement("div");
+                div.className = "exp-item-selected";
+                div.textContent = exp;
+                cont.appendChild(div);
+            });
+            cerrarModalExpedientes();
+        }
+
+        function guardarCitaAgenda() {
+            const apoderado = document.getElementById("citaApoderado").value;
+            const notaria = document.getElementById("citaNotaria").value;
+            const inicio = document.getElementById("citaInicio").value;
+            const fin = document.getElementById("citaFin").value;
+            const obs = document.getElementById("citaObs").value;
+
+            if (!apoderado || !notaria || !inicio || !fin) {
+                alert("Rellena todos los campos obligatorios.");
+                return;
+            }
+
+            const cita = {
+                id: Date.now(),
+                dia: fechaSeleccionada,
+                apoderado,
+                notaria,
+                inicio,
+                fin,
+                obs,
+                expedientes: [...expedientesSeleccionados]
+            };
+
+            citas.push(cita);
+            renderCitasAgenda();
+            cerrarModalCita();
+        }
+
+        function renderCitasAgenda() {
+            // Limpiar citas previas del calendario (solo las dinámicas)
+            document.querySelectorAll(".cal-item.dynamic").forEach(el => el.remove());
+
+            citas.forEach(c => {
+                const day = [...document.querySelectorAll(".calendar-day")]
+                    .find(d => d.querySelector(".day-number")?.textContent.trim() == String(c.dia));
+                if (!day) return;
+
+                const div = document.createElement("div");
+                div.className = "cal-item presencial dynamic";
+                div.textContent = `${c.inicio} – ${c.apoderado} (${c.notaria})`;
+                day.appendChild(div);
+
+                // Añadir también al listado
+                const tbody = document.getElementById("tablaListado");
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${String(c.dia).padStart(2,"0")}/06/2026</td>
+                    <td>${c.inicio}</td>
+                    <td>${c.apoderado}</td>
+                    <td>${c.notaria}</td>
+                    <td><span class="badge badge-blue">Presencial</span></td>
+                    <td><span class="badge badge-yellow">En curso</span></td>
+                    <td>${c.obs || ""}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+    </script>
+</body>
+</html>

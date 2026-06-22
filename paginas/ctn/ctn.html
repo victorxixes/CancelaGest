@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ctn - CancelaGest 2.0</title>
+
+    <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- DESIGN SYSTEM BASE -->
+    <link rel="stylesheet" href="../../css/ds.css">
+
+    <!-- COMPONENTES NECESARIOS -->
+    <link rel="stylesheet" href="../../css/components/ds-buttons.css">
+    <link rel="stylesheet" href="../../css/components/ds-inputs.css">
+    <link rel="stylesheet" href="../../css/components/ds-cards.css">
+    <link rel="stylesheet" href="../../css/components/ds-grid.css">
+    <link rel="stylesheet" href="../../css/components/ds-badges.css">
+    <link rel="stylesheet" href="../../css/components/ds-tables.css">
+
+    <!-- CSS DEL MÓDULO ESPECÍFICO -->
+    <link rel="stylesheet" href="../../css/modules/ds-auditoria.css">
+
+    <style>
+        /* Anular animaciones solo en esta página */
+        * {
+            animation: none !important;
+            transition: none !important;
+        }
+
+        /* Buscador unificado */
+        .ctn-searchbar {
+            background: rgba(255,255,255,0.55);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.35);
+            padding: 14px 18px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 20px rgba(10,74,138,0.15);
+        }
+
+        .ctn-searchbar input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .ctn-searchbar .icon {
+            font-size: 20px;
+            opacity: 0.7;
+        }
+
+        .ctn-searchbar button {
+            padding: 8px 14px;
+        }
+
+        /* Panel plegable */
+        .ctn-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px 0;
+        }
+
+        .ctn-panel-header span {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .ctn-toggle-btn {
+            background: rgba(255,255,255,0.55);
+            border: 1px solid rgba(255,255,255,0.35);
+            padding: 6px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .ctn-panel-content {
+            display: none;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR NUEVO -->
+    <div id="sidebar-container"></div>
+
+    <!-- CONTENIDO -->
+    <div class="layout-content">
+
+        <h2 class="section-title">💼 Centro Tecnológico Notarial (CTN)</h2>
+        <span class="header-sub">Consulta avanzada de notarías</span>
+
+        <!-- 🔵 BUSCADOR UNIFICADO -->
+        <div class="ctn-searchbar">
+            <span class="icon">🔍</span>
+            <input type="text" id="busquedaGeneral" placeholder="Buscar por notaría, municipio, DNI o código...">
+            <button class="btn-small" onclick="buscarGeneralCTN()">Buscar</button>
+        </div>
+
+        <!-- PANEL DE CONSULTA (PLEGABLE) -->
+        <div class="card bloque-ctn" style="margin-top:20px;">
+
+            <div class="ctn-panel-header" onclick="togglePanelCTN()">
+                <span class="section-title">Panel de consulta CTN</span>
+                <button class="ctn-toggle-btn" id="btnToggleCTN">Mostrar filtros ▼</button>
+            </div>
+
+            <div class="ctn-panel-content" id="panelCTN">
+
+                <div class="filters-bar">
+
+                    <div class="input-group">
+                        <label>Buscar por notaría</label>
+                        <input class="input" type="text" id="buscarNotaria">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Buscar por municipio</label>
+                        <input class="input" type="text" id="buscarMunicipio">
+                    </div>
+
+                    <div class="input-group">
+                        <label>DNI del notario</label>
+                        <input class="input" type="text" id="buscarDNI">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Código notarial</label>
+                        <input class="input" type="text" id="buscarCodigo">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Videoconferencia</label>
+                        <select class="input" id="filtroVC">
+                            <option value="todos">Todas</option>
+                            <option value="si">Con videoconferencia</option>
+                            <option value="no">Sin videoconferencia</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="filters-actions">
+                    <button class="btn-small" onclick="filtrarCTN()">Buscar</button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- EXPORTACIÓN -->
+        <div class="card bloque-ctn" style="margin-top:20px;">
+            <div class="section-title">Exportación</div>
+            <button class="btn-excel" onclick="descargarExcelCTN()">📤 Descargar Excel</button>
+        </div>
+
+  <!-- TABLA PRINCIPAL -->
+<div class="card bloque-ctn">
+    <div class="section-title">Resultados de búsqueda</div>
+
+    <div class="table-wrapper">
+        <table class="table table--compact">
+            <thead>
+                <tr>
+                    <th>Notaría</th>
+                    <th>Municipio</th>
+                    <th>DNI Notario</th>
+                    <th>Código</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>VC</th>
+                    <th>Apoderado</th>
+                    <th>Ficha</th>
+                </tr>
+            </thead>
+
+            <tbody id="tablaCTN">
+                <tr>
+                    <td>Barcelona 12</td>
+                    <td>Barcelona</td>
+                    <td>12345678A</td>
+                    <td>NT-001</td>
+                    <td>C/ Mallorca 123</td>
+                    <td>933 123 456</td>
+                    <td>45</td>
+                    <td>Juan Pérez</td>
+                    <td>
+                        <button class="btn-small" onclick="abrirModalCTN()">Ir</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- JS DEL SIDEBAR -->
+<script src="../../js/components/ds-sidebar.js"></script>
+
+<!-- ============================================================
+     FUNCIONES DE BÚSQUEDA Y PANEL
+============================================================ -->
+<script>
+function buscarGeneralCTN() {
+    const q = document.getElementById("busquedaGeneral").value.toLowerCase();
+
+    document.querySelectorAll("#tablaCTN tr").forEach(row => {
+        const texto = row.innerText.toLowerCase();
+        row.style.display = texto.includes(q) ? "" : "none";
+    });
+}
+
+function togglePanelCTN() {
+    const panel = document.getElementById("panelCTN");
+    const btn = document.getElementById("btnToggleCTN");
+
+    if (panel.style.display === "block") {
+        panel.style.display = "none";
+        btn.textContent = "Mostrar filtros ▼";
+    } else {
+        panel.style.display = "block";
+        btn.textContent = "Ocultar filtros ▲";
+    }
+}
+</script>
+
+<!-- ============================================================
+     MODAL CTN — FICHA NOTARIAL
+============================================================ -->
+<div id="modalCTN" class="modal-overlay">
+    <div class="glass-modal modal-ctn">
+
+        <h2 class="section-title">📜 Ficha Notarial</h2>
+        <span class="header-sub">Datos completos de la notaría y ubicación</span>
+
+        <!-- DATOS NOTARIA -->
+        <div class="card-block" style="margin-top:20px;">
+            <div class="section-title">Datos de la notaría</div>
+
+            <div class="grid-2">
+
+                <div class="campo">
+                    <label>Código</label>
+                    <input type="text" id="codigo" class="compact-input">
+                </div>
+
+                <div class="campo">
+                    <label>Nombre</label>
+                    <input type="text" id="nombre" class="compact-input">
+                </div>
+
+                <div class="campo">
+                    <label>Apellidos</label>
+                    <input type="text" id="apellidos" class="compact-input">
+                </div>
+
+                <div class="campo">
+                    <label>NIF</label>
+                    <input type="text" id="nif" class="compact-input">
+                </div>
+
+                <div class="campo">
+                    <label>Teléfono</label>
+                    <input type="text" id="telefono" class="compact-input">
+                </div>
+
+                <div class="campo">
+                    <label>CP</label>
+                    <input type="text" id="cp" class="compact-input">
+                </div>
+
+                <div class="campo">
+                    <label>Provincia</label>
+                    <input type="text" id="provincia" class="compact-input">
+                </div>
+
+                <div class="campo">
+                    <label>Municipio</label>
+                    <input type="text" id="municipio" class="compact-input">
+                </div>
+
+                <div class="campo">
+                    <label>Videoconferencia (VC)</label>
+                    <input type="text" id="vc" class="compact-input">
+                </div>
+
+                <div class="campo">
+                    <label>Apoderado</label>
+                    <input type="text" id="apoderado" class="compact-input">
+                </div>
+
+                <div class="campo">
+                    <label>Apoderado Secundario</label>
+                    <input type="text" id="apoderado_secundario" class="compact-input">
+                </div>
+
+                <div class="campo" style="grid-column: 1 / 3;">
+                    <label>Observación</label>
+                    <textarea id="observacion" class="compact-input" rows="4" placeholder="Añade aquí las observaciones..."></textarea>
+                </div>
+
+            </div>
+
+            <button class="btn" onclick="guardarFichaNotaria()" style="margin-top:20px;">
+                💾 Guardar cambios
+            </button>
+        </div>
+
+        <!-- MAPA -->
+        <div class="card-block" style="margin-top:25px;">
+            <div class="section-title">Ubicación de la notaría</div>
+            <div id="mapaNotaria"></div>
+        </div>
+
+        <button class="btn-small" onclick="cerrarModalCTN()" style="margin-top:20px;">Cerrar</button>
+
+    </div>
+</div>
+
+<!-- ============================================================
+     JS DEL MODAL
+============================================================ -->
+<script>
+function abrirModalCTN() {
+    document.getElementById("modalCTN").style.display = "flex";
+    setTimeout(() => initMap(), 200);
+}
+
+function cerrarModalCTN() {
+    document.getElementById("modalCTN").style.display = "none";
+}
+
+function guardarFichaNotaria() {
+    alert("✔ Datos de la notaría guardados (función pendiente de implementar)");
+}
+</script>
+
+<!-- ============================================================
+     GOOGLE MAPS
+============================================================ -->
+<script>
+let mapa;
+
+function initMap() {
+    mapa = new google.maps.Map(document.getElementById("mapaNotaria"), {
+        center: { lat: 41.3851, lng: 2.1734 },
+        zoom: 12,
+        mapId: "DEMO_MAP_ID"
+    });
+
+    new google.maps.Marker({
+        position: { lat: 41.3851, lng: 2.1734 },
+        map: mapa,
+        title: "Notaría"
+    });
+}
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
+
+
+
+
+</body>
+</html>

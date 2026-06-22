@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Entidades bancarias</title>
+
+    <link rel="stylesheet" href="../css/styles.css">
+
+    <style>
+        body {
+            background: #f1f5f9;
+            padding: 30px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .content {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #084482;
+            margin-bottom: 25px;
+        }
+
+        #buscador {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.35);
+            background: rgba(255,255,255,0.55);
+            backdrop-filter: blur(10px);
+            font-size: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(10,74,138,0.15);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 14px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.55);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 6px 18px rgba(10,74,138,0.15);
+        }
+
+        th {
+            background: #084482;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.35);
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: rgba(255,255,255,0.35);
+            cursor: pointer;
+        }
+
+        .btn-select {
+            background: #084482;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            transition: 0.25s ease;
+            box-shadow: 0 4px 12px rgba(10,74,138,0.15);
+        }
+
+        .btn-select:hover {
+            background: #0A5AA3;
+            transform: translateY(-2px);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.45);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .modal-inner {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+        }
+
+        .campo { margin-bottom: 12px; }
+        .campo label { font-weight: 600; font-size: 14px; }
+
+        .modal-actions {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+    </style>
+</head>
+
+<body class="sidebar-expanded">
+
+<div class="content">
+
+    <h2>Entidades bancarias</h2>
+
+    <button class="btn-select" style="margin-bottom:15px;" onclick="abrirModalNuevoRegistro()">
+        ➕ Añadir entidad
+    </button>
+
+    <input type="text" id="buscador" placeholder="Buscar por ID, CNAE, Denominación...">
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:120px;">Código</th>
+                <th>ID</th>
+                <th>CNAE</th>
+                <th>Denominación</th>
+                <th>Otros</th>
+            </tr>
+        </thead>
+        <tbody id="tablaRegistros"></tbody>
+    </table>
+
+</div>
+
+<script>
+const API_BASE = "http://localhost:8000/registros"; // ajusta host/puerto si hace falta
+
+let registros = [];
+
+/* MODALES */
+function abrirModal(id) {
+    document.getElementById(id).style.display = "flex";
+}
+function cerrarModal(id) {
+    document.getElementById(id).style.display = "none";
+}
+function abrirModalNuevoRegistro() {
+    abrirModal("modalNuevoRegistro");
+}
+
+/* RENDER TABLA */
+function renderRegistros(lista) {
+    const tbody = document.getElementById("tablaRegistros");
+    tbody.innerHTML = "";
+
+    lista.forEach(reg => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+            <td>${reg.codigo}</td>
+            <td>${reg.ID}</td>
+            <td>${reg.CNAE}</td>
+            <td>${reg.denominación}</td>
+            <td>${reg.otros}</td>
+        `;
+
+        tbody.appendChild(tr);
+    });
+}
+
+/* CARGAR DESDE API */
+async function cargarRegistros() {
+    try {
+        const res = await fetch(API_BASE);
+        if (!res.ok) throw new Error("Error al cargar registros");
+        registros = await res.json();
+        renderRegistros(registros);
+    } catch (err) {
+        console.error(err);
+        alert("No se pudieron cargar los registros.");
+    }
+}
+
+/* GUARDAR NUEVO REGISTRO */
+async function guardarRegistro() {
+    const codigo = document.getElementById("reg_codigo").value.trim();
+    const provincia = document.getElementById("reg_ID").value.trim();
+    const poblacion = document.getElementById("reg_CNAE").value.trim();
+    const nombre_registro = document.getElementById("denominación").value.trim();
+    const direccion = document.getElementById("reg_otros").value.trim();
+
+    if (!codigo || !provincia || !poblacion || !nombre_registro) {
+        alert("Rellena al menos Código, Provincia, Población y Nombre del registro.");
+        return;
+    }
+
+    const nuevo = { codigo, provincia, poblacion, nombre_registro, direccion };
+
+    try {
+        const res = await fetch(API_BASE, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(nuevo)
+        });
+
+        if (!res.ok) throw new Error("Error al guardar registro");
+
+        const creado = await res.json();
+        registros.push(creado);
+        renderRegistros(registros);
+
+        cerrarModal("modalNuevoRegistro");
+    } catch (err) {
+        console.error(err);
+        alert("No se pudo guardar el registro.");
+    }
+}
+
+/* BUSCADOR */
+document.addEventListener("DOMContentLoaded", () => {
+    cargarRegistros();
+
+    document.getElementById("buscador").addEventListener("input", function () {
+        const t = this.value.toLowerCase();
+
+        const filtrados = registros.filter(r =>
+            r.codigo.toLowerCase().includes(t) ||
+            r.provincia.toLowerCase().includes(t) ||
+            r.poblacion.toLowerCase().includes(t) ||
+            r.nombre_registro.toLowerCase().includes(t)
+        );
+
+        renderRegistros(filtrados);
+    });
+});
+</script>
+
+<!-- MODAL NUEVO REGISTRO -->
+<div id="modalNuevoRegistro" class="modal-overlay">
+    <div class="modal-inner">
+
+        <h3>Nuevo registro de la propiedad</h3>
+
+        <div class="campo">
+            <label>Código</label>
+            <input type="text" id="reg_codigo" class="compact-input">
+        </div>
+
+        <div class="campo">
+            <label>ID</label>
+            <input type="text" id="reg_id" class="compact-input">
+        </div>
+
+        <div class="campo">
+            <label>CNAE</label>
+            <input type="text" id="reg_cnae" class="compact-input">
+        </div>
+
+        <div class="campo">
+            <label>Denominacion</label>
+            <input type="text" id="reg_denominacion" class="compact-input">
+        </div>
+
+        <div class="campo">
+            <label>Otros</label>
+            <input type="text" id="reg_otros" class="compact-input">
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn-select" onclick="cerrarModal('modalNuevoRegistro')">Cancelar</button>
+            <button class="btn-select" onclick="guardarRegistro()">Guardar</button>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

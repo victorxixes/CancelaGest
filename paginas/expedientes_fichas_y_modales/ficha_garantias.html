@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ficha de garantías - CancelaGest 2.0</title>
+
+    
+   <!-- DESIGN SYSTEM -->
+    <link rel="stylesheet" href="../../css/ds.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../../css/modules/ds-actividades.css">
+
+
+<body class="sidebar-expanded">
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+
+    <!-- BOTÓN VOLVER PEQUEÑO -->
+    <button class="btn-volver-small" onclick="window.history.back()">
+        ⬅ Volver
+    </button>
+
+    <h1 class="section-title">📄 Garantías Registrales</h1>
+
+    <!-- GRID DE DOS COLUMNAS -->
+    <div class="grid-2">
+
+        <!-- BLOQUE 1 — FINCA DEL CONTRATO -->
+        <section class="card-block compact">
+            <h3 class="compact-title">Finca del contrato</h3>
+
+            <div class="form-grid">
+                <div class="form-label">Domicilio</div>
+                <div class="form-field">
+                    <input type="text" class="compact-input" value="AVENIDA NAVARRA 4 4ª A">
+                </div>
+
+                <div class="form-label">Localidad</div>
+                <div class="form-field">
+                    <input type="text" class="compact-input" value="PAMPLONA/IRUÑA">
+                </div>
+
+                <div class="form-label">Código postal</div>
+                <div class="form-field">
+                    <input type="text" class="compact-input" value="31012">
+                </div>
+
+                <div class="form-label">Provincia</div>
+                <div class="form-field">
+                    <input type="text" class="compact-input" value="Navarra">
+                </div>
+
+                <div class="form-label">Datos pendientes</div>
+                <div class="form-field">
+                    <select class="compact-input">
+                        <option selected>Sí</option>
+                        <option>No</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- BLOQUE 3 — IDENTIFICACIÓN DEL REGISTRO -->
+        <section class="card-block compact">
+            <h3 class="compact-title">Identificación del registro</h3>
+
+            <div class="form-grid">
+                <div class="form-label">Provincia</div>
+                <div class="form-field">
+                    <input type="text" class="compact-input" value="Navarra">
+                </div>
+
+                <div class="form-label">Población</div>
+                <div class="form-field">
+                    <input type="text" class="compact-input" value="PAMPLONA/IRUÑA">
+                </div>
+
+                <div class="form-label">Registro (Número)</div>
+                <div class="form-field">
+                    <input type="text" class="compact-input">
+                </div>
+
+                <div class="form-label">Nº sección</div>
+                <div class="form-field">
+                    <input type="text" class="compact-input">
+                </div>
+
+                <div class="form-label">Registro (Nombre)</div>
+                <div class="form-field">
+                    <input type="text" class="compact-input">
+                </div>
+            </div>
+        </section>
+
+        <!-- BLOQUE 2 — DATOS DE LA GARANTÍA (DEBAJO DE FINCA DEL CONTRATO) -->
+        <section class="card-block compact" style="grid-column: 1;">
+            <h3 class="compact-title">Datos de la garantía</h3>
+
+            <div class="form-grid">
+                <div class="form-label">IDUFIR / CRU</div>
+                <div class="form-field">
+                    <input type="text" class="compact-input">
+                </div>
+
+                <div class="form-label">Nº finca registral</div>
+                <div class="form-field">
+                    <input type="text" class="compact-input">
+                </div>
+
+                <div class="form-label">Fecha inscripción cancelación</div>
+                <div class="form-field">
+                    <input type="date" class="compact-input">
+                </div>
+            </div>
+        </section>
+
+    </div> <!-- /grid-2 -->
+
+    <!-- BOTONES FINALES -->
+    <footer class="final-buttons compact-final">
+        <button class="btn btn-secondary compact-btn">Cancelar</button>
+        <button class="btn compact-btn">Aceptar</button>
+    </footer>
+
+    <!-- BOTÓN ABSIS -->
+    <button class="btn-absis">📨 Enviar al Absis</button>
+
+</div>
+
+</body>
+</html>

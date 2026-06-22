@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Ficha Notarial</title>
+
+    
+   <!-- DESIGN SYSTEM -->
+    <link rel="stylesheet" href="../../css/ds.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../../css/modules/ds-actividades.css">
+
+
+<body class="sidebar-expanded">
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+
+    <!-- CONTENIDO OFICIAL -->
+    <div class="layout-content">
+
+    <h2 class="section-title">📜 Ficha Notarial</h2>
+    <span class="header-sub">Datos completos de la notaría y ubicación</span>
+
+    <!-- ============================================================
+         CARD: DATOS NOTARIA
+    ============================================================ -->
+    <div class="card-block" style="margin-top:20px;">
+        <div class="section-title">Datos de la notaría</div>
+
+        <div class="grid-2">
+
+            <div class="campo">
+                <label>Código</label>
+                <input type="text" id="codigo" class="compact-input">
+            </div>
+
+            <div class="campo">
+                <label>Nombre</label>
+                <input type="text" id="nombre" class="compact-input">
+            </div>
+
+            <div class="campo">
+                <label>Apellidos</label>
+                <input type="text" id="apellidos" class="compact-input">
+            </div>
+
+            <div class="campo">
+                <label>NIF</label>
+                <input type="text" id="nif" class="compact-input">
+            </div>
+
+            <div class="campo">
+                <label>Teléfono</label>
+                <input type="text" id="telefono" class="compact-input">
+            </div>
+
+            <div class="campo">
+                <label>CP</label>
+                <input type="text" id="cp" class="compact-input">
+            </div>
+
+            <div class="campo">
+                <label>Provincia</label>
+                <input type="text" id="provincia" class="compact-input">
+            </div>
+
+            <div class="campo">
+                <label>Municipio</label>
+                <input type="text" id="municipio" class="compact-input">
+            </div>
+
+            <div class="campo">
+                <label>Videoconferencia (VC)</label>
+                <input type="text" id="vc" class="compact-input">
+            </div>
+
+            <div class="campo">
+                <label>Apoderado</label>
+                <input type="text" id="apoderado" class="compact-input">
+            </div>
+
+            <div class="campo">
+                <label>Apoderado Secundario</label>
+                <input type="text" id="apoderado_secundario" class="compact-input">
+            </div>
+
+            <!-- OBSERVACIÓN CENTRADA Y PREMIUM -->
+            <div class="campo" style="grid-column: 1 / 3;">
+                <label>Observación</label>
+                <textarea id="observacion" class="compact-input" rows="4" placeholder="Añade aquí las observaciones..."></textarea>
+            </div>
+
+        </div>
+
+        <button class="btn" onclick="guardarFichaNotaria()" style="margin-top:20px;">
+            💾 Guardar cambios
+        </button>
+    </div>
+
+    <!-- ============================================================
+         CARD: MAPA
+    ============================================================ -->
+    <div class="card-block" style="margin-top:25px;">
+        <div class="section-title">Ubicación de la notaría</div>
+        <div id="mapaNotaria"></div>
+    </div>
+
+</div>
+
+<!-- GOOGLE MAPS -->
+<script>
+let mapa;
+
+function initMap() {
+    mapa = new google.maps.Map(document.getElementById("mapaNotaria"), {
+        center: { lat: 41.3851, lng: 2.1734 },
+        zoom: 12,
+        mapId: "DEMO_MAP_ID"
+    });
+
+    new google.maps.Marker({
+        position: { lat: 41.3851, lng: 2.1734 },
+        map: mapa,
+        title: "Notaría"
+    });
+}
+
+function guardarFichaNotaria() {
+    alert("✔ Datos de la notaría guardados (función pendiente de implementar)");
+}
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
+
+</body>
+</html>

@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ficha del Expediente - CancelaGest 2.0</title>
+
+    <!-- CSS BASE DEL DESIGN SYSTEM -->
+    <link rel="stylesheet" href="../../css/ds.css">
+
+    <!-- COMPONENTES DEL DS -->
+    <link rel="stylesheet" href="../../css/components/ds-buttons.css">
+    <link rel="stylesheet" href="../../css/components/ds-inputs.css">
+    <link rel="stylesheet" href="../../css/components/ds-tables.css">
+    <link rel="stylesheet" href="../../css/components/ds-modal.css">
+    <link rel="stylesheet" href="../../css/components/ds-progress.css">
+    <link rel="stylesheet" href="../../css/components/ds-scroll.css">
+    <link rel="stylesheet" href="../../css/components/ds-steps.css">
+    <link rel="stylesheet" href="../../css/components/ds-observaciones.css">
+</head>
+
+<body>
+
+<!-- SIDEBAR LATERAL DERECHO -->
+<div id="sidebarTools" class="sidebar-tools">
+    <div class="sidebar-content">
+
+        <button class="btn btn-secondary btn-small" onclick="bloquearExpediente()">🔒 Bloquear expediente</button>
+        <button class="btn btn-small" onclick="abrirActividades()">📋 Ver actividades</button>
+        <button class="btn btn-small" onclick="abrirObservacionesInternas()">💬 Ver observaciones internas</button>
+        <button class="btn btn-secondary btn-small" onclick="abrirHistorialReclamaciones()">📝 Historial reclamaciones</button>
+        <button class="btn btn-secondary btn-small" onclick="abrirHistorialAcciones()">📝 Historial de acciones</button>
+        <button class="btn btn-secondary btn-small" onclick="abrirHistorialObservaciones()">📝 Historial de observaciones</button>
+        <button class="btn btn-secondary btn-small" onclick="abrirCarpetaDigital()">📂 Carpeta digital</button>
+        <button class="btn btn-red btn-small" onclick="abrirModalReclamacion()">➕ Añadir reclamación</button>
+        <button class="btn btn-small btn-blue" onclick="abrirModalAcciones()">➕ Añadir acción</button>
+        <button class="btn btn-small btn-blue" onclick="abrirModalFincas()">➕ Añadir finca</button>
+        <button class="btn btn-blue btn-small" onclick="abrirModalNuevaObservacion()">➕ Añadir observación</button>
+        <button class="btn btn-blue" onclick="abrirModalNuevoGasto()">➕ Añadir gasto</button>
+        <button class="btn btn-blue btn-small" onclick="abrirModalEditarEncargo()">📤 Enviar notario</button>
+
+    </div>
+</div>
+<!-- HITBOX PARA ACTIVAR EL SIDEBAR -->
+<div class="sidebar-hitbox"></div>
+
+<!-- HEADER SUPERIOR -->
+<div class="top-header-expediente">
+    <button class="btn btn-secondary btn-small" onclick="volverAtras()">⬅ Volver</button>
+
+    <div class="Gestor">
+        Gestor asignado
+        <span class="badge badge--blue">Nombre</span>
+    </div>
+
+    <div class="Vinculados">
+        Expedientes vinculados
+        <span class="badge badge--green">12345 – 12346 – 12347</span>
+    </div>
+</div>
+
+<!-- PROGRESO -->
+<section class="card-block" style="margin-top:20px;">
+    <div class="header-flex">
+        <h3 class="section-title">Progreso del expediente</h3>
+
+        <div class="progress-steps">
+            <div class="step-item" data-step="1"><span class="step-number">1</span><span class="step-label">Documentación previa</span></div>
+            <div class="step-item" data-step="2"><span class="step-number">2</span><span class="step-label">Sede notarial sin protocolo</span></div>
+            <div class="step-item" data-step="3"><span class="step-number">3</span><span class="step-label">Sede notarial con protocolo</span></div>
+            <div class="step-item" data-step="4"><span class="step-number">4</span><span class="step-label">Gestión económica</span></div>
+            <div class="step-item" data-step="5"><span class="step-number">5</span><span class="step-label">Liquidación impuestos</span></div>
+            <div class="step-item" data-step="6"><span class="step-number">6</span><span class="step-label">Presentación Registro</span></div>
+            <div class="step-item" data-step="7"><span class="step-number">7</span><span class="step-label">Defectos</span></div>
+            <div class="step-item" data-step="8"><span class="step-number">8</span><span class="step-label">Liquidación y cierre</span></div>
+        </div>
+
+        <div class="progress-bar-container mt-15">
+            <div class="progress-bar" id="barraProgreso"></div>
+        </div>
+    </div>
+</section>
+<!-- ========================= -->
+<!--  DATOS GENERALES          -->
+<!-- ========================= -->
+
+<section class="card-block">
+    <h3 class="section-title">📂 Datos generales del expediente</h3>
+
+    <!-- EXPEDIENTE Nº -->
+    <div class="collapsible-header" onclick="toggleCollapse(this)">
+        <h4 class="section-subtitle">Expediente nº</h4>
+        <span class="chevron">▼</span>
+    </div>
+
+    <div class="collapsible-content">
+        <div class="block-inline">
+            <div class="item"><span class="label">Oficina:</span><input type="text" class="input--compact"></div>
+            <div class="item"><span class="label">Estado actual:</span><input type="text" class="input--compact"></div>
+            <div class="item"><span class="label">Fecha de Alta:</span><input type="text" class="input--compact"></div>
+            <div class="item"><span class="label">Actividad actual:</span><input type="text" class="input--compact"></div>
+            <div class="item"><span class="label">Estado expediente:</span><input type="text" class="input--compact"></div>
+            <div class="item"><span class="label">Nº SIA:</span><input type="text" class="input--compact"></div>
+            <div class="item"><span class="label">Observaciones:</span><input type="text" class="input--compact"></div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- SOLICITANTE + TITULAR -->
+    <div class="collapsible-header" onclick="toggleCollapse(this)">
+        <h4 class="section-subtitle">Solicitante y Titular</h4>
+        <span class="chevron">▼</span>
+    </div>
+
+    <div class="collapsible-content">
+        <div class="two-columns">
+
+            <!-- SOLICITANTE -->
+            <div>
+                <h4 class="section-subtitle">Solicitante</h4>
+                <div class="block-inline">
+                    <div class="item"><span class="label">Nombre:</span><input type="text" class="input--compact"></div>
+                    <div class="item"><span class="label">Apellidos:</span><input type="text" class="input--compact"></div>
+                    <div class="item"><span class="label">DNI:</span><input type="text" class="input--compact"></div>
+                </div>
+            </div>
+
+            <!-- TITULAR -->
+            <div>
+                <h4 class="section-subtitle">Titular</h4>
+                <div class="block-inline">
+                    <div class="item"><span class="label">Nombre:</span><input type="text" class="input--compact"></div>
+                    <div class="item"><span class="label">Apellidos:</span><input type="text" class="input--compact"></div>
+                    <div class="item"><span class="label">DNI:</span><input type="text" class="input--compact"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- INFORMACIÓN FINANCIERA -->
+    <div class="collapsible-header" onclick="toggleCollapse(this)">
+        <h4 class="section-subtitle">Información financiera</h4>
+        <span class="chevron">▼</span>
+    </div>
+
+    <div class="collapsible-content">
+        <div class="block-inline">
+            <div class="item"><span class="label">Entidad:</span><input type="text" class="input--compact"></div>
+            <div class="item"><span class="label">Nº Contrato:</span><input type="text" class="input--compact"></div>
+            <div class="item"><span class="label">Fecha constitución:</span><input type="date" class="input--compact"></div>
+            <div class="item"><span class="label">Capital:</span><input type="text" class="input--compact"></div>
+            <div class="item"><span class="label">Finca:</span><input type="text" class="input--compact"></div>
+            <div class="item"><span class="label">Provisión:</span><input type="text" class="input--compact"></div>
+            <div class="item"><span class="label">Tipo operación:</span><input type="text" class="input--compact"></div>
+            <div class="item"><span class="label">Sub-tipo:</span><input type="text" class="input--compact"></div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- DATOS DE FACTURACIÓN -->
+    <div class="collapsible-header" onclick="toggleCollapse(this)">
+        <h4 class="section-subtitle">Datos de facturación</h4>
+        <span class="chevron">▼</span>
+    </div>
+
+    <div class="collapsible-content">
+        <div class="block-inline">
+            <div class="item"><span class="label">Nombre:</span><input type="text" class="input--compact"></div>
+            <div class="item"><span class="label">Apellidos:</span><input type="text" class="input--compact"></div>
+            <div class="item"><span class="label">DNI:</span><input type="text" class="input--compact"></div>
+            <div class="item"><span class="label">Dirección:</span><input type="text" class="input--compact"></div>
+            <div class="item"><span class="label">Código Postal:</span><input type="text" class="input--compact"></div>
+            <div class="item"><span class="label">Población:</span><input type="text" class="input--compact"></div>
+            <div class="item"><span class="label">Provincia:</span><input type="text" class="input--compact"></div>
+            <div class="item"><span class="label">Teléfono:</span><input type="text" class="input--compact"></div>
+            <div class="item"><span class="label">Email:</span><input type="email" class="input--compact"></div>
+        </div>
+    </div>
+</section>
+<!-- =============================== -->
+<!--  ACCIONES                       -->
+<!-- =============================== -->
+
+<section class="card-block widget">
+    <div class="section-header">
+        <h3 class="section-title">📋 Última acción</h3>
+    </div>
+
+    <table class="table table--compact mt-10 table-acciones">
+        <thead>
+            <tr>
+                <th>Acción</th>
+                <th>Fecha / Hora</th>
+            </tr>
+        </thead>
+        <tbody id="tablaAccionesExpediente"></tbody>
+    </table>
+</section>
+
+<!-- =============================== -->
+<!--  FILA: OBSERVACIONES + GASTOS   -->
+<!-- =============================== -->
+
+<div class="fila-observaciones-gastos">
+
+    <!-- OBSERVACIONES -->
+    <section class="card-block widget">
+        <div class="section-header">
+            <h3 class="section-title">📝 Últimas observaciones</h3>
+        </div>
+
+        <table class="table table--compact mt-10">
+            <thead>
+                <tr>
+                    <th style="width:140px;">Fecha</th>
+                    <th>Observación</th>
+                </tr>
+            </thead>
+            <tbody id="tablaObservaciones"></tbody>
+        </table>
+    </section>
+
+    <!-- GASTOS -->
+    <div class="bloque-gastos">
+        <section class="card-block widget">
+
+            <div class="section-header">
+                <button class="btn btn-purple btn-small" onclick="abrirModalPPAD()">➕ Añadir PPAD</button>
+                <h3 class="section-title">💰 Gastos del expediente</h3>
+            </div>
+
+            <table class="table table--compact" id="tablaGastos">
+                <thead>
+                    <tr>
+                        <th>Nº Documento</th>
+                        <th>Tipo</th>
+                        <th>Cuantía</th>
+                        <th>Concepto</th>
+                        <th>Importe</th>
+                        <th>Documento</th>
+                        <th>Saldo real</th>
+                        <th style="width:200px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyGastos"></tbody>
+            </table>
+
+            <div class="totales-gastos">
+                <div class="total-item">
+                    <span>Total cuantía:</span>
+                    <strong id="totalCuantia">0 €</strong>
+                </div>
+                <div class="total-item">
+                    <span>Total saldo real:</span>
+                    <strong id="totalSaldo">0 €</strong>
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+</div>
+<!-- =============================== -->
+<!--  DOCUMENTOS PARA NOTARÍA        -->
+<!-- =============================== -->
+
+<section class="card-block widget" id="bloqueDocumentosNotaria">
+    <div class="section-header">
+        <h3 class="section-title">📄 Documentos para notaría</h3>
+        <button class="btn btn-blue btn-small" onclick="abrirCarpetaDigital()">📂 Gestionar documentos</button>
+    </div>
+
+    <div class="scroll-box mt-10" style="max-height: 220px;">
+        <table class="table table--compact">
+            <thead>
+                <tr>
+                    <th>Documento</th>
+                    <th>Tipo</th>
+                    <th>Fecha subida</th>
+                    <th>Estado</th>
+                    <th style="width:160px;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tablaDocumentosNotaria">
+                <!-- Se rellena dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- =============================== -->
+<!--  INFORMACIÓN REGISTRAL          -->
+<!-- =============================== -->
+
+<section class="card-block widget-small">
+    <div class="section-header">
+        <h3 class="section-title">📘 Información registral</h3>
+    </div>
+
+    <div class="scroll-box mt-10" style="max-height: 220px;">
+        <table class="table table--compact table-registro">
+            <thead>
+                <tr>
+                    <th>Fecha NS</th>
+                    <th>Nº Finca</th>
+                    <th>Provincia</th>
+                    <th>Población</th>
+                    <th>Registro</th>
+                    <th>Capital inscrito</th>
+                </tr>
+            </thead>
+            <tbody id="tablaFincas"></tbody>
+        </table>
+    </div>
+</section>
+
+<!-- =============================== -->
+<!--  ENCARGO AL NOTARIO (RENDER DINÁMICO) -->
+<!-- =============================== -->
+
+<section class="card-block widget" id="bloqueEncargoNotario">
+    <!-- Este bloque se rellenará dinámicamente desde expediente-notario.js -->
+</section>
+<!-- =============================== -->
+<!--  MODALES                        -->
+<!-- =============================== -->
+
+<!-- MODAL NUEVO GASTO -->
+<div id="modalNuevoGasto" class="modal-overlay" onclick="cerrarModalNuevoGasto(event)">
+    <div class="modal-window" onclick="event.stopPropagation()" style="max-width:900px;">
+        <div class="modal-header">
+            <h3 class="modal-title">➕ Añadir gasto</h3>
+            <button class="modal-close" onclick="cerrarModalNuevoGasto(event)">✖</button>
+        </div>
+
+        <div class="modal-body" style="padding:0;">
+            <iframe id="iframeNuevoGasto" style="width:100%; height:600px; border:none;"></iframe>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL EDITAR ENCARGO NOTARIO -->
+<div id="modalEditarEncargo" class="modal-overlay" onclick="cerrarModalEditarEncargo(event)">
+    <div class="modal-window" onclick="event.stopPropagation()" style="max-width:700px;">
+
+        <div class="modal-header">
+            <h3>✏ Editar encargo al notario</h3>
+            <button class="modal-close" onclick="cerrarModalEditarEncargo(event)">✖</button>
+        </div>
+
+        <div class="modal-body">
+            <table class="table table--compact">
+                <tr>
+                    <th>Tipo documento</th>
+                    <td><input id="edit_tipoDocumento" class="input--compact w-100"></td>
+
+                    <th>Escritura / Documento</th>
+                    <td><input id="edit_escrituraDocumento" class="input--compact w-100"></td>
+                </tr>
+
+                <tr>
+                    <th>Tramitación</th>
+                    <td><input id="edit_tramitacion" class="input--compact w-100"></td>
+
+                    <th>Formato escritura</th>
+                    <td><input id="edit_formatoEscritura" class="input--compact w-100"></td>
+                </tr>
+
+                <tr>
+                    <th>Tipo firma</th>
+                    <td><input id="edit_tipoFirma" class="input--compact w-100"></td>
+
+                    <th>Idioma</th>
+                    <td><input id="edit_idioma" class="input--compact w-100"></td>
+                </tr>
+
+                <tr>
+                    <th>Apoderado</th>
+                    <td><input id="edit_apoderado" class="input--compact w-100"></td>
+
+                    <th>Notario</th>
+                    <td><input id="edit_notario" class="input--compact w-100"></td>
+                </tr>
+
+                <tr>
+                    <th>Fecha solicitud PNC</th>
+                    <td><input id="edit_fechaSolicitud" type="date" class="input--compact w-100"></td>
+
+                    <th>Nº Solicitud PNC</th>
+                    <td><input id="edit_solicitudPnc" class="input--compact w-100"></td>
+                </tr>
+
+                <tr>
+                    <th>Fecha encargo</th>
+                    <td><input id="edit_fechaEncargo" type="date" class="input--compact w-100"></td>
+
+                    <th>Fecha firma</th>
+                    <td><input id="edit_fechaFirma" type="date" class="input--compact w-100"></td>
+                </tr>
+
+                <tr>
+                    <th>Nº Protocolo</th>
+                    <td><input id="edit_protocolo" class="input--compact w-100"></td>
+
+                    <th>Provisión</th>
+                    <td><input id="edit_provision" type="number" class="input--compact w-100"></td>
+                </tr>
+
+                <tr>
+                    <th>Observaciones</th>
+                    <td colspan="3">
+                        <textarea id="edit_observacionesEncargo" class="input--compact w-100" rows="3"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-secondary btn-small" onclick="cerrarModalEditarEncargo(event)">Cancelar</button>
+            <button class="btn btn-blue btn-small" onclick="guardarEdicionEncargo()">💾 Guardar cambios</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- MODAL ELIMINAR ENCARGO -->
+<div id="modalEliminarEncargo" class="modal-overlay" onclick="cerrarModalEliminarEncargo(event)">
+    <div class="modal-window" onclick="event.stopPropagation()" style="max-width:400px;">
+
+        <div class="modal-header">
+            <h3>🗑 Eliminar encargo</h3>
+            <button class="modal-close" onclick="cerrarModalEliminarEncargo(event)">✖</button>
+        </div>
+
+        <div class="modal-body">
+            <p>¿Seguro que deseas eliminar este encargo al notario?</p>
+            <p class="text-soft">Esta acción no se puede deshacer.</p>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-secondary btn-small" onclick="cerrarModalEliminarEncargo(event)">Cancelar</button>
+            <button class="btn btn-red btn-small" onclick="eliminarEncargoNotario()">🗑 Eliminar</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- MODAL ACCIONES -->
+<div id="modalAcciones" class="modal-overlay" onclick="cerrarModalAcciones(event)">
+    <div class="modal-window" onclick="event.stopPropagation()" style="max-width:900px;">
+
+        <div class="modal-header">
+            <h3>📋 Seleccionar acción</h3>
+            <button class="modal-close" onclick="cerrarModalAcciones(event)">✖</button>
+        </div>
+
+        <div class="modal-body" style="padding:0;">
+            <iframe id="iframeAcciones" style="width:100%; height:600px; border:none;"></iframe>
+        </div>
+
+    </div>
+</div>
+
+<!-- MODAL RECLAMACIÓN -->
+<div id="modalReclamacion" class="modal-overlay" onclick="cerrarModalReclamacion(event)">
+    <div class="modal-window modal-reclamacion" onclick="event.stopPropagation()">
+
+        <div class="modal-header">
+            <h3>📨 Registrar reclamación</h3>
+            <button class="modal-close" onclick="cerrarModalReclamacion(event)">✖</button>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="form-group">
+                <label class="modal-label">De:</label>
+                <input id="reclamacionDe" type="text" class="input--compact w-100" placeholder="Quién envía la reclamación">
+            </div>
+
+            <div class="form-group mt-10">
+                <label class="modal-label">Para:</label>
+                <input id="reclamacionPara" type="text" class="input--compact w-100" placeholder="Destinatario de la reclamación">
+            </div>
+
+            <hr class="mt-15 mb-15" style="opacity:0.3;">
+
+            <div class="form-group">
+                <label class="modal-label">Tipo de reclamación</label>
+                <select id="reclamacionTipo" class="input--compact w-100">
+                    <option value="oficina">📄 Documentación pendiente</option>
+                    <option value="notaria">🏛️ Notaría</option>
+                    <option value="apoderado">👤 Apoderado</option>
+                    <option value="interna">🏢 Interna</option>
+                </select>
+            </div>
+
+            <div class="form-group mt-10">
+                <label class="modal-label">Descripción detallada</label>
+                <textarea id="reclamacionDescripcion" class="input--compact w-100" rows="5"
+                    placeholder="Describe claramente la incidencia, retraso o problema detectado..."></textarea>
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-secondary btn-small" onclick="cerrarModalReclamacion(event)">Cancelar</button>
+            <button class="btn btn-blue btn-small" onclick="guardarReclamacion()">💾 Enviar reclamación</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- MODAL FINCAS -->
+<div id="modalFincas" class="modal-overlay" onclick="cerrarModalFincas(event)">
+    <div class="modal-window" onclick="event.stopPropagation()" style="max-width:600px;">
+
+        <div class="modal-header">
+            <h3>➕ Añadir finca</h3>
+            <button class="modal-close" onclick="cerrarModalFincas(event)">✖</button>
+        </div>
+
+        <div class="modal-body">
+            <table class="table table--compact">
+                <tr><th>Finca</th><td><input type="text" id="finca_num" class="input--compact w-100"></td></tr>
+                <tr><th>Sección</th><td><input type="text" id="finca_seccion" class="input--compact w-100"></td></tr>
+                <tr><th>CRU / IDUFIR</th><td><input type="text" id="finca_cru" class="input--compact w-100"></td></tr>
+                <tr><th>Provincia</th><td><input type="text" id="finca_provincia" class="input--compact w-100"></td></tr>
+                <tr><th>Población</th><td><input type="text" id="finca_poblacion" class="input--compact w-100"></td></tr>
+                <tr>
+                    <th>Registro</th>
+                    <td>
+                        <select id="finca_registro" class="input--compact w-100">
+                            <option value="">Seleccione...</option>
+                            <option value="Registro 1">Registro 1</option>
+                            <option value="Registro 2">Registro 2</option>
+                            <option value="Registro 3">Registro 3</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr><th>Capital inscrito</th><td><input type="number" id="finca_capital" class="input--compact w-100"></td></tr>
+                <tr><th>Nº Inscripción</th><td><input type="text" id="finca_inscripcion" class="input--compact w-100"></td></tr>
+                <tr><th>Nº Contrato</th><td><input type="text" id="finca_contrato" class="input--compact w-100"></td></tr>
+                <tr><th>Fecha Constitución</th><td><input type="date" id="finca_fecha" class="input--compact w-100"></td></tr>
+                <tr>
+                    <th>Préstamo subrogado</th>
+                    <td>
+                        <select id="finca_subrogado" class="input--compact w-100">
+                            <option value="no">No</option>
+                            <option value="si">Sí</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Entidad</th>
+                    <td>
+                        <select id="finca_entidad" class="input--compact w-100">
+                            <option value="">Seleccione...</option>
+                            <option value="CaixaBank">CaixaBank</option>
+                            <option value="Sabadell">Sabadell</option>
+                            <option value="BBVA">BBVA</option>
+                            <option value="Santander">Santander</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-secondary btn-small" onclick="cerrarModalFincas(event)">Cerrar</button>
+            <button class="btn btn-blue btn-small" onclick="guardarFinca()">Aceptar</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- MODAL AÑADIR PPAD -->
+<div id="modalPPAD" class="modal-overlay" onclick="cerrarModalPPAD(event)">
+    <div class="modal-window" onclick="event.stopPropagation()">
+
+        <h3 class="modal-title">📌 Añadir PPAD</h3>
+
+        <label>Fecha</label>
+        <input id="ppadFecha" type="date" class="input--compact">
+
+        <label>Concepto</label>
+        <input id="ppadConcepto" class="input--compact">
+
+        <label>Importe (€)</label>
+        <input id="ppadImporte" type="number" class="input--compact">
+
+        <div class="modal-actions">
+            <button class="btn btn-green" onclick="guardarPPAD()">💾 Guardar PPAD</button>
+            <button class="btn btn-red" onclick="cerrarModalPPAD(event)">✖ Cerrar</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- MODAL PAGAR GASTO -->
+<div id="modalPagarGasto" class="modal-overlay" onclick="cerrarModalPagar(event)">
+    <div class="modal-window" onclick="event.stopPropagation()">
+
+        <h3 class="modal-title">💳 Registrar pago</h3>
+
+        <label>Importe pagado</label>
+        <input id="pagoImporte" type="number" class="input--compact">
+
+        <label>Fecha del pago</label>
+        <input id="pagoFecha" type="date" class="input--compact">
+
+        <label>Documento justificante (PDF)</label>
+        <input id="pagoPDF" type="file" accept="application/pdf">
+
+        <div class="modal-actions">
+            <button class="btn btn-blue" onclick="guardarPago()">💾 Registrar pago</button>
+            <button class="btn btn-red" onclick="cerrarModalPagar(event)">✖ Cerrar</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- MODAL FACTURAR GASTO -->
+<div id="modalFacturarGasto" class="modal-overlay" onclick="cerrarModalFacturar(event)">
+    <div class="modal-window" onclick="event.stopPropagation()">
+
+        <h3 class="modal-title">🧾 Facturar gasto</h3>
+
+        <label>Nº Factura</label>
+        <input id="facturaNumero" class="input--compact">
+
+        <label>Fecha factura</label>
+        <input id="facturaFecha" type="date" class="input--compact">
+
+        <label>Importe facturado</label>
+        <input id="facturaImporte" type="number" class="input--compact">
+
+        <label>Subir factura (PDF)</label>
+        <input id="facturaPDF" type="file" accept="application/pdf">
+
+        <div class="modal-actions">
+            <button class="btn btn-purple" onclick="guardarFactura()">💾 Guardar factura</button>
+            <button class="btn btn-red" onclick="cerrarModalFacturar(event)">✖ Cerrar</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- MODAL NUEVA OBSERVACIÓN -->
+<div id="modalNuevaObservacion" class="modal-overlay" onclick="cerrarModalNuevaObservacion(event)">
+    <div class="modal-window" onclick="event.stopPropagation()" style="max-width:600px;">
+
+        <div class="modal-header">
+            <h3>📝 Nueva observación</h3>
+            <button class="modal-close" onclick="cerrarModalNuevaObservacion(event)">✖</button>
+        </div>
+
+        <div class="modal-body">
+
+            <label class="modal-label">Observación</label>
+            <textarea id="nuevaObsTexto" class="input--compact w-100" rows="4"
+                placeholder="Escribe aquí la observación..."></textarea>
+
+            <div class="form-group mt-15">
+                <label class="modal-label">Visibilidad</label>
+                <select id="nuevaObsVisibilidad" class="input--compact w-100">
+                    <option value="interno">🔒 Interno</option>
+                    <option value="apoderado">👤 Apoderado</option>
+                    <option value="notaria">🏛️ Notaría</option>
+                    <option value="departamento">🏢 Departamento interno</option>
+                </select>
+            </div>
+
+            <div class="form-group mt-15">
+                <label class="modal-label">Urgente</label>
+                <input id="nuevaObsUrgente" type="checkbox">
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-secondary btn-small" onclick="cerrarModalNuevaObservacion(event)">Cancelar</button>
+            <button class="btn btn-blue btn-small" onclick="guardarNuevaObservacion()">💾 Enviar observación</button>
+        </div>
+
+    </div>
+</div>
+<!-- MODAL ACTIVIDADES -->
+<div id="modalActividades" class="modal-bg" style="display:none;">
+    <div class="modal-box modal-anim" style="width:90%; max-width:1100px; height:85%;">
+
+        <!-- HEADER -->
+        <div class="modal-header">
+            <span>📋 Actividades del expediente</span>
+            <span class="modal-close" onclick="cerrarModalActividades()">✖</span>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs-container" style="display:flex; border-bottom:1px solid var(--glass-border);">
+
+            <button class="tab-btn active"
+                data-url="ficha_actividad_documentacionprevia.html"
+                onclick="cargarActividad(this)">
+                📄 Documentación previa
+            </button>
+
+            <button class="tab-btn"
+                data-url="ficha_actividad_sedenotarialconprotocolo.html"
+                onclick="cargarActividad(this)">
+                🏛️ Sede notarial
+            </button>
+
+            <button class="tab-btn"
+                data-url="ficha__actividad_impuestos.html"
+                onclick="cargarActividad(this)">
+                💰 Impuestos
+            </button>
+
+            <button class="tab-btn"
+                data-url="ficha_actividad_registro.html"
+                onclick="cargarActividad(this)">
+                🗂️ Registro
+            </button>
+
+            <button class="tab-btn"
+                data-url="ficha_actividad_defectos.html"
+                onclick="cargarActividad(this)">
+                ⚠️ Defectos
+            </button>
+
+            <button class="tab-btn"
+                data-url="ficha_garantias.html"
+                onclick="cargarActividad(this)">
+                🛡️ Garantías
+            </button>
+
+        </div>
+
+        <!-- CONTENIDO DINÁMICO -->
+        <iframe id="iframeActividad" style="width:100%; height:100%; border:none;"></iframe>
+
+    </div>
+</div>
+
+<!-- =============================== -->
+<!--  SCRIPTS FINALES (MÓDULOS)      -->
+<!-- =============================== -->
+
+<script src="../../js/modules/expediente/expediente-core.js"></script>
+<script src="../../js/modules/expediente/expediente-acciones.js"></script>
+<script src="../../js/modules/expediente/expediente-reclamacion.js"></script>
+<script src="../../js/modules/expediente/expediente-notario.js"></script>
+<script src="../../js/modules/expediente/expediente-gastos.js"></script>
+<script src="../../js/modules/expediente/expediente-fincas.js"></script>
+<script src="../../js/modules/expediente/expediente-observaciones.js"></script>
+<script src="../../js/modules/expediente/expediente-modales.js"></script>
+
+<!-- SIDEBAR -->
+<script src="../../js/components/ds-sidebar-right.js"></script>
+<script>
+
+function abrirObservacionesInternas() {
+    window.location.href = "../expedientes_fichas_y_modales/observaciones_internas.html";
+}
+
+function abrirHistorialReclamaciones() {
+    window.location.href = "../expedientes_fichas_y_modales/historico_reclamaciones.html";
+}
+
+function abrirHistorialAcciones() {
+    window.location.href = "../expedientes_fichas_y_modales/historico_acciones.html";
+}
+
+function abrirHistorialObservaciones() {
+    window.location.href = "../expedientes_fichas_y_modales/historico_comentarios.html";
+}
+
+function abrirCarpetaDigital() {
+    window.location.href = "../expedientes_fichas_y_modales/ficha_carpetadigital.html";
+}
+/* ============================================================
+   ABRIR MODAL
+============================================================ */
+function abrirActividades() {
+    const modal = document.getElementById("modalActividades");
+    modal.style.display = "flex";
+
+    // Recuperar última pestaña usada
+    const ultima = localStorage.getItem("actividadTab");
+
+    let btn;
+
+    if (ultima) {
+        btn = document.querySelector(`.tab-btn[data-url="${ultima}"]`);
+    }
+
+    // Si no existe, cargar la primera
+    if (!btn) {
+        btn = document.querySelector(".tab-btn");
+    }
+
+    cargarActividad(btn);
+}
+
+/* ============================================================
+   CERRAR MODAL
+============================================================ */
+function cerrarModalActividades() {
+    document.getElementById("modalActividades").style.display = "none";
+}
+
+/* ============================================================
+   CARGAR ACTIVIDAD EN IFRAME
+============================================================ */
+function cargarActividad(btn) {
+    // Activar pestaña seleccionada
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    const url = btn.dataset.url;
+
+    // Guardar pestaña seleccionada
+    localStorage.setItem("actividadTab", url);
+
+    // Cargar contenido
+    document.getElementById("iframeActividad").src = url;
+}
+
+
+</script>
+
+</body>
+</html>

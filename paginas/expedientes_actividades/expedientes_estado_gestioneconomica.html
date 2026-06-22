@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Expedientes – Gestión económica</title>
+
+    <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- DESIGN SYSTEM COMPLETO -->
+    <link rel="stylesheet" href="../../css/ds.css">
+    <link rel="stylesheet" href="../../css/modules/ds-auditoria.css">
+
+    <style>
+    /* ============================================================
+       OVERRIDES ESPECÍFICOS — GLASS LUXE 2027
+    ============================================================ */
+
+    body {
+        background: transparent !important;
+    }
+
+    .content {
+        flex: 1;
+        padding: 30px 40px;
+        box-sizing: border-box;
+        width: 100%;
+        max-width: none;
+        margin-left: 260px;
+        transition: margin-left 0.25s ease;
+    }
+
+    body.sidebar-collapsed .content {
+        margin-left: 130px;
+    }
+
+    /* ============================================================
+       KPIS — GLASS LUXE 2027 (compactos)
+    ============================================================ */
+    .kpi-grid-compact {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 25px;
+    }
+
+    .kpi-grid-compact .kpi-card {
+        padding: 14px 16px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .kpi-grid-compact .kpi-icon {
+        font-size: 26px;
+    }
+
+    .kpi-grid-compact .kpi-title {
+        font-size: 13px;
+    }
+
+    .kpi-grid-compact .kpi-value {
+        font-size: 22px;
+        margin-top: 2px;
+    }
+
+    /* ============================================================
+       MODAL PDF
+    ============================================================ */
+    .modal-bg {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.55);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        backdrop-filter: blur(6px);
+    }
+
+    .modal-box {
+        width: 70%;
+        height: 80%;
+        background: var(--glass-bg-strong);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--glass-border);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: var(--shadow-glass);
+        backdrop-filter: blur(14px);
+    }
+
+    .modal-header {
+        background: var(--molsan-primary);
+        color: white;
+        padding: 12px;
+        font-size: 18px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .modal-close {
+        cursor: pointer;
+        font-size: 22px;
+    }
+
+    .modal-content {
+        flex: 1;
+    }
+
+    .ojo-icon {
+        width: 22px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .ojo-icon:hover {
+        transform: scale(1.15);
+    }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+
+    <!-- CONTENIDO -->
+    <div class="layout-content">
+
+        <h1>📘 Expedientes – <span>Gestión económica</span></h1>
+
+        <!-- ============================================================
+             KPIS — GLASS LUXE 2027
+        ============================================================ -->
+        <div class="kpi-grid kpi-grid-compact">
+
+            <div class="kpi-card kpi-red">
+                <div class="kpi-icon">📄</div>
+                <div class="kpi-info">
+                    <div class="kpi-title">Pago notario pendiente</div>
+                    <div class="kpi-value" id="kpiPagoNotarioPendiente">0</div>
+                </div>
+            </div>
+
+            <div class="kpi-card kpi-yellow">
+                <div class="kpi-icon">⚠</div>
+                <div class="kpi-info">
+                    <div class="kpi-title">Saldo insuficiente</div>
+                    <div class="kpi-value" id="kpiSaldoInsuficiente">0</div>
+                </div>
+            </div>
+
+            <div class="kpi-card kpi-blue">
+                <div class="kpi-icon">📑</div>
+                <div class="kpi-info">
+                    <div class="kpi-title">Pendiente complemento</div>
+                    <div class="kpi-value" id="kpiPendComplemento">0</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ============================================================
+             BLOQUE DE BÚSQUEDA
+        ============================================================ -->
+        <div class="card">
+            <div class="section-title">Buscar expedientes</div>
+
+            <div class="filters-bar">
+                <div><label>Nº Expediente</label><input type="text" id="fExpediente"></div>
+                <div><label>Nº Oficina</label><input type="text" id="fOficina"></div>
+                <div><label>Fecha de alta</label><input type="date" id="fAlta"></div>
+                <div><label>DNI Solicitante</label><input type="text" id="fDni"></div>
+                <div><label>Notario</label><input type="text" id="fNotario"></div>
+            </div>
+
+            <div class="filters-actions">
+                <button class="btn-small" id="btnBuscar">Buscar</button>
+            </div>
+        </div>
+
+        <!-- BOTÓN EXCEL -->
+        <div style="display:flex; justify-content:flex-start; margin:20px 0;">
+            <button class="btn-excel" id="btnExcel">📥 Descargar Excel</button>
+        </div>
+
+        <!-- ============================================================
+             LISTADO
+        ============================================================ -->
+        <div class="card card-full">
+
+            <div class="section-title">Listado de expedientes</div>
+
+            <div class="table-wrapper">
+                <table class="sla-table" id="tablaEconomicos2">
+                    <thead>
+                        <tr>
+                            <th>Expediente</th>
+                            <th>Nº oficina</th>
+                            <th>F. alta</th>
+                            <th>Solicitante</th>
+                            <th>DNI</th>
+                            <th>Notario</th>
+                            <th>Protocolo</th>
+                            <th>F. firma</th>
+                            <th>Factura Notario</th>
+                            <th>Factura Registro</th>
+                            <th>Otros Conceptos</th>
+                            <th>Honorarios Gestoría</th>
+                            <th>Saldo inicial</th>
+                            <th>Saldo pendiente</th>
+                            <th>Cuantía dev Saldo</th>
+                            <th>Días</th>
+                            <th>Acceder</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="pagination">
+                <div id="paginationInfo"></div>
+                <div class="pagination-controls">
+                    <button id="prevPage">Anterior</button>
+                    <button id="nextPage">Siguiente</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div> <!-- /content -->
+
+<!-- ============================================================
+     MODAL PDF
+============================================================ -->
+<div class="modal-bg" id="modalPDF">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span>Visualizar Documento</span>
+            <span class="modal-close" onclick="cerrarModal()">×</span>
+        </div>
+        <div class="modal-content">
+            <iframe id="visorPDF" src="" width="100%" height="100%"></iframe>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+/* === DATOS DE EJEMPLO === */
+const datos = [
+    {
+        expediente: "EXP-8001",
+        oficina: "Barcelona",
+        alta: "2026-05-01",
+        solicitante: "Juan Pérez",
+        dni: "12345678A",
+        notario: "Notario López",
+        protocolo: "1234",
+        firma: "2026-05-05",
+        facturaNotario: "docs/factura_notario_8001.pdf",
+        facturaRegistro: "docs/factura_registro_8001.pdf",
+        otros: "docs/otros_8001.pdf",
+        honorarios: "350€",
+        saldoInicial: "1500€",
+        saldoPendiente: "900€",
+        cuantiaDev: "600€"
+    },
+    {
+        expediente: "EXP-8002",
+        oficina: "Madrid",
+        alta: "2026-04-10",
+        solicitante: "Laura Gómez",
+        dni: "87654321B",
+        notario: "Notario Ruiz",
+        protocolo: "5678",
+        firma: "2026-04-12",
+        facturaNotario: "",
+        facturaRegistro: "",
+        otros: "",
+        honorarios: "200€",
+        saldoInicial: "800€",
+        saldoPendiente: "300€",
+        cuantiaDev: "500€"
+    }
+];
+
+let filtered = [...datos];
+let currentPage = 1;
+const rowsPerPage = 10;
+
+const tbody = document.querySelector("#tablaEconomicos2 tbody");
+
+function format(date) {
+    if (!date) return "";
+    const [y,m,d] = date.split("-");
+    return `${d}/${m}/${y}`;
+}
+
+function diasDesde(firma) {
+    if (!firma) return 0;
+    const f1 = new Date(firma);
+    const f2 = new Date();
+    return Math.floor((f2 - f1) / (1000*60*60*24));
+}
+
+function alertaDias(firma) {
+    const dias = diasDesde(firma);
+    return dias > 40
+        ? `<span class="alert alert-danger">⚠ ${dias} días</span>`
+        : `${dias} días`;
+}
+
+function iconoPDF(ruta) {
+    return ruta
+        ? `<img src="img/ojo.jpg" class="ojo-icon" onclick="verPDF('${ruta}')">`
+        : `<span class="badge badge-red">✖</span>`;
+}
+
+function verPDF(ruta) {
+    document.getElementById("visorPDF").src = ruta;
+    document.getElementById("modalPDF").style.display = "flex";
+}
+
+function cerrarModal() {
+    document.getElementById("modalPDF").style.display = "none";
+    document.getElementById("visorPDF").src = "";
+}
+
+/* ============================================================
+   KPIs AUTOMÁTICOS
+============================================================ */
+function actualizarKPIsEco() {
+
+    const pagoNotarioPendiente = filtered.filter(e => !e.facturaNotario).length;
+    const saldoInsuficiente = filtered.filter(e => parseFloat(e.saldoPendiente) > parseFloat(e.saldoInicial)).length;
+    const pendienteComplemento = filtered.filter(e => parseFloat(e.cuantiaDev) > parseFloat(e.saldoPendiente)).length;
+
+    document.getElementById("kpiPagoNotarioPendiente").textContent = pagoNotarioPendiente;
+    document.getElementById("kpiSaldoInsuficiente").textContent = saldoInsuficiente;
+    document.getElementById("kpiPendComplemento").textContent = pendienteComplemento;
+}
+
+/* ============================================================
+   RENDER TABLA
+============================================================ */
+function render() {
+    tbody.innerHTML = "";
+    const start = (currentPage - 1) * rowsPerPage;
+    const page = filtered.slice(start, start + rowsPerPage);
+
+    page.forEach(e => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${e.expediente}</td>
+                <td>${e.oficina}</td>
+                <td>${format(e.alta)}</td>
+                <td>${e.solicitante}</td>
+                <td>${e.dni}</td>
+                <td>${e.notario}</td>
+                <td>${e.protocolo}</td>
+                <td>${format(e.firma)}</td>
+                <td>${iconoPDF(e.facturaNotario)}</td>
+                <td>${iconoPDF(e.facturaRegistro)}</td>
+                <td>${iconoPDF(e.otros)}</td>
+                <td>${e.honorarios}</td>
+                <td>${e.saldoInicial}</td>
+                <td>${e.saldoPendiente}</td>
+                <td>${e.cuantiaDev}</td>
+                <td>${alertaDias(e.firma)}</td>
+                <td><a class="btn-ir" href="expediente_detalle.html?id=${e.expediente}">Ir</a></td>
+            </tr>
+        `;
+    });
+
+    const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
+    document.getElementById("paginationInfo").textContent =
+        `Página ${currentPage} de ${totalPages} — ${filtered.length} expediente(s)`;
+
+    document.getElementById("prevPage").disabled = currentPage === 1;
+    document.getElementById("nextPage").disabled = currentPage === totalPages;
+
+    actualizarKPIsEco();
+}
+
+document.getElementById("prevPage").onclick = () => { currentPage--; render(); };
+document.getElementById("nextPage").onclick = () => { currentPage++; render(); };
+
+render();
+</script>
+
+<script src="../../js/components/ds-sidebar.js"></script>
+
+</body>
+</html>
+

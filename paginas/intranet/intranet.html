@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Intranet</title>
+
+    <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- DESIGN SYSTEM BASE -->
+    <link rel="stylesheet" href="../../css/ds.css">
+
+    <!-- COMPONENTES NECESARIOS -->
+    <link rel="stylesheet" href="../../css/components/ds-buttons.css">
+    <link rel="stylesheet" href="../../css/components/ds-inputs.css">
+    <link rel="stylesheet" href="../../css/components/ds-cards.css">
+    <link rel="stylesheet" href="../../css/components/ds-grid.css">
+    <link rel="stylesheet" href="../../css/components/ds-badges.css">
+    <link rel="stylesheet" href="../../css/components/ds-tables.css">
+
+    <!-- CSS DEL MÓDULO ESPECÍFICO -->
+    <link rel="stylesheet" href="../../css/modules/ds-auditoria.css">
+
+<style>
+/* Anular animaciones */
+* {
+    animation: none !important;
+    transition: none !important;
+}
+
+body {
+    background: #f1f5f9;
+    font-family: 'Inter', sans-serif;
+}
+
+.content {
+    max-width: 1400px;
+    margin: auto;
+    padding: 25px;
+}
+
+/* TARJETAS GLASS */
+.card-block {
+    background: rgba(255,255,255,0.55);
+    padding: 22px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.35);
+    backdrop-filter: blur(10px);
+    margin-top: 25px;
+    box-shadow: 0 6px 18px rgba(10,74,138,0.15);
+}
+
+/* TABLA GLASS */
+.sla-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 14px rgba(10,74,138,0.15);
+}
+
+.sla-table th {
+    background: linear-gradient(180deg, #0B3A66 0%, #06294D 100%);
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+
+.sla-table td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.35);
+    color: #334155;
+}
+
+.sla-table tr:hover td {
+    background: rgba(255,255,255,0.35);
+}
+
+/* BUSCADOR GLASS */
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.55);
+    border: 1px solid rgba(255,255,255,0.35);
+    padding: 10px 14px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(10,74,138,0.15);
+}
+
+.search-box input {
+    border: none;
+    background: transparent;
+    width: 100%;
+    outline: none;
+    font-size: 15px;
+}
+
+.search-box .icon {
+    font-size: 18px;
+    color: #475569;
+}
+
+/* NOTICIAS GLASS */
+.news-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.news-list li {
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.35);
+    font-size: 15px;
+    color: #334155;
+    line-height: 1.4;
+}
+
+.news-list li:last-child {
+    border-bottom: none;
+}
+</style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+    <script src="../../js/components/ds-sidebar.js"></script>
+
+    <!-- CONTENIDO -->
+    <div class="layout-content">
+
+        <!-- HEADER -->
+        <div class="header">
+            <h1>🌐 Intranet Corporativa</h1>
+            <span class="header-sub">Documentación interna y noticias corporativas</span>
+        </div>
+
+        <!-- DOCUMENTOS SUBIDOS -->
+        <div class="card-block">
+            <h2 style="color:#084482; font-size:22px; font-weight:700;">Documentos subidos</h2>
+
+            <!-- BUSCADOR -->
+            <div class="search-box" style="margin-bottom: 16px;">
+                <span class="icon">🔎</span>
+                <input type="text" id="searchDocs" placeholder="Buscar documentos..." class="input">
+            </div>
+
+            <!-- TABLA -->
+            <div style="overflow-x:auto;">
+                <table class="sla-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Título</th>
+                            <th>Concepto</th>
+                            <th>Archivo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaDocsBody">
+                        <!-- Se rellenará por JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- NOTICIAS CORPORATIVAS -->
+        <div class="card-block" style="padding:25px; max-width:900px;">
+
+            <h2 style="color:#084482; font-size:22px; font-weight:700;">Noticias corporativas</h2>
+
+            <ul id="listaNoticias" class="news-list" style="max-height:260px; overflow-y:auto; padding-right:10px;">
+
+                <li>
+                    📢 <strong>Nuevo módulo de Registro Mercantil</strong><br>
+                    Ya disponible en CancelaGest 2.0 el nuevo módulo de gestión de inscripciones.
+                </li>
+
+                <li>
+                    🏢 <strong>Apertura de nueva oficina en Valencia</strong><br>
+                    La compañía amplía su presencia con una nueva sede operativa.
+                </li>
+
+                <li>
+                    🔧 <strong>Mantenimiento programado</strong><br>
+                    El sistema no estará disponible el 28/05 de 02:00 a 04:00.
+                </li>
+
+                <li>
+                    🎉 <strong>Reconocimiento empresarial</strong><br>
+                    CancelaGest ha sido premiada por su innovación en procesos notariales.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CancelaGest 2.0 – Defectos Registrales</title>
+
+   <!-- DESIGN SYSTEM -->
+    <link rel="stylesheet" href="../../css/ds.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../../css/modules/ds-actividades.css">
+
+<body class="sidebar-expanded">
+
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
+
+
+        <h2 class="section-title">📑 Defectos Registrales</h2>
+        <span class="header-sub">Gestión de defectos, subsanaciones y observaciones del Registro</span>
+
+        <!-- CONTENEDOR DE TODOS LOS DEFECTOS -->
+        <div id="contenedorDefectos">
+
+            <!-- BLOQUE DE DEFECTO (PLANTILLA INICIAL) -->
+            <div class="card-block defecto-bloque">
+                <div class="section-title">📄 Información del defecto</div>
+
+                <div class="grid-2">
+
+                    <div class="campo">
+                        <label>Documento</label>
+                        <input type="text" placeholder="Documento afectado">
+                    </div>
+
+                    <div class="campo">
+                        <label>Motivos del defecto</label>
+                        <input type="text" placeholder="Motivos del defecto">
+                    </div>
+
+                    <div class="campo">
+                        <label>Subtipo del defecto</label>
+                        <input type="text" placeholder="Subtipo del defecto">
+                    </div>
+
+                    <div class="campo">
+                        <label>Fecha notificación registro</label>
+                        <input type="date">
+                    </div>
+
+                    <div class="campo">
+                        <label>Fecha vencimiento presentación registro</label>
+                        <input type="date">
+                    </div>
+
+                    <div class="campo">
+                        <label>Calificación del registro</label>
+                        <input type="text" placeholder="Calificación del registro">
+                    </div>
+
+                    <div class="campo" style="grid-column: span 2;">
+                        <label>Observaciones</label>
+                        <textarea class="compact-input" placeholder="Observaciones adicionales..."></textarea>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div> <!-- /contenedorDefectos -->
+
+        <!-- BOTÓN AÑADIR NUEVO DEFECTO -->
+        <button class="btn-small" onclick="nuevoDefecto()" style="margin-top:10px;">
+            ➕ Añadir nuevo defecto
+        </button>
+
+        <!-- BOTÓN FINAL -->
+        <button class="btn" style="margin-top:25px;">
+            🔄 Enviar al Absis
+        </button>
+
+    </div> <!-- /content -->
+
+    <script>
+    function nuevoDefecto() {
+        const contenedor = document.getElementById("contenedorDefectos");
+
+        const bloque = document.createElement("div");
+        bloque.classList.add("card-block", "defecto-bloque");
+
+        bloque.innerHTML = `
+            <div class="section-title">📄 Información del defecto</div>
+
+            <div class="grid-2">
+
+                <div class="campo">
+                    <label>Documento</label>
+                    <input type="text" placeholder="Documento afectado">
+                </div>
+
+                <div class="campo">
+                    <label>Motivos del defecto</label>
+                    <input type="text" placeholder="Motivos del defecto">
+                </div>
+
+                <div class="campo">
+                    <label>Subtipo del defecto</label>
+                    <input type="text" placeholder="Subtipo del defecto">
+                </div>
+
+                <div class="campo">
+                    <label>Fecha notificación registro</label>
+                    <input type="date">
+                </div>
+
+                <div class="campo">
+                    <label>Fecha vencimiento presentación registro</label>
+                    <input type="date">
+                </div>
+
+                <div class="campo">
+                    <label>Calificación del registro</label>
+                    <input type="text" placeholder="Calificación del registro">
+                </div>
+
+                <div class="campo" style="grid-column: span 2;">
+                    <label>Observaciones</label>
+                    <textarea class="compact-input" placeholder="Observaciones adicionales..."></textarea>
+                </div>
+
+            </div>
+        `;
+
+        contenedor.appendChild(bloque);
+        bloque.scrollIntoView({ behavior: "smooth" });
+    }
+    </script>
+
+</body>
+</html>
