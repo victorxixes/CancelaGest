@@ -1,0 +1,65 @@
+/* components/ds-kpi.css */
+/* ============================================================
+   KPI — GLASS LUXE 2027
+============================================================ */
+
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-lg);
+    margin-top: var(--space-lg);
+}
+
+.kpi-box {
+    padding: var(--space-lg);
+    border-radius: var(--radius-md);
+    text-align: center;
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition);
+}
+
+.kpi-box:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glass);
+}
+
+/* Título */
+.kpi-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--brand-primary-dark);
+}
+
+/* Valor principal */
+.kpi-value {
+    font-size: 38px;
+    font-weight: var(--font-weight-black);
+    margin: var(--space-sm) 0;
+    color: var(--brand-primary);
+    text-shadow: 0 0 6px rgba(10,90,163,0.25);
+}
+
+/* Subtítulo */
+.kpi-sub {
+    font-size: var(--font-size-sm);
+    color: var(--text-soft);
+}
+
+/* Variantes */
+.kpi--danger {
+    background: rgba(220,38,38,0.20);
+    color: #7f1d1d;
+}
+
+.kpi--warning {
+    background: rgba(234,179,8,0.20);
+    color: #78350f;
+}
+
+.kpi--info {
+    background: rgba(14,165,233,0.20);
+    color: #075985;
+}

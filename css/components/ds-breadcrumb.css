@@ -1,0 +1,25 @@
+/* ============================================================
+   COMPONENTE: BREADCRUMB — Glass Luxe 2027
+============================================================ */
+
+.breadcrumb {
+    display: flex;
+    gap: 6px;
+    font-size: 14px;
+    opacity: 0.85;
+    margin-bottom: var(--space-md);
+}
+
+.breadcrumb a {
+    color: var(--brand-primary);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb span {
+    opacity: 0.6;
+}

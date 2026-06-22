@@ -1,0 +1,47 @@
+/* core/ds-helpers.css */
+/* ============================================================
+   HELPERS AVANZADOS — GLASS LUXE 2027
+============================================================ */
+
+/* Flex */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.flex-center { display: flex; justify-content: center; align-items: center; }
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+.flex-wrap { flex-wrap: wrap; }
+
+/* Grid */
+.grid { display: grid; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); gap: var(--space-lg); }
+
+/* Responsive */
+@media (max-width: var(--break-tablet)) {
+    .grid-3 { grid-template-columns: 1fr; }
+    .grid-4 { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: var(--break-mobile)) {
+    .grid-2,
+    .grid-4 { grid-template-columns: 1fr; }
+}
+
+/* Spacing */
+.p-10 { padding: 10px; }
+.p-20 { padding: 20px; }
+.m-10 { margin: 10px; }
+.m-20 { margin: 20px; }
+
+/* Gap */
+.gap-10 { gap: 10px; }
+.gap-20 { gap: 20px; }
+
+/* Width */
+.w-100 { width: 100%; }
+.w-auto { width: auto; }
+
+/* Text */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-muted { color: var(--text-muted); }

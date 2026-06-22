@@ -1,0 +1,123 @@
+/* components/ds-tables.css */
+/* ============================================================
+   TABLES — GLASS LUXE 2027
+============================================================ */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: var(--radius-md);
+    backdrop-filter: blur(10px);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-glass);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+}
+
+/* Cabecera */
+.table thead th {
+    background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-light));
+    color: var(--text-on-primary);
+    padding: 12px;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    text-align: left;
+}
+
+/* Filas */
+.table tbody tr:nth-child(even) {
+    background: rgba(255,255,255,0.20);
+}
+
+.table tbody tr:hover {
+    background: rgba(10,74,138,0.12);
+}
+
+/* Celdas */
+.table td {
+    padding: 12px;
+    font-size: var(--font-size-md);
+    border-bottom: 1px solid var(--border-glass);
+}
+
+/* Compacta */
+.table--compact td,
+.table--compact th {
+    padding: 6px;
+    font-size: var(--font-size-sm);
+}
+/* ============================================================
+   TABLA ESTILO EXCEL — ENCARGO AL NOTARIO
+============================================================ */
+
+.tabla-excel-block {
+    margin-top: 20px;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 15px;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.tabla-header h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #0A4A8A;
+}
+
+.tabla-excel {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.tabla-excel th {
+    background: #E8EEF5;
+    color: #0A4A8A;
+    font-weight: 600;
+    padding: 6px 8px;
+    border: 1px solid #C9D6E2;
+    width: 180px;
+}
+
+.tabla-excel td {
+    background: white;
+    padding: 6px 8px;
+    border: 1px solid #C9D6E2;
+}
+
+.tabla-footer {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+/* ============================================================
+   FIX — FORZAR ESTILO EXCEL PARA TABLAS PERSONALIZADAS
+============================================================ */
+
+.tabla-excel {
+    display: table !important;
+    width: 100% !important;
+    border-collapse: collapse !important;
+    background: white !important;
+}
+
+.tabla-excel th,
+.tabla-excel td {
+    border: 1px solid #C9D6E2 !important;
+    padding: 6px 8px !important;
+    background: white !important;
+}
+
+.tabla-excel th {
+    background: #E8EEF5 !important;
+    color: #0A4A8A !important;
+    font-weight: 600 !important;
+}

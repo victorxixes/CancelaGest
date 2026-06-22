@@ -1,0 +1,105 @@
+/* components/ds-observaciones.css */
+/* ============================
+   OBSERVACIONES — GLASS LUXE 2027
+============================ */
+
+#listaObservaciones {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+/* Item base */
+.obs-item {
+    background: rgba(10, 74, 138, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 0.75rem 0.9rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.obs-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+    border-color: rgba(30, 124, 195, 0.4);
+}
+
+/* Header */
+.obs-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.35rem;
+}
+
+.obs-fecha {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Badges */
+.obs-badges {
+    display: flex;
+    gap: 0.35rem;
+    align-items: center;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.12rem 0.45rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+
+/* Visibilidad */
+.badge-vis {
+    background: rgba(30, 124, 195, 0.18);
+    color: #e3f2ff;
+    border: 1px solid rgba(30, 124, 195, 0.5);
+}
+
+/* Urgente */
+.badge-urgente {
+    background: rgba(220, 53, 69, 0.18);
+    color: #ffe5e8;
+    border: 1px solid rgba(220, 53, 69, 0.6);
+}
+
+/* Texto */
+.obs-texto {
+    font-size: 0.86rem;
+    color: #f5f7fb;
+    line-height: 1.4;
+    margin-bottom: 0.45rem;
+}
+
+/* Acciones */
+.obs-actions {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.obs-actions .btn-mini {
+    font-size: 0.75rem;
+    padding: 0.18rem 0.5rem;
+}
+
+/* Animación fade-in */
+.fade-in {
+    opacity: 0;
+    transform: translateY(4px);
+    animation: obsFadeIn 0.18s ease-out forwards;
+}
+
+@keyframes obsFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

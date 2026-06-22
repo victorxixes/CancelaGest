@@ -1,0 +1,63 @@
+/* ============================================================
+   COMPONENTE: TABLA DE DOCUMENTOS — Glass Luxe 2027
+============================================================ */
+
+.file-table-wrapper {
+    overflow-x: auto;
+    margin-top: var(--space-md);
+}
+
+.file-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-glass);
+    backdrop-filter: blur(14px);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    min-width: 480px;
+}
+
+.file-table th {
+    background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-light));
+    color: white;
+    padding: 12px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.file-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border-glass);
+    font-size: 14px;
+    color: var(--text-main);
+    transition: background 0.25s ease;
+}
+
+.file-table tr:hover td {
+    background: rgba(255,255,255,0.25);
+    cursor: pointer;
+}
+
+.file-table tr:last-child td {
+    border-bottom: none;
+}
+
+.file-table-empty {
+    text-align: center;
+    padding: 20px;
+    opacity: 0.6;
+    font-size: 14px;
+}
+
+.file-icon {
+    font-size: 18px;
+    margin-right: 8px;
+    opacity: 0.8;
+}
+
+.file-actions {
+    display: flex;
+    gap: 8px;
+}

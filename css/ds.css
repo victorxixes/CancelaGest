@@ -1,0 +1,68 @@
+/* ============================================================
+   DESIGN SYSTEM — GLASS LUXE 2027
+   Archivo maestro que importa TODO el DS
+============================================================ */
+
+/* CORE */
+@import url("core/ds-tokens.css");
+@import url("core/ds-base.css");
+@import url("core/ds-helpers.css");
+@import url("core/ds-animations.css");
+
+/* LAYOUT */
+@import url("layout/ds-layout.css");
+@import url("layout/cg-sidebar.css");
+
+/* COMPONENTES */
+@import url("components/ds-buttons.css");
+@import url("components/ds-inputs.css");
+@import url("components/ds-tables.css");
+@import url("components/ds-cards.css");
+@import url("components/ds-badges.css");
+@import url("components/ds-kpis.css");
+@import url("components/ds-scroll.css");
+@import url("components/ds-search.css");
+@import url("components/ds-pdf-viewer.css");
+@import url("components/ds-buttons.css");
+@import url("components/ds-drawer.css");
+@import url("components/ds-file-table.css");
+@import url("components/ds-upload.css");
+@import url("components/ds-dropdown.css");
+@import url("components/ds-toast.css");
+@import url("components/ds-tooltip.css");
+@import url("components/ds-steps.css");
+@import url("components/ds-tabs.css");
+@import url("components/ds-breadcrumb.css");
+@import url("components/ds-switches.css");
+@import url("components/ds-modal.css");
+@import url("components/ds-tables.css");
+@import url("components/ds-pagination.css");
+@import url("components/ds-progress.css");
+@import url("components/ds-sidebar-right.css");
+@import url("components/ds-gastos.css");
+@import url("components/ds-observaciones.css");
+
+
+
+/* MÓDULOS GLOBALES (si los hubiera) */
+@import url("modules/ds-expedientes.css");
+@import url("modules/ds-agenda.css");
+@import url("modules/ds-auditoria.css");
+@import url("modules/ds-herramientas.css");
+@import url("modules/ds-tables.css");
+@import url("modules/ds-carpeta-digital.css");
+@import url("modules/ds-dashboard.css");
+@import url("modules/ds-documentos.css");
+@import url("modules/ds-expedientes-importados.css");
+@import url("modules/ds-notificaciones.css");
+@import url("modules/ds-usuarios.css");
+@import url("modules/ds-mensajeria.css");
+@import url("modules/ds-encargo-notario.css");
+@import url("modules/ds-facturacion.css");
+@import url("modules/ds-liquidacionycierre.css");
+@import url("modules/ds-actividades.css");
+
+/* NOTA:
+   Los módulos específicos de página NO se importan aquí.
+   Ejemplo: ds-carpeta-digital.css se carga solo en esa página.
+*/

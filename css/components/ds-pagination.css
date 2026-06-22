@@ -1,0 +1,29 @@
+/* PAGINACIÓN */
+.pagination {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pagination-controls button {
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.55);
+    color: #084482;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+    backdrop-filter: blur(10px);
+}
+
+.pagination-controls button:hover:not(:disabled) {
+    background: rgba(255,255,255,0.75);
+}
+
+.pagination-controls button:disabled {
+    opacity: 0.4;
+    cursor: default;
+}

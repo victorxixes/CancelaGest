@@ -1,0 +1,64 @@
+/* components/ds-progress.css */
+/* ============================
+   PROGRESS STEPS — GLASS LUXE 2027
+============================ */
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding: 0 5px;
+}
+
+.step-item {
+    text-align: center;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.step-item:hover {
+    transform: translateY(-2px);
+}
+
+.step-number {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 50%;
+    background: var(--molsan-primary-light);
+    color: white;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.step-item.active .step-number {
+    background: var(--molsan-primary);
+}
+
+.step-item.completed .step-number {
+    background: var(--molsan-green);
+}
+
+.step-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* ============================
+   PROGRESS BAR
+============================ */
+.progress-bar-container {
+    width: 100%;
+    height: 10px;
+    background: var(--glass-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--molsan-primary);
+    transition: width 0.4s ease;
+}

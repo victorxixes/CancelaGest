@@ -1,0 +1,77 @@
+/* ============================================================
+   MÓDULO: AUDITORÍA — KPIs PREMIUM (Glass Luxe 2027)
+============================================================ */
+
+/* GRID PRINCIPAL */
+.audit-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-lg);
+    margin-top: var(--space-md);
+}
+
+/* CAJA KPI */
+.audit-kpi-box {
+    padding: var(--space-xl);
+    border-radius: var(--radius-lg);
+    background: var(--bg-glass-strong);
+    border: 1px solid var(--border-glass);
+    backdrop-filter: blur(18px);
+    box-shadow: var(--shadow-glass);
+    text-align: center;
+    animation: auditFadeInUp 0.6s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ICONO */
+.audit-kpi-icon {
+    font-size: 34px;
+    margin-bottom: var(--space-sm);
+    opacity: 0.9;
+}
+
+/* TÍTULO */
+.audit-kpi-title {
+    font-size: 15px;
+    font-weight: 600;
+    opacity: 0.85;
+}
+
+/* NÚMERO */
+.audit-kpi-num {
+    font-size: 36px;
+    font-weight: 700;
+    margin-top: var(--space-xs);
+    color: var(--text-main);
+}
+
+/* SUBTÍTULO */
+.audit-kpi-sub {
+    font-size: 13px;
+    opacity: 0.75;
+    margin-top: var(--space-xs);
+}
+
+/* COLORES PREMIUM */
+.audit-kpi-info {
+    border-left: 4px solid var(--brand-primary);
+}
+
+.audit-kpi-success {
+    border-left: 4px solid #16a34a;
+}
+
+.audit-kpi-warning {
+    border-left: 4px solid #eab308;
+}
+
+.audit-kpi-danger {
+    border-left: 4px solid #dc2626;
+}
+
+/* ANIMACIÓN */
+@keyframes auditFadeInUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,225 @@
+/* modules/ds-importaciones.css */
+/* ============================================================
+   MÓDULO: IMPORTACIONES — GLASS LUXE 2027
+============================================================ */
+
+/* Layout general */
+.import-container {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: var(--space-xl);
+    margin-top: var(--space-lg);
+}
+
+@media (max-width: var(--break-tablet)) {
+    .import-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================
+   STEPS / PROGRESO
+============================ */
+.import-steps {
+    margin-bottom: var(--space-xl);
+}
+
+/* ============================
+   CARD PRINCIPAL
+============================ */
+.import-card {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    padding: var(--space-xl);
+    backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition);
+}
+
+.import-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glass);
+}
+
+/* Título */
+.import-title {
+    font-size: 22px;
+    font-weight: var(--font-weight-bold);
+    color: var(--brand-primary-dark);
+    margin-bottom: var(--space-md);
+}
+
+/* Subtítulo */
+.import-subtitle {
+    font-size: var(--font-size-md);
+    color: var(--text-soft);
+    margin-bottom: var(--space-lg);
+}
+
+/* ============================
+   UPLOAD
+============================ */
+.import-upload {
+    border: 2px dashed var(--brand-primary-light);
+    border-radius: var(--radius-md);
+    padding: var(--space-xl);
+    text-align: center;
+    background: rgba(255,255,255,0.25);
+    transition: var(--transition);
+}
+
+.import-upload:hover {
+    background: rgba(255,255,255,0.45);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Icono */
+.import-upload-icon {
+    font-size: 42px;
+    color: var(--brand-primary);
+    margin-bottom: var(--space-md);
+}
+
+/* ============================
+   PREVIEW DE ARCHIVO
+============================ */
+.import-preview {
+    margin-top: var(--space-xl);
+}
+
+.import-preview-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--brand-primary);
+    margin-bottom: var(--space-md);
+}
+
+/* Tabla */
+.import-preview-table {
+    margin-top: var(--space-md);
+}
+
+/* Scroll */
+.import-preview-scroll {
+    max-height: 380px;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+/* ============================
+   ESTADOS DE CELDA
+============================ */
+.import-ok {
+    background: rgba(22,163,74,0.25);
+    color: #065f46;
+}
+
+.import-warning {
+    background: rgba(234,179,8,0.25);
+    color: #78350f;
+}
+
+.import-error {
+    background: rgba(220,38,38,0.25);
+    color: #7f1d1d;
+}
+
+/* ============================
+   PANEL DERECHO (RESUMEN)
+============================ */
+.import-summary {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    padding: var(--space-xl);
+    backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Título */
+.import-summary-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--brand-primary-dark);
+    margin-bottom: var(--space-md);
+}
+
+/* Lista */
+.import-summary-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+/* Item */
+.import-summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--space-sm);
+    border-radius: var(--radius-md);
+    background: rgba(255,255,255,0.25);
+    border: 1px solid var(--border-glass);
+    backdrop-filter: blur(8px);
+}
+
+/* ============================
+   BOTONES DE ACCIÓN
+============================ */
+.import-actions {
+    margin-top: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.import-btn {
+    padding: 14px;
+    font-size: var(--font-size-lg);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* Importar */
+.import-btn-confirm {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: white;
+    box-shadow: var(--shadow-soft);
+}
+
+.import-btn-confirm:hover {
+    box-shadow: var(--shadow-glass);
+    transform: translateY(-2px);
+}
+
+/* Cancelar */
+.import-btn-cancel {
+    background: rgba(220,38,38,0.25);
+    color: #7f1d1d;
+}
+
+.import-btn-cancel:hover {
+    background: rgba(220,38,38,0.35);
+}
+
+/* ============================
+   MODAL DE RESULTADOS
+============================ */
+.import-modal .modal__content {
+    width: 520px;
+}
+
+.import-result {
+    margin-top: var(--space-lg);
+}
+
+.import-result-item {
+    padding: var(--space-sm);
+    border-radius: var(--radius-md);
+    background: rgba(255,255,255,0.25);
+    border: 1px solid var(--border-glass);
+    margin-bottom: var(--space-sm);
+}

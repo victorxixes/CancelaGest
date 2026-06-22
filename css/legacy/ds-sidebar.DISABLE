@@ -1,0 +1,143 @@
+/* layout/ds-sidebar.css */
+/* ============================================================
+   SIDEBAR GLASS LUXE 2027 — COMPACTO POR DEFECTO
+============================================================ */
+
+#sidebar {
+    height: 100vh;
+    background: var(--bg-glass);
+    backdrop-filter: blur(18px);
+    border-right: 1px solid var(--border-glass);
+    box-shadow: var(--shadow-glass);
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    transition: width var(--transition);
+    z-index: 999;
+}
+
+/* LOGO */
+.sidebar-logo {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0 20px;
+}
+
+.logo-mini {
+    width: 40px;
+    border-radius: 14px;
+    box-shadow: 0 0 12px rgba(255,255,255,0.4);
+}
+
+/* ICONOS — NECESARIO PARA QUE SE VEAN */
+.icon {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+    flex-shrink: 0;
+    display: inline-block;
+}
+
+/* ITEMS */
+.menu-item,
+.submenu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    margin: 4px 12px;
+    border-radius: var(--radius-sm);
+    color: var(--text-main);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background var(--transition), transform var(--transition-fast);
+}
+
+.menu-item:hover,
+.submenu-item:hover {
+    background: rgba(255,255,255,0.45);
+    transform: translateY(-1px);
+}
+
+/* TEXTO OCULTO EN COMPACTO */
+body:not(.sidebar-expanded) #sidebar .text {
+    display: none;
+}
+
+/* SUBMENÚ */
+.submenu {
+    display: none;
+    flex-direction: column;
+}
+
+.submenu.open {
+    display: flex;
+}
+
+.arrow {
+    margin-left: auto;
+    transition: transform 0.2s;
+}
+
+.arrow.rotate {
+    transform: rotate(90deg);
+}
+
+/* AVATAR */
+.user-avatar-wrapper {
+    margin-top: auto;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+/* MENÚ AVATAR */
+.user-menu {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    box-shadow: var(--shadow-glass);
+    border-radius: var(--radius-md);
+    padding: 10px 0;
+    width: 160px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition), transform var(--transition);
+}
+
+.user-menu.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+}
+
+.user-menu-item {
+    padding: 10px 16px;
+    cursor: pointer;
+}
+
+.user-menu-item:hover {
+    background: var(--bg-glass-strong);
+}
+/* Sidebar compacto: ancho fijo */
+.sidebar-compact {
+    width: 30px;
+}
+
+#sidebar {
+    position: relative;
+}
+
+/* Necesario para que el menú avatar se posicione bien */
+#sidebar {
+    position: relative;
+}

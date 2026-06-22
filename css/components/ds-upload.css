@@ -1,0 +1,43 @@
+/* ============================================================
+   COMPONENTE: BOTONES DE SUBIDA Y EXPORTACIÓN — Glass Luxe 2027
+============================================================ */
+
+.btn-upload {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--brand-primary);
+    color: white;
+    padding: 10px 18px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition);
+}
+
+.btn-upload:hover {
+    background: var(--brand-primary-light);
+    transform: translateY(-2px);
+}
+
+.btn-excel {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #16a34a;
+    color: white;
+    padding: 10px 18px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition);
+}
+
+.btn-excel:hover {
+    background: #22c55e;
+    transform: translateY(-2px);
+}

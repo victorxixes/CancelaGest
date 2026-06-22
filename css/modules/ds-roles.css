@@ -1,0 +1,174 @@
+/* modules/ds-roles.css */
+/* ============================================================
+   MÓDULO: ROLES — CANCELAGEST 2.0
+============================================================ */
+
+/* Layout general */
+.roles-container {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: var(--space-xl);
+    margin-top: var(--space-lg);
+}
+
+@media (max-width: var(--break-tablet)) {
+    .roles-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================
+   LISTADO DE ROLES
+============================ */
+.roles-list {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Item de rol */
+.role-item {
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    background: rgba(255,255,255,0.25);
+    border: 1px solid var(--border-glass);
+    margin-bottom: var(--space-sm);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.role-item:hover {
+    background: rgba(255,255,255,0.45);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Nombre del rol */
+.role-name {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--brand-primary-dark);
+}
+
+/* Número de permisos */
+.role-count {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+}
+
+/* ============================
+   DETALLE DEL ROL
+============================ */
+.role-detail {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    padding: var(--space-xl);
+    backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Título */
+.role-detail-title {
+    font-size: 22px;
+    font-weight: var(--font-weight-bold);
+    color: var(--brand-primary-dark);
+    margin-bottom: var(--space-md);
+}
+
+/* Descripción */
+.role-detail-desc {
+    font-size: var(--font-size-md);
+    color: var(--text-soft);
+    margin-bottom: var(--space-lg);
+}
+
+/* ============================
+   PERMISOS
+============================ */
+.role-permissions-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--brand-primary);
+    margin-bottom: var(--space-md);
+}
+
+/* Grid de permisos */
+.role-permissions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-md);
+}
+
+/* Card de permiso */
+.permission-card {
+    background: rgba(255,255,255,0.25);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition);
+}
+
+.permission-card:hover {
+    background: rgba(255,255,255,0.45);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Nombre del permiso */
+.permission-name {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-main);
+    margin-bottom: var(--space-sm);
+}
+
+/* Switch */
+.permission-switch {
+    margin-top: var(--space-sm);
+}
+
+/* ============================
+   BOTONES DE ACCIÓN
+============================ */
+.role-actions {
+    margin-top: var(--space-xl);
+    display: flex;
+    gap: var(--space-md);
+}
+
+/* Guardar */
+.role-btn-save {
+    padding: 14px;
+    font-size: var(--font-size-lg);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, var(--brand-primary-light), var(--brand-primary));
+    color: white;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.role-btn-save:hover {
+    box-shadow: var(--shadow-glass);
+    transform: translateY(-2px);
+}
+
+/* Eliminar */
+.role-btn-delete {
+    padding: 14px;
+    font-size: var(--font-size-lg);
+    border-radius: var(--radius-lg);
+    background: rgba(220,38,38,0.25);
+    color: #7f1d1d;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.role-btn-delete:hover {
+    background: rgba(220,38,38,0.35);
+}

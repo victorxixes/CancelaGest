@@ -1,0 +1,46 @@
+/* components/ds-inputs.css */
+/* ============================================================
+   INPUTS — GLASS LUXE 2027
+============================================================ */
+
+input[type="text"],
+input[type="date"],
+input[type="number"],
+input[type="email"],
+select,
+textarea {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: var(--font-size-md);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-glass);
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    color: var(--text-main);
+    transition: var(--transition);
+    box-shadow: 0 2px 10px rgba(10,74,138,0.12);
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+    background: var(--bg-glass-strong);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--brand-primary-light);
+    background: rgba(255,255,255,0.75);
+    box-shadow:
+        0 0 0 2px rgba(30,124,195,0.25),
+        0 4px 16px rgba(10,74,138,0.20);
+}
+
+/* Compacto */
+.input--compact {
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+}

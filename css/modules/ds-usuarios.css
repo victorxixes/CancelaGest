@@ -1,0 +1,101 @@
+/* modules/ds-usuarios.css */
+/* ============================================================
+   MÓDULO: USUARIOS — CANCELAGEST 2.0
+============================================================ */
+
+/* Layout general */
+.usuarios-container {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: var(--space-xl);
+    margin-top: var(--space-lg);
+}
+
+@media (max-width: var(--break-tablet)) {
+    .usuarios-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Panel izquierdo (tabla) */
+.usuarios-list {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Fila usuario */
+.usuario-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    background: rgba(255,255,255,0.25);
+    margin-bottom: var(--space-sm);
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.usuario-item:hover {
+    background: rgba(255,255,255,0.45);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Estado */
+.usuario-estado--activo {
+    background: rgba(22,163,74,0.25);
+    color: #065f46;
+}
+
+.usuario-estado--inactivo {
+    background: rgba(220,38,38,0.25);
+    color: #7f1d1d;
+}
+
+/* Panel derecho (detalle) */
+.usuario-detalle {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    padding: var(--space-xl);
+    backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Título */
+.usuario-detalle-title {
+    font-size: 22px;
+    font-weight: var(--font-weight-bold);
+    color: var(--brand-primary-dark);
+    margin-bottom: var(--space-md);
+}
+
+/* Inputs */
+.usuario-input {
+    margin-bottom: var(--space-md);
+}
+
+/* Roles asignados */
+.usuario-roles {
+    margin-top: var(--space-lg);
+}
+
+.usuario-role-item {
+    padding: var(--space-sm);
+    border-radius: var(--radius-md);
+    background: rgba(255,255,255,0.25);
+    border: 1px solid var(--border-glass);
+    margin-bottom: var(--space-xs);
+}
+
+/* Botones */
+.usuario-actions {
+    margin-top: var(--space-xl);
+    display: flex;
+    gap: var(--space-md);
+}

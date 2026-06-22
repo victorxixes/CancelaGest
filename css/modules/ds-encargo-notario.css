@@ -1,0 +1,86 @@
+/* modules/ds-encargo-notario.css */
+/* ============================================================
+   GLASS LUXE 2027 — ENCARGO AL NOTARIO
+   Módulo exclusivo para el bloque de Encargo Notarial
+============================================================ */
+
+/* CONTENEDOR PRINCIPAL */
+.encargo-notario {
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    padding: 18px 22px;
+    margin-top: 20px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.20);
+    animation: fadeIn .25s ease;
+}
+
+/* TÍTULO */
+.encargo-notario h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+    font-weight: 600;
+    color: var(--molsan-primary-light);
+}
+
+/* TABLA ESTILO INFORMACIÓN REGISTRAL */
+.encargo-notario table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.encargo-notario th {
+    width: 220px;
+    text-align: left;
+    padding: 6px 8px;
+    font-weight: 600;
+    background: rgba(255,255,255,0.12);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    color: var(--molsan-primary-light);
+}
+
+.encargo-notario td {
+    padding: 6px 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    color: white;
+}
+
+/* BOTONES */
+.encargo-notario .encargo-buttons {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.encargo-notario .btn-secondary {
+    background: rgba(255,255,255,0.15);
+    color: white;
+}
+
+.encargo-notario .btn-blue {
+    background: var(--molsan-primary);
+    color: white;
+}
+
+.encargo-notario .btn-green {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: white;
+}
+#bloqueEncargoNotario {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+}
+.encargo-notario {
+    display: block !important;
+}
+
+/* ANIMACIÓN */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}

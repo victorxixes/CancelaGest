@@ -1,0 +1,203 @@
+/* components/ds-cards.css */
+/* ============================================================
+   CARDS — GLASS LUXE 2027
+============================================================ */
+
+.card,
+.card-block {
+    background: var(--bg-glass);
+    padding: var(--space-lg);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-glass);
+    backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-soft);
+    transition: transform var(--transition), box-shadow var(--transition);
+    margin-bottom: var(--space-lg);
+}
+
+.card:hover,
+.card-block:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glass);
+}
+
+/* Expandibles */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding-bottom: var(--space-sm);
+    transition: background var(--transition), box-shadow var(--transition);
+}
+
+.card-block.open .card-header {
+    background: rgba(255,255,255,0.25);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    border-radius: var(--radius-sm);
+}
+
+.card-header .arrow {
+    transition: transform var(--transition);
+}
+
+.card-block.open .arrow {
+    transform: rotate(180deg);
+}
+
+.card-content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition:
+        max-height var(--transition-slow),
+        opacity var(--transition),
+        transform var(--transition);
+}
+
+.card-block.open .card-content {
+    max-height: 2000px;
+    opacity: 1;
+    transform: translateY(0);
+}
+/* ============================================================
+   CABECERA SUPERIOR DEL EXPEDIENTE
+============================================================ */
+
+.top-header-expediente {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding: 10px 5px;
+}
+
+.top-header-expediente .Gestor {
+    font-weight: 600;
+    color: #0A4A8A;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.top-header-expediente .exp-vinculados-line {
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;
+}
+/* ============================================================
+   BLOQUES COMPACTOS — LIBERAR LADO DERECHO
+============================================================ */
+
+/* Bloques estándar (Última acción, Observaciones) */
+.widget {
+    max-width: 650px;        /* Ajusta el ancho */
+    width: 100%;
+    margin-left: 0;
+}
+
+/* Bloque pequeño (Información registral) */
+.widget-small {
+    max-width: 650px;
+    width: 100%;
+    margin-left: 0;
+}
+
+/* Asegurar que no se expanden */
+.widget,
+.widget-small {
+    display: block;
+}
+
+/* Opcional: separación entre bloques */
+.widget + .widget,
+.widget-small + .widget,
+.widget + .widget-small {
+    margin-top: 20px;
+}
+/* ============================================================
+   COLAPSABLES — GLASS LUXE 2027
+============================================================ */
+
+.collapsible-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.25s ease;
+    margin-bottom: 5px;
+}
+
+.collapsible-header:hover {
+    background: rgba(255,255,255,0.55);
+}
+
+.collapsible-header .chevron {
+    transition: transform 0.25s ease;
+}
+
+.collapsible-header.active .chevron {
+    transform: rotate(180deg);
+}
+
+/* Contenido colapsable */
+.collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+    background: rgba(255,255,255,0.25);
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 10px;
+    padding: 0 14px;
+}
+
+/* Cuando está abierto */
+.collapsible-content.open {
+    padding: 14px;
+    max-height: 900px; /* suficiente para cualquier bloque */
+}
+/* ============================================================
+   BLOQUES COMPACTOS — CAMPOS EN LÍNEA
+============================================================ */
+
+.block-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+}
+
+.block-inline .item {
+    display: flex;
+    flex-direction: column;
+    width: calc(33.33% - 20px); /* 3 columnas */
+    min-width: 220px;
+}
+
+.block-inline .label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0A4A8A;
+    margin-bottom: 3px;
+}
+
+.input--compact {
+    padding: 6px 8px;
+    height: 32px;
+}
+
+/* Para bloques con más contenido (Información financiera) */
+.block-inline.financiera .item {
+    width: calc(25% - 20px); /* 4 columnas */
+}
+
+/* Para bloques con menos contenido (Solicitante / Titular) */
+.block-inline.persona .item {
+    width: calc(33.33% - 20px);
+}

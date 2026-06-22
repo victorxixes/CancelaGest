@@ -1,0 +1,350 @@
+/* ============================================================
+   COMPONENTE: MODAL — Glass Luxe 2027
+============================================================ */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(6px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+}
+
+.modal-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal {
+    width: 480px;
+    max-width: 90%;
+    background: var(--bg-glass-strong);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(18px);
+    box-shadow: var(--shadow-glass);
+    padding: var(--space-xl);
+    animation: modalFadeIn 0.35s ease;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: var(--space-md);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-sm);
+    margin-top: var(--space-lg);
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* ============================================================
+   MODALES PREMIUM — GLASS LUXE 2027
+   (Reclamación,Encargo Notario, Añadir Finca, Añadir Acción,)
+============================================================ */
+
+.modal-reclamacion {
+    width: 480px;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+    animation: modalFadeIn 0.35s ease;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, #0A4A8A, #1E7CC3);
+    color: white;
+    border-radius: 16px 16px 0 0;
+}
+
+.modal-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--text-primary);
+    transition: 0.2s;
+}
+
+.modal-close:hover {
+    color: #ff4d4d;
+    transform: scale(1.1);
+}
+
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-label {
+    font-weight: 600;
+    color: #0A4A8A;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Animación */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(4px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+}
+
+.modal-overlay.open {
+    display: flex;
+}
+
+/* Ventana modal */
+.modal-window {
+    width: 50%;
+    max-width: 900px;
+    min-width: 480px;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+    animation: modalFadeIn 0.35s ease;
+    overflow: hidden;
+}
+
+/* Cabecera */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, #0A4A8A, #1E7CC3);
+    color: white;
+}
+
+.modal-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Botón cerrar */
+.modal-close {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.modal-close:hover {
+    transform: scale(1.2);
+    opacity: 0.8;
+}
+
+/* Cuerpo */
+.modal-body {
+    padding: 22px;
+}
+
+.modal-body .form-group {
+    margin-bottom: 15px;
+}
+
+.modal-body label {
+    font-weight: 600;
+    color: #0A4A8A;
+    margin-bottom: 4px;
+    display: block;
+}
+
+/* Footer */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 15px 22px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Animación */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 9999;
+    padding: 40px;
+}
+
+.modal-content {
+    background: #fff;
+    border-radius: 8px;
+    padding: 25px;
+    width: 450px;
+    margin: auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.modal-title {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.modal-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+.modal-window {
+    max-width: 1400px !important;
+    width: 95%;
+}
+/* Animación Glass Luxe */
+.modal-anim {
+    animation: modalFade 0.25s ease-out;
+}
+
+@keyframes modalFade {
+    from { opacity: 0; transform: translateY(-10px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Tabs */
+.tab-btn {
+    padding: 10px 16px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-soft);
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tab-btn:hover {
+    color: var(--brand-primary);
+}
+
+.tab-btn.active {
+    color: var(--brand-primary);
+    border-bottom: 3px solid var(--brand-primary);
+}
+/* Fondo oscuro del modal */
+.modal-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Caja del modal */
+.modal-box {
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(14px);
+    border-radius: 16px;
+    padding: 0;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header del modal */
+.modal-header {
+    padding: 14px 20px;
+    font-size: 18px;
+    font-weight: 700;
+    background: rgba(255,255,255,0.55);
+    border-bottom: 1px solid var(--glass-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Botón cerrar */
+.modal-close {
+    cursor: pointer;
+    font-size: 20px;
+    opacity: 0.7;
+    transition: 0.2s;
+}
+
+.modal-close:hover {
+    opacity: 1;
+}
+
+/* Animación */
+.modal-anim {
+    animation: modalFade 0.25s ease-out;
+}
+
+@keyframes modalFade {
+    from { opacity: 0; transform: translateY(-10px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}

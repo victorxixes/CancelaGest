@@ -1,0 +1,78 @@
+/* === BLOQUE GASTOS EXACTO COMO EN LA CAPTURA === */
+#bloqueGastosExpediente {
+    background: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    padding: 15px 18px;
+    margin-top: 20px;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+#bloqueGastosExpediente .section-title {
+    font-size: 18px;
+    font-weight: 00;
+    color: #1a1a1a;
+    margin-bottom: 15px;
+}
+
+#bloqueGastosExpediente table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#bloqueGastosExpediente th {
+    background: #f5f5f5;
+    padding: 8px;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+#bloqueGastosExpediente td {
+    padding: 8px;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+}
+
+.totales-gastos {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 40px;
+}
+
+.total-item span {
+    color: #333;
+    font-size: 14px;
+}
+
+.total-item strong {
+    color: #00a651;
+    font-size: 16px;
+}
+
+/* Layout: Observaciones (izq) + Gastos (dcha) */
+.fila-observaciones-gastos {
+    display: grid;
+    grid-template-columns: 1fr 1.8fr;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+/* Forzar que Gastos se estire */
+#bloqueGastosExpediente {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+/* Forzar que el contenedor del bloque de gastos no limite el ancho */
+.bloque-gastos,
+.bloque-gastos .widget,
+.bloque-gastos section,
+.bloque-gastos .card-block {
+    width: 100% !important;
+    max-width: none !important;
+}

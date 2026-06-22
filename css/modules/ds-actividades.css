@@ -1,0 +1,263 @@
+/* ============================================================
+   MÓDULO — ACTIVIDADES (Glass Luxe 2027)
+   Archivo: ds-actividades.css
+============================================================ */
+
+/* ============================================
+   CONTENEDOR PRINCIPAL
+============================================ */
+.actividades-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    width: 100%;
+}
+
+/* ============================================
+   CARD / WIDGET
+============================================ */
+.actividades-card {
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 22px 26px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    box-sizing: border-box;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   HEADER DE SECCIÓN
+============================================ */
+.actividades-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.actividades-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--brand-primary);
+}
+
+/* ============================================
+   TABLA DE ACTIVIDADES
+============================================ */
+.actividades-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.actividades-table thead th {
+    text-align: left;
+    padding: 10px 6px;
+    font-weight: 600;
+    color: var(--text-soft);
+    border-bottom: 1px solid rgba(0,0,0,0.15);
+}
+
+.actividades-table tbody td {
+    padding: 10px 6px;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    vertical-align: middle;
+}
+
+/* Hover fila */
+.actividades-table tbody tr:hover {
+    background: rgba(0,0,0,0.04);
+    cursor: pointer;
+}
+
+/* ============================================
+   ESTADOS (Píldoras)
+============================================ */
+.estado-pill {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.estado-pendiente {
+    background: rgba(250,204,21,0.25);
+    color: #854d0e;
+}
+
+.estado-completado {
+    background: rgba(34,197,94,0.18);
+    color: #15803d;
+}
+
+.estado-proceso {
+    background: rgba(59,130,246,0.20);
+    color: #1d4ed8;
+}
+
+.estado-error {
+    background: rgba(220,38,38,0.18);
+    color: #b91c1c;
+}
+
+/* ============================================
+   BOTONES DE ACCIÓN
+============================================ */
+.actividad-btn {
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+
+.actividad-btn:hover {
+    opacity: 0.85;
+}
+
+.btn-ver {
+    background: rgba(59,130,246,0.25);
+    color: #1d4ed8;
+}
+
+.btn-editar {
+    background: rgba(250,204,21,0.25);
+    color: #854d0e;
+}
+
+.btn-eliminar {
+    background: rgba(220,38,38,0.25);
+    color: #b91c1c;
+}
+
+.btn-add {
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(8px);
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-add:hover {
+    background: rgba(255,255,255,0.75);
+}
+
+/* ============================================
+   CAMPOS (inputs, fechas, selects)
+============================================ */
+.actividades-input,
+.actividades-select,
+.actividades-date {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.actividades-input:focus,
+.actividades-select:focus,
+.actividades-date:focus {
+    outline: none;
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 2px rgba(10,74,138,0.25);
+}
+
+/* ============================================
+   GRID INTERNO
+============================================ */
+.actividades-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+@media (max-width: 900px) {
+    .actividades-grid-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   SCROLL INTERNO
+============================================ */
+.actividades-scroll {
+    max-height: 350px;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+.actividades-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.actividades-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.25);
+    border-radius: 10px;
+}
+
+/* ============================================
+   BADGES
+============================================ */
+.actividades-badge {
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    background: rgba(0,0,0,0.08);
+    color: var(--text-soft);
+}
+
+/* ============================================
+   TOOLTIP
+============================================ */
+.tooltip {
+    position: relative;
+    cursor: help;
+}
+
+.tooltip:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    left: 0;
+    top: -32px;
+    background: rgba(0,0,0,0.75);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+/* ============================================
+   ANIMACIONES
+============================================ */
+.row-highlight {
+    animation: highlight 1.2s ease;
+}
+
+@keyframes highlight {
+    from { background: rgba(59,130,246,0.25); }
+    to { background: transparent; }
+}

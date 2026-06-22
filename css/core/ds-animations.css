@@ -1,0 +1,112 @@
+/* core/ds-animations.css */
+/* ============================================================
+   ANIMACIONES — DESIGN SYSTEM GLASS LUXE 2027
+============================================================ */
+
+/* Fade In */
+@keyframes ds-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Fade Up (contenido que aparece desde abajo) */
+@keyframes ds-fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Fade Down */
+@keyframes ds-fade-down {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Slide Left */
+@keyframes ds-slide-left {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Slide Right */
+@keyframes ds-slide-right {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Scale In (modales, tarjetas) */
+@keyframes ds-scale-in {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Expand / Collapse (para card-content, submenús, etc.) */
+@keyframes ds-expand {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes ds-collapse {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+}
+
+/* Spin (loader) */
+@keyframes ds-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Glow (para KPIs, botones activos, estados done) */
+@keyframes ds-glow {
+    0%   { box-shadow: 0 0 4px rgba(30,124,195,0.4); }
+    50%  { box-shadow: 0 0 12px rgba(30,124,195,0.7); }
+    100% { box-shadow: 0 0 4px rgba(30,124,195,0.4); }
+}
+
+/* Pulse (notificaciones, badges, alertas) */
+@keyframes ds-pulse {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}

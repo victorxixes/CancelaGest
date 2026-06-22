@@ -1,0 +1,306 @@
+/* ============================================================
+   LIQUIDACIÓN Y CIERRE — GLASS LUXE 2027
+   Módulo exclusivo para la página de cierre del expediente
+============================================================ */
+
+/* ============================================
+   LAYOUT GENERAL
+============================================ */
+.expediente-liquidacion .layout-content {
+    padding: 20px 30px !important;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ============================================
+   BLOQUES / CARDS
+============================================ */
+.expediente-liquidacion .card-block.widget {
+    width: 100%;
+    max-width: 100%;
+    padding: 22px 26px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ============================================
+   TITULOS DE SECCIÓN
+============================================ */
+.expediente-liquidacion .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.expediente-liquidacion .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--brand-primary);
+}
+
+/* ============================================
+   GRID SUPERIOR (Resumen + Incidencias)
+============================================ */
+.expediente-liquidacion .grid-superior {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 26px;
+    margin-bottom: 26px;
+    align-items: stretch;
+}
+
+@media (max-width: 1200px) {
+    .expediente-liquidacion .grid-superior {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   GRID INTERMEDIO (Actividades + Documentación)
+============================================ */
+/* ============================================
+   GRID MEDIO — Estado de actividades + Documentación final
+============================================ */
+.expediente-liquidacion .grid-medio {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* izquierda / derecha */
+    gap: 26px;
+    margin-bottom: 26px;
+    align-items: stretch; /* iguala alturas */
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .expediente-liquidacion .grid-medio {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Igualar altura de los bloques dentro del grid medio */
+.expediente-liquidacion .grid-medio > .card-block {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Evitar desbordes internos */
+.expediente-liquidacion #bloqueActividades,
+.expediente-liquidacion #bloqueDocumentacionFinal {
+    overflow: hidden;
+}
+
+/* Scroll interno controlado */
+.expediente-liquidacion #bloqueDocumentacionFinal .scroll-box,
+.expediente-liquidacion #bloqueActividades .scroll-box {
+    flex: 1;
+    overflow-y: auto;
+}
+/* ============================================
+   GRID INFERIOR — Económico + Factura
+============================================ */
+.expediente-liquidacion .grid-inferior {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Económico más ancho */
+    gap: 26px;
+    margin-bottom: 26px;
+    align-items: stretch; /* Igualar alturas */
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .expediente-liquidacion .grid-inferior {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Igualar altura de los bloques dentro del grid inferior */
+.expediente-liquidacion .grid-inferior > .card-block {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Evitar desbordes internos */
+.expediente-liquidacion #bloqueResumenEconomico,
+.expediente-liquidacion #bloqueFactura {
+    overflow: hidden;
+}
+
+/* Scroll interno controlado para tablas */
+.expediente-liquidacion #bloqueResumenEconomico .scroll-box {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Alinear botones al fondo del bloque Factura */
+.expediente-liquidacion #bloqueFactura {
+    display: flex;
+    flex-direction: column;
+}
+
+.expediente-liquidacion #bloqueFactura .btn {
+    margin-top: auto; /* Empuja el botón hacia abajo */
+}
+
+/* ============================================
+   IGUALAR ALTURA DE BLOQUES EN CADA FILA
+============================================ */
+.expediente-liquidacion .grid-superior > .card-block,
+.expediente-liquidacion .grid-medio > .card-block,
+.expediente-liquidacion .grid-inferior > .card-block {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ============================================
+   KPI GRID
+============================================ */
+.expediente-liquidacion .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.expediente-liquidacion .kpi-card {
+    background: rgba(255,255,255,0.55);
+    padding: 16px 18px;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.10);
+    backdrop-filter: blur(8px);
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.expediente-liquidacion .kpi-label {
+    font-size: 13px;
+    color: var(--text-soft);
+}
+
+.expediente-liquidacion .kpi-value {
+    display: block;
+    margin-top: 6px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--brand-primary);
+}
+
+/* Píldoras */
+.expediente-liquidacion .kpi-pill {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.expediente-liquidacion .kpi-pill--green {
+    background: rgba(34,197,94,0.18);
+    color: #15803d;
+}
+
+.expediente-liquidacion .kpi-pill--yellow {
+    background: rgba(250,204,21,0.25);
+    color: #854d0e;
+}
+
+.expediente-liquidacion .kpi-pill--red {
+    background: rgba(220,38,38,0.18);
+    color: #b91c1c;
+}
+
+/* ============================================
+   TABLAS
+============================================ */
+.expediente-liquidacion table.table {
+    width: 100%;
+    table-layout: auto;
+}
+
+.expediente-liquidacion .scroll-box {
+    border-radius: 12px;
+    padding: 6px;
+    background: rgba(255,255,255,0.45);
+    backdrop-filter: blur(6px);
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* ============================================
+   DOCUMENTACIÓN FINAL — GRID INTERNO
+============================================ */
+.expediente-liquidacion .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+}
+
+@media (max-width: 900px) {
+    .expediente-liquidacion .grid-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   MODALES
+============================================ */
+.expediente-liquidacion .modal-overlay {
+    backdrop-filter: blur(6px);
+}
+
+.expediente-liquidacion .glass-modal {
+    width: 700px;
+    max-height: 90vh;
+    padding: 26px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.75);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.25);
+}
+
+/* ============================================
+   BOTONES
+============================================ */
+.expediente-liquidacion .btn {
+    border-radius: 12px;
+    padding: 10px 18px;
+    font-weight: 600;
+}
+
+.expediente-liquidacion .btn-blue {
+    background: linear-gradient(135deg,#0f4c75,#3282b8);
+    color: white;
+}
+
+.expediente-liquidacion .btn-red {
+    background: #dc2626;
+    color: white;
+}
+
+/* ============================================
+   OBSERVACIONES / INCIDENCIAS
+============================================ */
+.expediente-liquidacion .obs-item {
+    background: rgba(10, 74, 138, 0.08);
+    border-radius: 10px;
+    padding: 12px 14px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    margin-bottom: 10px;
+}
+
+/* ============================================
+   GLASS BOX
+============================================ */
+.expediente-liquidacion .glass-box {
+    background: rgba(255,255,255,0.55);
+    padding: 16px;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.10);
+}

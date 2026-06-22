@@ -1,0 +1,32 @@
+/* ============================================================
+   GLASS LUXE 2027 — SIDEBAR LATERAL DERECHO
+============================================================ */
+
+.sidebar-tools {
+    position: fixed;
+    top: 0;
+    right: -260px;
+    width: 260px;
+    height: 100vh;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(12px);
+    border-left: 1px solid rgba(255,255,255,0.15);
+    box-shadow: -4px 0 12px rgba(0,0,0,0.25);
+    transition: right 0.35s ease;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.sidebar-tools.open {
+    right: 0;
+}
+
+.sidebar-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.sidebar-hitbox {
+    background: red !important;
+    opacity: 0.4 !important;
+}

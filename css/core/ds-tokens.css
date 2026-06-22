@@ -1,0 +1,73 @@
+/* core/ds-tokens.css */
+/* ============================================================
+   DESIGN SYSTEM — TOKENS GLOBALES (GLASS LUXE 2027)
+============================================================ */
+:root {
+    /* Brand */
+    --brand-primary: #0A4A8A;
+    --brand-primary-light: #1E7CC3;
+    --brand-primary-dark: #063b6d;
+    --brand-accent: #0F5BB5;
+
+    /* Legacy compat (opcional, por si usas estos nombres) */
+    --molsan-primary: var(--brand-primary);
+    --molsan-primary-light: var(--brand-primary-light);
+    --molsan-accent: var(--brand-accent);
+
+    /* Text */
+    --text-main: #1E293B;
+    --text-soft: #475569;
+    --text-muted: #94A3B8;
+    --text-on-primary: #ffffff;
+
+    /* Backgrounds */
+    --bg-app: linear-gradient(135deg, #e8f3ff 0%, #f7fbff 40%, #ffffff 100%);
+    --bg-glass: rgba(255,255,255,0.45);
+    --bg-glass-strong: rgba(255,255,255,0.65);
+
+    /* Borders */
+    --border-glass: rgba(255,255,255,0.35);
+    --border-soft: rgba(148,163,184,0.45);
+
+    /* Shadows */
+    --shadow-soft: 0 4px 14px rgba(10,74,138,0.15);
+    --shadow-glass: 0 8px 24px rgba(10,74,138,0.25);
+    --shadow-strong: 0 12px 40px rgba(10,74,138,0.35);
+
+    /* Radius */
+    --radius-xs: 6px;
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 18px;
+    --radius-pill: 999px;
+
+    /* Spacing */
+    --space-xs: 6px;
+    --space-sm: 10px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+
+    /* Typography */
+    --font-family-base: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-size-xs: 11px;
+    --font-size-sm: 13px;
+    --font-size-md: 14px;
+    --font-size-lg: 16px;
+    --font-size-xl: 20px;
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-black: 800;
+
+    /* Transitions */
+    --transition-fast: 0.18s ease-out;
+    --transition: 0.25s ease;
+    --transition-slow: 0.35s ease;
+
+    /* Breakpoints */
+    --break-desktop: 1200px;
+    --break-tablet: 900px;
+    --break-mobile: 600px;
+}

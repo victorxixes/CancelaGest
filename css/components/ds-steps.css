@@ -1,0 +1,44 @@
+/* ============================================================
+   COMPONENTE: STEPPER — Glass Luxe 2027
+============================================================ */
+
+.stepper {
+    display: flex;
+    gap: var(--space-lg);
+    margin: var(--space-md) 0;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+    text-align: center;
+}
+
+.step-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bg-glass);
+    border: 2px solid var(--border-glass);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    transition: var(--transition);
+    backdrop-filter: blur(10px);
+}
+
+.step.active .step-circle {
+    background: var(--brand-primary);
+    color: white;
+    border-color: var(--brand-primary-light);
+    box-shadow: var(--shadow-soft);
+}
+
+.step-label {
+    font-size: 13px;
+    opacity: 0.8;
+    max-width: 120px;
+}

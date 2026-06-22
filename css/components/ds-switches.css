@@ -1,0 +1,61 @@
+/* components/ds-switches.css */
+/* ============================================================
+   SWITCH — GLASS LUXE 2027
+============================================================ */
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 26px;
+}
+
+/* Ocultar input */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Fondo del switch */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-pill);
+    transition: var(--transition);
+    backdrop-filter: blur(6px);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Círculo */
+.slider::before {
+    content: "";
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background: rgba(255,255,255,0.85);
+    border-radius: 50%;
+    transition: var(--transition);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    border: 1px solid var(--border-glass);
+}
+
+/* Activado */
+.switch input:checked + .slider {
+    background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-light));
+    border-color: var(--brand-primary-light);
+}
+
+.switch input:checked + .slider::before {
+    transform: translateX(26px);
+}
+
+/* Focus accesible */
+.switch input:focus + .slider {
+    box-shadow: 0 0 0 3px rgba(30,124,195,0.35);
+}

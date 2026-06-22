@@ -1,0 +1,60 @@
+/* ============================================================
+   COMPONENTE: SEARCH INPUT — Glass Luxe 2027
+============================================================ */
+
+.search-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 14px 12px 42px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-glass);
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    font-size: 15px;
+    color: var(--text-main);
+    transition: var(--transition);
+    box-shadow: var(--shadow-soft);
+}
+
+.search-input::placeholder {
+    color: var(--text-muted);
+}
+
+.search-input:hover {
+    background: var(--bg-glass-strong);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 3px rgba(10,74,138,0.25);
+}
+
+/* ICONO */
+.search-icon {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+/* VERSIÓN COMPACTA */
+.search-input--sm {
+    padding: 8px 12px 8px 36px;
+    font-size: 14px;
+    border-radius: var(--radius-sm);
+}
+
+/* VERSIÓN GRANDE */
+.search-input--lg {
+    padding: 16px 18px 16px 48px;
+    font-size: 17px;
+    border-radius: var(--radius-lg);
+}

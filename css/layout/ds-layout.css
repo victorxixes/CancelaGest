@@ -1,0 +1,82 @@
+/* ============================================================
+   LAYOUT GENERAL — GLASS LUXE 2027
+============================================================ */
+
+.layout {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* SIDEBAR (compacto por defecto) */
+.sidebar {
+    width: 80px;
+    min-width: 80px;
+    /* background eliminado para permitir el Glass Luxe del cg-sidebar.css */
+    border-right: 1px solid var(--border-soft);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    transition: width var(--transition);
+    z-index: 100;
+}
+
+
+/* SIDEBAR EXPANDIDO */
+body.sidebar-expanded .sidebar {
+    width: 260px;
+    min-width: 260px;
+}
+.sidebar-hitbox {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 12px;
+    height: 100vh;
+    z-index: 999999999 !important;
+}
+
+/* CONTENIDO */
+.layout-content {
+    flex: 1;
+    padding: 30px 40px;
+    width: 100%;
+    margin-left: 80px;
+    transition: margin-left var(--transition);
+}
+
+/* CONTENIDO CON SIDEBAR EXPANDIDO */
+body.sidebar-expanded .layout-content {
+    margin-left: 260px;
+}
+
+/* TITULOS */
+.section-title {
+    font-size: 18px;
+    font-weight: var(--font-weight-bold);
+    color: var(--brand-primary);
+    margin-bottom: 10px;
+}
+
+.header-sub {
+    font-size: 13px;
+    color: var(--text-soft);
+}
+/* ============================================================
+   LAYOUT — CONTENIDO PRINCIPAL
+============================================================ */
+.layout-content {
+    margin-left: 260px;          /* espacio del sidebar expandido */
+    padding: 30px 40px;          /* margen interior estándar */
+    max-width: calc(100% - 260px);
+    box-sizing: border-box;
+    transition: margin-left 0.30s ease;
+}
+
+/* Cuando el sidebar está colapsado */
+body:not(.sidebar-expanded) .layout-content {
+    margin-left: 78px;           /* ancho del sidebar compacto */
+    max-width: calc(100% - 78px);
+}

@@ -1,0 +1,100 @@
+/* modules/ds-documentos.css */
+/* ============================================================
+   MÓDULO: DOCUMENTOS — CANCELAGEST 2.0
+============================================================ */
+
+/* Layout general */
+.docs-container {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: var(--space-xl);
+    margin-top: var(--space-lg);
+}
+
+@media (max-width: var(--break-tablet)) {
+    .docs-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Panel izquierdo (listado) */
+.docs-list {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Documento */
+.doc-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    background: rgba(255,255,255,0.25);
+    margin-bottom: var(--space-sm);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.doc-item:hover {
+    background: rgba(255,255,255,0.45);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Tipo */
+.doc-type {
+    font-size: var(--font-size-sm);
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    font-weight: var(--font-weight-semibold);
+}
+
+.doc-type--pdf {
+    background: rgba(220,38,38,0.25);
+    color: #7f1d1d;
+}
+
+.doc-type--img {
+    background: rgba(14,165,233,0.25);
+    color: #075985;
+}
+
+.doc-type--doc {
+    background: rgba(234,179,8,0.25);
+    color: #78350f;
+}
+
+/* Panel derecho (visor) */
+.doc-viewer {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    padding: var(--space-xl);
+    backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Título */
+.doc-viewer-title {
+    font-size: 22px;
+    font-weight: var(--font-weight-bold);
+    color: var(--brand-primary-dark);
+    margin-bottom: var(--space-md);
+}
+
+/* PDF viewer */
+.doc-pdf {
+    margin-top: var(--space-lg);
+}
+
+/* Botones */
+.doc-actions {
+    margin-top: var(--space-xl);
+    display: flex;
+    gap: var(--space-md);
+}

@@ -1,0 +1,135 @@
+/* components/ds-tables.css */
+/* ============================================================
+   GLASS LUXE 2027 — TABLAS PREMIUM (ENCAPSULADAS)
+   Archivo: ds-tables.css
+============================================================ */
+
+/* CONTENEDOR PREMIUM */
+.table-premium {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(12px);
+    padding: 10px;
+    box-shadow: 0 8px 25px rgba(10,74,138,0.15);
+}
+
+/* TABLA PREMIUM */
+.table-premium table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    color: #084482;
+}
+
+/* CABECERA */
+.table-premium table thead tr {
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(10px);
+}
+
+.table-premium table thead th {
+    padding: 12px 14px;
+    font-weight: 700;
+    text-align: left;
+    border-bottom: 2px solid rgba(10,74,138,0.15);
+    color: #063766;
+    white-space: nowrap;
+}
+
+/* FILAS */
+.table-premium table tbody tr {
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(6px);
+    transition: 0.15s ease;
+}
+
+.table-premium table tbody tr:hover {
+    background: rgba(255,255,255,0.65);
+    transform: translateY(-1px);
+}
+
+/* CELDAS */
+.table-premium table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(10,74,138,0.12);
+}
+
+/* TABLA COMPACTA */
+.table-premium .table--compact td,
+.table-premium .table--compact th {
+    padding: 8px 10px;
+    font-size: 13px;
+}
+
+/* TABLA GLASS */
+.table-premium .glass-table {
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.35);
+}
+
+/* SLA TABLE */
+.table-premium .sla-table {
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+/* BADGES */
+.table-premium .badge {
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    display: inline-block;
+}
+
+.table-premium .badge-blue { background: #0A4A8A; }
+.table-premium .badge-green,
+.table-premium .badge--success { background: #2E8B57; }
+.table-premium .badge--info { background: #1E7CC3; }
+.table-premium .badge--warning { background: #E6A100; }
+.table-premium .badge--danger { background: #C62828; }
+
+/* BOTONES DENTRO DE TABLA */
+.table-premium table .btn-small {
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 8px;
+}
+
+/* PAGINACIÓN */
+.table-premium .pagination {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.table-premium .pagination-controls button {
+    padding: 8px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(12px);
+    color: #084482;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+    box-shadow: 0 4px 12px rgba(10,74,138,0.15);
+}
+
+.table-premium .pagination-controls button:hover:not(:disabled) {
+    background: rgba(255,255,255,0.75);
+    transform: translateY(-2px);
+}
+
+.table-premium .pagination-controls button:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
